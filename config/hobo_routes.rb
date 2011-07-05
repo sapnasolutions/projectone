@@ -5,6 +5,46 @@
 GatewayManagerHobo::Application.routes.draw do
 
 
+  # Resource routes for controller "biens"
+  get 'biens(.:format)' => 'biens#index', :as => 'biens'
+  get 'biens/new(.:format)', :as => 'new_bien'
+  get 'biens/:id/edit(.:format)' => 'biens#edit', :as => 'edit_bien'
+  get 'biens/:id(.:format)' => 'biens#show', :as => 'bien', :constraints => { :id => %r([^/.?]+) }
+  post 'biens(.:format)' => 'biens#create', :as => 'create_bien'
+  put 'biens/:id(.:format)' => 'biens#update', :as => 'update_bien', :constraints => { :id => %r([^/.?]+) }
+  delete 'biens/:id(.:format)' => 'biens#destroy', :as => 'destroy_bien', :constraints => { :id => %r([^/.?]+) }
+
+
+  # Resource routes for controller "bien_emplacements"
+  get 'bien_emplacements(.:format)' => 'bien_emplacements#index', :as => 'bien_emplacements'
+  get 'bien_emplacements/new(.:format)', :as => 'new_bien_emplacement'
+  get 'bien_emplacements/:id/edit(.:format)' => 'bien_emplacements#edit', :as => 'edit_bien_emplacement'
+  get 'bien_emplacements/:id(.:format)' => 'bien_emplacements#show', :as => 'bien_emplacement', :constraints => { :id => %r([^/.?]+) }
+  post 'bien_emplacements(.:format)' => 'bien_emplacements#create', :as => 'create_bien_emplacement'
+  put 'bien_emplacements/:id(.:format)' => 'bien_emplacements#update', :as => 'update_bien_emplacement', :constraints => { :id => %r([^/.?]+) }
+  delete 'bien_emplacements/:id(.:format)' => 'bien_emplacements#destroy', :as => 'destroy_bien_emplacement', :constraints => { :id => %r([^/.?]+) }
+
+
+  # Resource routes for controller "bien_transactions"
+  get 'bien_transactions(.:format)' => 'bien_transactions#index', :as => 'bien_transactions'
+  get 'bien_transactions/new(.:format)', :as => 'new_bien_transaction'
+  get 'bien_transactions/:id/edit(.:format)' => 'bien_transactions#edit', :as => 'edit_bien_transaction'
+  get 'bien_transactions/:id(.:format)' => 'bien_transactions#show', :as => 'bien_transaction', :constraints => { :id => %r([^/.?]+) }
+  post 'bien_transactions(.:format)' => 'bien_transactions#create', :as => 'create_bien_transaction'
+  put 'bien_transactions/:id(.:format)' => 'bien_transactions#update', :as => 'update_bien_transaction', :constraints => { :id => %r([^/.?]+) }
+  delete 'bien_transactions/:id(.:format)' => 'bien_transactions#destroy', :as => 'destroy_bien_transaction', :constraints => { :id => %r([^/.?]+) }
+
+
+  # Resource routes for controller "bien_types"
+  get 'bien_types(.:format)' => 'bien_types#index', :as => 'bien_types'
+  get 'bien_types/new(.:format)', :as => 'new_bien_type'
+  get 'bien_types/:id/edit(.:format)' => 'bien_types#edit', :as => 'edit_bien_type'
+  get 'bien_types/:id(.:format)' => 'bien_types#show', :as => 'bien_type', :constraints => { :id => %r([^/.?]+) }
+  post 'bien_types(.:format)' => 'bien_types#create', :as => 'create_bien_type'
+  put 'bien_types/:id(.:format)' => 'bien_types#update', :as => 'update_bien_type', :constraints => { :id => %r([^/.?]+) }
+  delete 'bien_types/:id(.:format)' => 'bien_types#destroy', :as => 'destroy_bien_type', :constraints => { :id => %r([^/.?]+) }
+
+
   # Resource routes for controller "clients"
   get 'clients(.:format)' => 'clients#index', :as => 'clients'
   get 'clients/new(.:format)', :as => 'new_client'

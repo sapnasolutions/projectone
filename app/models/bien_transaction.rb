@@ -1,15 +1,10 @@
-class Client < ActiveRecord::Base
+class BienTransaction < ActiveRecord::Base
 
   hobo_model # Don't put anything above this
-  
+
   fields do
-    name          :string
-    raison_social :string
     timestamps
   end
-  
-  has_many :installations, :dependent => :destroy
-  has_many :biens, :dependent => :destroy
 
   # --- Permissions --- #
 

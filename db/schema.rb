@@ -10,7 +10,57 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110705150748) do
+ActiveRecord::Schema.define(:version => 20110705154333) do
+
+  create_table "bien_emplacements", :force => true do |t|
+    t.string   "position_gps"
+    t.string   "code_postal"
+    t.string   "pays"
+    t.string   "ville"
+    t.string   "addresse"
+    t.string   "secteur"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bien_transactions", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bien_types", :force => true do |t|
+    t.string   "nom"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "biens", :force => true do |t|
+    t.integer  "nb_piece"
+    t.integer  "prix"
+    t.integer  "surface"
+    t.integer  "surface_terrain"
+    t.string   "titre"
+    t.text     "description"
+    t.date     "date_disponibilite"
+    t.string   "statut"
+    t.integer  "nb_chambre"
+    t.integer  "valeur_dpe"
+    t.integer  "valeur_ges"
+    t.string   "classe_dpe"
+    t.string   "class_ges"
+    t.string   "reference"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "bien_emplacement_id"
+    t.integer  "bien_transaction_id"
+    t.integer  "bien_type_id"
+    t.integer  "client_id"
+  end
+
+  add_index "biens", ["bien_emplacement_id"], :name => "index_biens_on_bien_emplacement_id"
+  add_index "biens", ["bien_transaction_id"], :name => "index_biens_on_bien_transaction_id"
+  add_index "biens", ["bien_type_id"], :name => "index_biens_on_bien_type_id"
+  add_index "biens", ["client_id"], :name => "index_biens_on_client_id"
 
   create_table "clients", :force => true do |t|
     t.string   "name"

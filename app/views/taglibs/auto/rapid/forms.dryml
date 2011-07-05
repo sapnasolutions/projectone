@@ -1,5 +1,53 @@
 <!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
 
+<def tag="form" for="BienEmplacement">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_emplacement.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="BienTransaction">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_transaction.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="BienType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_type.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Bien">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="bien_emplacement, bien_transaction, bien_type, client" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="Client">
   <form merge param="default">
     <error-messages param/>
