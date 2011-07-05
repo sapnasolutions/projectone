@@ -10,7 +10,45 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110628213159) do
+ActiveRecord::Schema.define(:version => 20110705150748) do
+
+  create_table "clients", :force => true do |t|
+    t.string   "name"
+    t.string   "raison_social"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "executions", :force => true do |t|
+    t.string   "type"
+    t.text     "description"
+    t.string   "statut"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "passerelle_id"
+  end
+
+  add_index "executions", ["passerelle_id"], :name => "index_executions_on_passerelle_id"
+
+  create_table "installations", :force => true do |t|
+    t.text     "description"
+    t.string   "code_acces_distant"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "client_id"
+  end
+
+  add_index "installations", ["client_id"], :name => "index_installations_on_client_id"
+
+  create_table "passerelles", :force => true do |t|
+    t.string   "type"
+    t.string   "params"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "installation_id"
+  end
+
+  add_index "passerelles", ["installation_id"], :name => "index_passerelles_on_installation_id"
 
   create_table "users", :force => true do |t|
     t.string   "crypted_password",          :limit => 40

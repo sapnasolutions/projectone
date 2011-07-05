@@ -5,8 +5,593 @@
 <def tag="main-nav">
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/">Home</nav-item>
+    <nav-item with="&Client"><ht key="client.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&Execution"><ht key="execution.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&Installation"><ht key="installation.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&Passerelle"><ht key="passerelle.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
   </navigation>
 </def>
+
+
+
+
+<!-- ====== Client Pages ====== -->
+
+<def tag="index-page" for="Client">
+  <page merge title="#{ht 'client.index.title', :default=>[model.model_name.human(:count=>100)] }">
+    <body: class="index-page client" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="client.index.heading">
+            <model-name-human model="&model"/>
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="client.collection.count" count="&collection_count">
+            <count summary/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="client.actions.new">New Client</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Client">
+  <page merge title="#{ht 'client.new.title', :default=>[' New Client'] }">
+    <body: class="new-page client" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="client.new.heading">
+            New Client
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'client.actions.create', :default=>['Create Client']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Client">
+  <page merge title="#{ht 'client.show.title', :default=>['Client'] }">
+
+    <body: class="show-page client" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="client.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="client.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Client
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <field-list fields="raison_social" param/>
+            <section param="collection-section">
+              <h3 param="collection-heading">
+                <ht key="installation.collection.heading" count="&this.installations.count" >
+                  <human-collection-name collection="installations" your/>
+                </ht>
+              </h3>
+
+              <collection:installations param/>
+
+              <a:installations action="new" if="&can_create?(@client.installations)" param="new-link">
+                <ht key="installation.actions.new" count="1">
+                  New Installation
+                </ht>
+              </a:installations>
+            </section>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Client">
+  <page merge title="#{ht 'client.edit.title', :default=>['Edit Client'] }">
+
+    <body: class="edit-page client" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="client.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit Client
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'client.actions.delete', :default=>['Remove This Client']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== Execution Pages ====== -->
+
+<def tag="index-page" for="Execution">
+  <page merge title="#{ht 'execution.index.title', :default=>[model.model_name.human(:count=>100)] }">
+    <body: class="index-page execution" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="execution.index.heading">
+            <model-name-human model="&model"/>
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="execution.collection.count" count="&collection_count">
+            <count summary/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="execution.actions.new">New Execution</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Execution">
+  <page merge title="#{ht 'execution.new.title', :default=>[' New Execution'] }">
+    <body: class="new-page execution" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="execution.new.heading">
+            New Execution
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'execution.actions.create', :default=>['Create Execution']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Execution">
+  <page merge title="#{ht 'execution.show.title', :default=>['Execution'] }">
+
+    <body: class="show-page execution" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="execution.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="execution.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Execution
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <view:description param="description"/>
+            <field-list fields="statut, passerelle" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Execution">
+  <page merge title="#{ht 'execution.edit.title', :default=>['Edit Execution'] }">
+
+    <body: class="edit-page execution" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="execution.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit Execution
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'execution.actions.delete', :default=>['Remove This Execution']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+
+
+
+<!-- ====== Installation Pages ====== -->
+
+<def tag="index-page" for="Installation">
+  <page merge title="#{ht 'installation.index.title', :default=>[model.model_name.human(:count=>100)] }">
+    <body: class="index-page installation" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="installation.index.heading">
+            <model-name-human model="&model"/>
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="installation.collection.count" count="&collection_count">
+            <count summary/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="installation.actions.new">New Installation</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Installation">
+  <page merge title="#{ht 'installation.new.title', :default=>[' New Installation'] }">
+    <body: class="new-page installation" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="installation.new.heading">
+            New Installation
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'installation.actions.create', :default=>['Create Installation']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Installation">
+  <page merge title="#{ht 'installation.show.title', :default=>['Installation'] }">
+
+    <body: class="show-page installation" param/>
+
+    <content: param>
+          <header param="content-header">
+            <a:client param="parent-link">&laquo; <ht key="installation.actions.back_to_parent" parent="Client" name="&this">Back to <name/></ht></a:client>
+            <h2 param="heading">
+              <ht key="installation.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="installation.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Installation
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <view:description param="description"/>
+            <field-list fields="code_acces_distant" param/>
+            <section param="collection-section">
+              <h3 param="collection-heading">
+                <ht key="passerelle.collection.heading" count="&this.passerelles.count" >
+                  <human-collection-name collection="passerelles" your/>
+                </ht>
+              </h3>
+
+              <collection:passerelles param/>
+
+              <a:passerelles action="new" if="&can_create?(@installation.passerelles)" param="new-link">
+                <ht key="passerelle.actions.new" count="1">
+                  New Passerelle
+                </ht>
+              </a:passerelles>
+            </section>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Installation">
+  <page merge title="#{ht 'installation.edit.title', :default=>['Edit Installation'] }">
+
+    <body: class="edit-page installation" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="installation.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit Installation
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'installation.actions.delete', :default=>['Remove This Installation']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+<def tag="new-for-client-page" polymorphic/>
+<def tag="new-for-client-page" for="Installation">
+  <page merge title="#{ht 'installation.new_for_owner.title', :default=>['New Installation for']} #{name :with => @client}">
+    <body: class="new-for-owner-page  installation" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="installation.new_for_owner.heading">
+            New Installation
+          </ht>
+        </h2>
+        <h3 param="subheading">
+          <ht key="installation.new_for_owner.subheading">
+            For:
+          </ht>
+          <a with="&@client"/>
+        </h3>
+      </header>
+
+      <section param="content-body">
+        <form owner="client" method="post" param>
+          <field-list: skip="client"/>
+          <submit: label="#{ht 'installation.actions.create', :default=>['Create Installation']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== Passerelle Pages ====== -->
+
+<def tag="index-page" for="Passerelle">
+  <page merge title="#{ht 'passerelle.index.title', :default=>[model.model_name.human(:count=>100)] }">
+    <body: class="index-page passerelle" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="passerelle.index.heading">
+            <model-name-human model="&model"/>
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="passerelle.collection.count" count="&collection_count">
+            <count summary/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="passerelle.actions.new">New Passerelle</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Passerelle">
+  <page merge title="#{ht 'passerelle.new.title', :default=>[' New Passerelle'] }">
+    <body: class="new-page passerelle" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="passerelle.new.heading">
+            New Passerelle
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'passerelle.actions.create', :default=>['Create Passerelle']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Passerelle">
+  <page merge title="#{ht 'passerelle.show.title', :default=>['Passerelle'] }">
+
+    <body: class="show-page passerelle" param/>
+
+    <content: param>
+          <header param="content-header">
+            <a:installation param="parent-link">&laquo; <ht key="passerelle.actions.back_to_parent" parent="Installation" name="&this">Back to <name/></ht></a:installation>
+            <h2 param="heading">
+              <ht key="passerelle.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="passerelle.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Passerelle
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <field-list fields="params" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Passerelle">
+  <page merge title="#{ht 'passerelle.edit.title', :default=>['Edit Passerelle'] }">
+
+    <body: class="edit-page passerelle" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="passerelle.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit Passerelle
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'passerelle.actions.delete', :default=>['Remove This Passerelle']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+<def tag="new-for-installation-page" polymorphic/>
+<def tag="new-for-installation-page" for="Passerelle">
+  <page merge title="#{ht 'passerelle.new_for_owner.title', :default=>['New Passerelle for']} #{name :with => @installation}">
+    <body: class="new-for-owner-page  passerelle" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="passerelle.new_for_owner.heading">
+            New Passerelle
+          </ht>
+        </h2>
+        <h3 param="subheading">
+          <ht key="passerelle.new_for_owner.subheading">
+            For:
+          </ht>
+          <a with="&@installation"/>
+        </h3>
+      </header>
+
+      <section param="content-body">
+        <form owner="installation" method="post" param>
+          <field-list: skip="installation"/>
+          <submit: label="#{ht 'passerelle.actions.create', :default=>['Create Passerelle']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
 
 
 

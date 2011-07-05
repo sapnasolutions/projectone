@@ -1,5 +1,53 @@
 <!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
 
+<def tag="form" for="Client">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, raison_social" param/>
+    <div param="actions">
+      <submit label="#{ht 'client.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Execution">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="description, statut, passerelle" param/>
+    <div param="actions">
+      <submit label="#{ht 'execution.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Installation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="description, code_acces_distant, client" param/>
+    <div param="actions">
+      <submit label="#{ht 'installation.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Passerelle">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="params, installation" param/>
+    <div param="actions">
+      <submit label="#{ht 'passerelle.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="User">
   <form merge param="default">
     <error-messages param/>

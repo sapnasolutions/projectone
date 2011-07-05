@@ -5,6 +5,54 @@
 GatewayManagerHobo::Application.routes.draw do
 
 
+  # Resource routes for controller "clients"
+  get 'clients(.:format)' => 'clients#index', :as => 'clients'
+  get 'clients/new(.:format)', :as => 'new_client'
+  get 'clients/:id/edit(.:format)' => 'clients#edit', :as => 'edit_client'
+  get 'clients/:id(.:format)' => 'clients#show', :as => 'client', :constraints => { :id => %r([^/.?]+) }
+  post 'clients(.:format)' => 'clients#create', :as => 'create_client'
+  put 'clients/:id(.:format)' => 'clients#update', :as => 'update_client', :constraints => { :id => %r([^/.?]+) }
+  delete 'clients/:id(.:format)' => 'clients#destroy', :as => 'destroy_client', :constraints => { :id => %r([^/.?]+) }
+
+
+  # Resource routes for controller "executions"
+  get 'executions(.:format)' => 'executions#index', :as => 'executions'
+  get 'executions/new(.:format)', :as => 'new_execution'
+  get 'executions/:id/edit(.:format)' => 'executions#edit', :as => 'edit_execution'
+  get 'executions/:id(.:format)' => 'executions#show', :as => 'execution', :constraints => { :id => %r([^/.?]+) }
+  post 'executions(.:format)' => 'executions#create', :as => 'create_execution'
+  put 'executions/:id(.:format)' => 'executions#update', :as => 'update_execution', :constraints => { :id => %r([^/.?]+) }
+  delete 'executions/:id(.:format)' => 'executions#destroy', :as => 'destroy_execution', :constraints => { :id => %r([^/.?]+) }
+
+
+  # Resource routes for controller "installations"
+  get 'installations(.:format)' => 'installations#index', :as => 'installations'
+  get 'installations/new(.:format)', :as => 'new_installation'
+  get 'installations/:id/edit(.:format)' => 'installations#edit', :as => 'edit_installation'
+  get 'installations/:id(.:format)' => 'installations#show', :as => 'installation', :constraints => { :id => %r([^/.?]+) }
+  post 'installations(.:format)' => 'installations#create', :as => 'create_installation'
+  put 'installations/:id(.:format)' => 'installations#update', :as => 'update_installation', :constraints => { :id => %r([^/.?]+) }
+  delete 'installations/:id(.:format)' => 'installations#destroy', :as => 'destroy_installation', :constraints => { :id => %r([^/.?]+) }
+
+  # Owner routes for controller "installations"
+  get 'clients/:client_id/installations/new(.:format)' => 'installations#new_for_client', :as => 'new_installation_for_client'
+  post 'clients/:client_id/installations(.:format)' => 'installations#create_for_client', :as => 'create_installation_for_client'
+
+
+  # Resource routes for controller "passerelles"
+  get 'passerelles(.:format)' => 'passerelles#index', :as => 'passerelles'
+  get 'passerelles/new(.:format)', :as => 'new_passerelle'
+  get 'passerelles/:id/edit(.:format)' => 'passerelles#edit', :as => 'edit_passerelle'
+  get 'passerelles/:id(.:format)' => 'passerelles#show', :as => 'passerelle', :constraints => { :id => %r([^/.?]+) }
+  post 'passerelles(.:format)' => 'passerelles#create', :as => 'create_passerelle'
+  put 'passerelles/:id(.:format)' => 'passerelles#update', :as => 'update_passerelle', :constraints => { :id => %r([^/.?]+) }
+  delete 'passerelles/:id(.:format)' => 'passerelles#destroy', :as => 'destroy_passerelle', :constraints => { :id => %r([^/.?]+) }
+
+  # Owner routes for controller "passerelles"
+  get 'installations/:installation_id/passerelles/new(.:format)' => 'passerelles#new_for_installation', :as => 'new_passerelle_for_installation'
+  post 'installations/:installation_id/passerelles(.:format)' => 'passerelles#create_for_installation', :as => 'create_passerelle_for_installation'
+
+
   # Lifecycle routes for controller "users"
   put 'users/:id/accept_invitation(.:format)' => 'users#do_accept_invitation', :as => 'do_user_accept_invitation'
   get 'users/:id/accept_invitation(.:format)' => 'users#accept_invitation', :as => 'user_accept_invitation'
