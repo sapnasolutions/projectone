@@ -104,6 +104,7 @@
           </header>
 
           <section param="content-body">
+            <field-list fields="position_gps, code_postal, pays, ville, addresse, secteur" param/>
           </section>
     </content:>
 
@@ -342,6 +343,7 @@
           </header>
 
           <section param="content-body">
+            <field-list fields="nom" param/>
           </section>
     </content:>
 
@@ -462,7 +464,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="bien_emplacement, bien_transaction, bien_type, client" param/>
+            <field-list fields="nb_piece, prix, surface, surface_terrain, titre, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, client" param/>
           </section>
     </content:>
 

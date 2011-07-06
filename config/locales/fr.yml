@@ -1,0 +1,10 @@
+# translation fr
+
+fr:
+  date:
+    formats:
+      default: "%H:%M %d/%m/%Y"
+  time:
+    formats:
+      default: "%H:%M %d/%m/%Y"
+  roger: "holla la la"

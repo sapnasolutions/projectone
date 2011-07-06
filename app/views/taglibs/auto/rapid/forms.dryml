@@ -3,7 +3,7 @@
 <def tag="form" for="BienEmplacement">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="" param/>
+    <field-list fields="position_gps, code_postal, pays, ville, addresse, secteur" param/>
     <div param="actions">
       <submit label="#{ht 'bien_emplacement.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -27,7 +27,7 @@
 <def tag="form" for="BienType">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="" param/>
+    <field-list fields="nom" param/>
     <div param="actions">
       <submit label="#{ht 'bien_type.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -39,7 +39,7 @@
 <def tag="form" for="Bien">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="bien_emplacement, bien_transaction, bien_type, client" param/>
+    <field-list fields="nb_piece, prix, surface, surface_terrain, titre, description, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, client" param/>
     <div param="actions">
       <submit label="#{ht 'bien.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
