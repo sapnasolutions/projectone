@@ -11,6 +11,7 @@ class Passerelle < ActiveRecord::Base
   belongs_to :installation
 
   has_many :executions, :dependent => :destroy
+  has_many :biens, :dependent => :destroy
   
   # --- Permissions --- #
 

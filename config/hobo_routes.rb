@@ -25,6 +25,16 @@ GatewayManagerHobo::Application.routes.draw do
   delete 'bien_emplacements/:id(.:format)' => 'bien_emplacements#destroy', :as => 'destroy_bien_emplacement', :constraints => { :id => %r([^/.?]+) }
 
 
+  # Resource routes for controller "bien_photos"
+  get 'bien_photos(.:format)' => 'bien_photos#index', :as => 'bien_photos'
+  get 'bien_photos/new(.:format)', :as => 'new_bien_photo'
+  get 'bien_photos/:id/edit(.:format)' => 'bien_photos#edit', :as => 'edit_bien_photo'
+  get 'bien_photos/:id(.:format)' => 'bien_photos#show', :as => 'bien_photo', :constraints => { :id => %r([^/.?]+) }
+  post 'bien_photos(.:format)' => 'bien_photos#create', :as => 'create_bien_photo'
+  put 'bien_photos/:id(.:format)' => 'bien_photos#update', :as => 'update_bien_photo', :constraints => { :id => %r([^/.?]+) }
+  delete 'bien_photos/:id(.:format)' => 'bien_photos#destroy', :as => 'destroy_bien_photo', :constraints => { :id => %r([^/.?]+) }
+
+
   # Resource routes for controller "bien_transactions"
   get 'bien_transactions(.:format)' => 'bien_transactions#index', :as => 'bien_transactions'
   get 'bien_transactions/new(.:format)', :as => 'new_bien_transaction'

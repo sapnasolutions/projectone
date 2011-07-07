@@ -9,8 +9,18 @@ class Client < ActiveRecord::Base
   end
   
   has_many :installations, :dependent => :destroy
-  has_many :biens, :dependent => :destroy
 
+  def create
+	super
+	Dir.mkdir "#{$base_client_medias}/#{self.id}" unless File.exist? "#{$base_client_medias}/#{self.id}"
+	return self
+  end
+  
+  def destroy
+	Dir.rmdir "#{$base_client_medias}/#{self.id}" if File.exist? "#{$base_client_medias}/#{self.id}"
+	super
+  end
+  
   # --- Permissions --- #
 
   def create_permitted?

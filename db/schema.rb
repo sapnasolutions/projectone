@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110705154333) do
+ActiveRecord::Schema.define(:version => 20110707082859) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -22,6 +22,22 @@ ActiveRecord::Schema.define(:version => 20110705154333) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "bien_photos", :force => true do |t|
+    t.integer  "ordre"
+    t.string   "titre"
+    t.text     "attributs"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.integer  "bien_id"
+    t.string   "hashsum"
+  end
+
+  add_index "bien_photos", ["bien_id"], :name => "index_bien_photos_on_bien_id"
 
   create_table "bien_transactions", :force => true do |t|
     t.datetime "created_at"
@@ -54,13 +70,13 @@ ActiveRecord::Schema.define(:version => 20110705154333) do
     t.integer  "bien_emplacement_id"
     t.integer  "bien_transaction_id"
     t.integer  "bien_type_id"
-    t.integer  "client_id"
+    t.integer  "passerelle_id"
   end
 
   add_index "biens", ["bien_emplacement_id"], :name => "index_biens_on_bien_emplacement_id"
   add_index "biens", ["bien_transaction_id"], :name => "index_biens_on_bien_transaction_id"
   add_index "biens", ["bien_type_id"], :name => "index_biens_on_bien_type_id"
-  add_index "biens", ["client_id"], :name => "index_biens_on_client_id"
+  add_index "biens", ["passerelle_id"], :name => "index_biens_on_passerelle_id"
 
   create_table "clients", :force => true do |t|
     t.string   "name"

@@ -12,6 +12,18 @@
 
 
 
+<def tag="form" for="BienPhoto">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="ordre, titre, hashsum, attributs, bien" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_photo.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="BienTransaction">
   <form merge param="default">
     <error-messages param/>
@@ -39,7 +51,7 @@
 <def tag="form" for="Bien">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="nb_piece, prix, surface, surface_terrain, titre, description, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, client" param/>
+    <field-list fields="nb_piece, prix, surface, surface_terrain, titre, description, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, passerelle" param/>
     <div param="actions">
       <submit label="#{ht 'bien.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

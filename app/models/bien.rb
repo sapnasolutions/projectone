@@ -23,7 +23,8 @@ class Bien < ActiveRecord::Base
   belongs_to :bien_emplacement#, :as => :emplacement
   belongs_to :bien_transaction#, :as => :transaction
   belongs_to :bien_type#, :as => :type
-  belongs_to :client
+  belongs_to :passerelle
+  has_many :bien_photos, :dependent => :destroy
   
   # --- Permissions --- #
 

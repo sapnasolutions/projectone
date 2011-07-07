@@ -7,6 +7,7 @@
     <nav-item href="#{base_url}/">Home</nav-item>
     <nav-item with="&Bien"><ht key="bien.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&BienEmplacement"><ht key="bien_emplacement.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&BienPhoto"><ht key="bien_photo.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&BienTransaction"><ht key="bien_transaction.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&BienType"><ht key="bien_type.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&Client"><ht key="client.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
@@ -125,6 +126,126 @@
           </ht>
         </h2>
         <delete-button label="#{ht 'bien_emplacement.actions.delete', :default=>['Remove This Bien emplacement']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== BienPhoto Pages ====== -->
+
+<def tag="index-page" for="BienPhoto">
+  <page merge title="#{ht 'bien_photo.index.title', :default=>[model.model_name.human(:count=>100)] }">
+    <body: class="index-page bien-photo" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="bien_photo.index.heading">
+            <model-name-human model="&model"/>
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="bien_photo.collection.count" count="&collection_count">
+            <count summary/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="bien_photo.actions.new">New Bien photo</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="BienPhoto">
+  <page merge title="#{ht 'bien_photo.new.title', :default=>[' New Bien photo'] }">
+    <body: class="new-page bien-photo" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="bien_photo.new.heading">
+            New Bien photo
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'bien_photo.actions.create', :default=>['Create Bien photo']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="BienPhoto">
+  <page merge title="#{ht 'bien_photo.show.title', :default=>['Bien photo'] }">
+
+    <body: class="show-page bien-photo" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="bien_photo.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="bien_photo.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Bien photo
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <field-list fields="ordre, titre, hashsum, attributs, bien" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="BienPhoto">
+  <page merge title="#{ht 'bien_photo.edit.title', :default=>['Edit Bien photo'] }">
+
+    <body: class="edit-page bien-photo" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="bien_photo.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit Bien photo
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'bien_photo.actions.delete', :default=>['Remove This Bien photo']}" param/>
       </section>
 
       <section param="content-body">
@@ -464,7 +585,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="nb_piece, prix, surface, surface_terrain, titre, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, client" param/>
+            <field-list fields="nb_piece, prix, surface, surface_terrain, titre, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, passerelle" param/>
           </section>
     </content:>
 

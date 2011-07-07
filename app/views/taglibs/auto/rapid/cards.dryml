@@ -16,6 +16,14 @@
   </card>
 </def>
 
+<def tag="card" for="BienPhoto">
+  <card class="bien-photo" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
 <def tag="card" for="BienTransaction">
   <card class="bien-transaction" param="default" merge>
     <header: param>
