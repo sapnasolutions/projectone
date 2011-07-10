@@ -64,7 +64,6 @@
 <def tag="card" for="Installation">
   <card class="installation" param="default" merge>
     <body: param>
-      <view:description param="description"/>
       <ht key="passerelle.collection.count" count="&this.passerelles.size">
          <count:passerelles param/>
       </ht>

@@ -3,7 +3,9 @@ class Installation < ActiveRecord::Base
   hobo_model # Don't put anything above this
 
   fields do
-    description        :text
+    informations_supplementaires        :string
+	#informations_supplementaires 	:text
+	# or create a model named parametres, bug with editor and text or hash
     code_acces_distant :string
     timestamps
   end

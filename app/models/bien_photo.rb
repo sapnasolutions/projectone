@@ -29,7 +29,7 @@ class BienPhoto < ActiveRecord::Base
 	belongs_to :bien
 	default_scope :order => :ordre
 	#process_in_background :photo
-	typed_serialize :attributs, Hash
+	#typed_serialize :attributs, Hash
   
     def self.from_local(local_path, bien, ordre, titre)
       filename = File.basename local_path

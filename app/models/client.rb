@@ -17,8 +17,9 @@ class Client < ActiveRecord::Base
   end
   
   def destroy
-	Dir.rmdir "#{$base_client_medias}/#{self.id}" if File.exist? "#{$base_client_medias}/#{self.id}"
 	super
+	Dir.rmdir "#{$base_client_medias}/#{self.id}" if File.exist? "#{$base_client_medias}/#{self.id}"
+	return nil
   end
   
   # --- Permissions --- #

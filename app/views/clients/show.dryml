@@ -1,0 +1,55 @@
+<show-page>
+
+<content-header: replace>
+<div class="header content-header">
+<h2 class="heading">Client <editor:name/></h2>
+</div>
+</content-header:>
+<field-list: fields="raison_social" tag="editor"/>
+<!-- 
+<old-show-page merge>
+
+
+      <section-group>
+	  <header class="content-header">
+		
+		</header>
+	 
+        <section>
+          <header class="content-header">
+            <h2 class="heading">
+              <div class="publish-checkbox">
+                <ht key="goods.publish"/> <editor:publish/>
+              </div>
+              <ht key="goods.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <editor:title/>
+              </ht>
+            </h2>
+          </header>
+
+          <section class="content-body">
+            <editor:description/>
+
+            <section class="collection-section">
+              <h3 class="heading">Images</h3>
+              
+              <collection:images part="images-part" class="clearfix">
+                <card update="images-part" active/>
+              </collection:images>
+
+              <upload-image:images.new class="image-uploader" update="images-part">
+                <ht key="images.add">Add new image</ht>&nbsp;:
+              </upload-image>
+            </section>
+          </section>
+          
+        </section>
+        
+        <aside>
+          <field-list fields="category, transaction_type, rooms, bedrooms, surface, price, fees, dpe_energy, ground_surface, 
+                availability_date, agency_ref, city, zipcode" tag="editor"/>
+        </aside>
+      </section-group>
+	  
+</old-show-page> -->
+</show-page>

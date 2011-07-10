@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110707082859) do
+ActiveRecord::Schema.define(:version => 20110708173107) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(:version => 20110707082859) do
   add_index "executions", ["passerelle_id"], :name => "index_executions_on_passerelle_id"
 
   create_table "installations", :force => true do |t|
-    t.text     "description"
+    t.string   "informations_supplementaires"
     t.string   "code_acces_distant"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -107,8 +107,8 @@ ActiveRecord::Schema.define(:version => 20110707082859) do
   add_index "installations", ["client_id"], :name => "index_installations_on_client_id"
 
   create_table "passerelles", :force => true do |t|
-    t.string   "type"
-    t.string   "params"
+    t.string   "logiciel"
+    t.string   "parametres"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "installation_id"

@@ -965,8 +965,7 @@
           </header>
 
           <section param="content-body">
-            <view:description param="description"/>
-            <field-list fields="code_acces_distant" param/>
+            <field-list fields="informations_supplementaires, code_acces_distant" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
                 <ht key="passerelle.collection.heading" count="&this.passerelles.count" >
@@ -1134,7 +1133,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="params" param/>
+            <field-list fields="logiciel, parametres" param/>
           </section>
     </content:>
 

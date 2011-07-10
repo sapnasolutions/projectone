@@ -3,8 +3,10 @@ class Passerelle < ActiveRecord::Base
   hobo_model # Don't put anything above this
 
   fields do
-    type   :string
-    params :string
+    logiciel   	:string
+    parametres 	:string
+	#parametres 	:text
+	# or create a model named parametres, bug with editor and text or hash
     timestamps
   end
 
@@ -12,6 +14,8 @@ class Passerelle < ActiveRecord::Base
 
   has_many :executions, :dependent => :destroy
   has_many :biens, :dependent => :destroy
+  
+  #typed_serialize :parametres, Hash
   
   # --- Permissions --- #
 
