@@ -30,6 +30,10 @@ class BienPhoto < ActiveRecord::Base
 	default_scope :order => :ordre
 	#process_in_background :photo
 	#typed_serialize :attributs, Hash
+	
+	def absolute_url
+		return "#{$domain}/#{self.photo.url}"
+	end
   
     def self.from_local(local_path, bien, ordre, titre)
       filename = File.basename local_path
@@ -49,10 +53,30 @@ class BienPhoto < ActiveRecord::Base
 
       self.from_data(filename,image_data,bien,ordre,titre)
     end
-    
+	
+	def save
+		if self.bien && self.ordre.nil?
+			if self.bien.bien_photos.empty?
+				self.ordre = 1
+			else
+				self.ordre = self.bien.bien_photos.map{ |p| p.ordre.to_i}.max+1
+			end
+		end
+		super
+	end
+	
+	def save!
+		if self.bien && self.ordre.nil?
+			if self.bien.bien_photos.empty?
+				self.ordre = 1
+			else
+				self.ordre = self.bien.bien_photos.map{ |p| p.ordre.to_i}.max+1
+			end
+		end
+		super
+	end
+	
     def self.from_data(filename,data,bien,ordre,titre)
-      require 'image_size'
-      require 'pp'
       begin
         hash = Digest::MD5.hexdigest data
       rescue   Exception => e
@@ -62,43 +86,16 @@ class BienPhoto < ActiveRecord::Base
 
       # Check if the hash is already known
       if bien.nil?
-		Logger.send("warn","Photo could not be saved: bien is unknow")
-        return nil
+		photo = self.where(:hashsum => hash, :bien_id => nil).first
+        return photo unless photo.nil?
       else
-        photo = self.find :first, :conditions => {:hashsum => hash, :bien_id => bien.id}
+		photo = self.where(:hashsum => hash, :bien_id => bien.id).first
         return photo unless photo.nil?
       end
           
 	  # Create the new media using a temporary file
 	  tmp = File.new("#{$tmp_path}/tmp.jpg","w+b")
 	  tmp.write data
-	  
-      #tmp = Tempfile.new filename
-	  #tmp.set_encoding("ASCII-8BIT")
-      #tmp.write data
-      # Use mimetype-fu to obtain mime if unknown
-      #mime = File.mime_type? tmp
-      #mime.gsub!(/\n/,"")
-	  
-      #if article.nil?
-      #  Logger.send("warn","unique label[#{label_name}] MIME (mimetype_fu) is #{mime}")
-      #else
-      #Logger.send("warn","#{bien.id}[#{filename}] MIME (mimetype_fu) is #{mime}")
-      #end
-
-      # Guess media type from MIME
-      #case mime
-      #  when /image/ then generator = Media::Image
-      #  when /video/ then generator = Media::Video
-      #else
-      #  Logger.send("warn","Could not guess MIME type : [#{mime.to_s}]")
-      #  return nil
-      #end
-	  
-	  #unless mime =~ /image/
-	#	Logger.send("warn","Could not guess MIME type : [#{mime.to_s}]")
-	#	return nil
-	#  end
       
       photo = self.new
       photo.hashsum = hash
@@ -106,14 +103,7 @@ class BienPhoto < ActiveRecord::Base
 	  photo.photo = tmp
       photo.titre = titre
 	  photo.ordre = ordre
-      
-      #if media is image store the size
-      #if media.is_a?(Media::Image)
-      #  size = ImageSize.new( data ).get_size
-      #  media.attrs[:width]  = size[0]
-      #  media.attrs[:height] = size[1]
-      #end
-      
+
       begin
         photo.save!
       rescue Exception => e  

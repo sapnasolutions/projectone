@@ -3,6 +3,7 @@ class BienTransaction < ActiveRecord::Base
   hobo_model # Don't put anything above this
 
   fields do
+	nom :string
     timestamps
   end
 

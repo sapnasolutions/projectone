@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110708173107) do
+ActiveRecord::Schema.define(:version => 20110713140508) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20110708173107) do
   create_table "bien_transactions", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "nom"
   end
 
   create_table "bien_types", :force => true do |t|
@@ -85,8 +86,22 @@ ActiveRecord::Schema.define(:version => 20110708173107) do
     t.datetime "updated_at"
   end
 
+  create_table "execution_source_files", :force => true do |t|
+    t.string   "hashsum"
+    t.text     "attributs"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.integer  "execution_id"
+  end
+
+  add_index "execution_source_files", ["execution_id"], :name => "index_execution_source_files_on_execution_id"
+
   create_table "executions", :force => true do |t|
-    t.string   "type"
+    t.string   "type_exe"
     t.text     "description"
     t.string   "statut"
     t.datetime "created_at"

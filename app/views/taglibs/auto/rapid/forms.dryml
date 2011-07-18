@@ -27,7 +27,7 @@
 <def tag="form" for="BienTransaction">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="" param/>
+    <field-list fields="nom" param/>
     <div param="actions">
       <submit label="#{ht 'bien_transaction.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -72,10 +72,22 @@
 
 
 
+<def tag="form" for="ExecutionSourceFile">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="hashsum, attributs, execution" param/>
+    <div param="actions">
+      <submit label="#{ht 'execution_source_file.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="Execution">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="description, statut, passerelle" param/>
+    <field-list fields="type_exe, description, statut, passerelle" param/>
     <div param="actions">
       <submit label="#{ht 'execution.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

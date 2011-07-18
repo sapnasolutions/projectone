@@ -61,6 +61,14 @@
   </card>
 </def>
 
+<def tag="card" for="ExecutionSourceFile">
+  <card class="execution-source-file" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
 <def tag="card" for="Installation">
   <card class="installation" param="default" merge>
     <header: param>

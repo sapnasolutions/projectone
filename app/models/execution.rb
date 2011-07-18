@@ -3,13 +3,14 @@ class Execution < ActiveRecord::Base
   hobo_model # Don't put anything above this
 
   fields do
-    type        :string
+    type_exe    :string
     description :text
     statut      :string
     timestamps
   end
 
   belongs_to :passerelle
+  has_one :execution_source_file
   
   # --- Permissions --- #
 

@@ -2,7 +2,7 @@ GatewayManagerHobo::Application.routes.draw do
   root :to => 'front#index'
 
   match 'search' => 'front#search', :as => 'site_search'
-
+  match 'export' => 'installations#export'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

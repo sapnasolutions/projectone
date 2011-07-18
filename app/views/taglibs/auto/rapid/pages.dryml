@@ -12,6 +12,7 @@
     <nav-item with="&BienType"><ht key="bien_type.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&Client"><ht key="client.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&Execution"><ht key="execution.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&ExecutionSourceFile"><ht key="execution_source_file.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&Installation"><ht key="installation.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
     <nav-item with="&Passerelle"><ht key="passerelle.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
   </navigation>
@@ -345,6 +346,7 @@
           </header>
 
           <section param="content-body">
+            <field-list fields="nom" param/>
           </section>
     </content:>
 
@@ -755,6 +757,126 @@
 
 
 
+<!-- ====== ExecutionSourceFile Pages ====== -->
+
+<def tag="index-page" for="ExecutionSourceFile">
+  <page merge title="#{ht 'execution_source_file.index.title', :default=>[model.model_name.human(:count=>100)] }">
+    <body: class="index-page execution-source-file" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="execution_source_file.index.heading">
+            <model-name-human model="&model"/>
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="execution_source_file.collection.count" count="&collection_count">
+            <count summary/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="execution_source_file.actions.new">New Execution source file</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="ExecutionSourceFile">
+  <page merge title="#{ht 'execution_source_file.new.title', :default=>[' New Execution source file'] }">
+    <body: class="new-page execution-source-file" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="execution_source_file.new.heading">
+            New Execution source file
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'execution_source_file.actions.create', :default=>['Create Execution source file']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="ExecutionSourceFile">
+  <page merge title="#{ht 'execution_source_file.show.title', :default=>['Execution source file'] }">
+
+    <body: class="show-page execution-source-file" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="execution_source_file.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="execution_source_file.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Execution source file
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <field-list fields="hashsum, attributs, execution" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="ExecutionSourceFile">
+  <page merge title="#{ht 'execution_source_file.edit.title', :default=>['Edit Execution source file'] }">
+
+    <body: class="edit-page execution-source-file" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="execution_source_file.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit Execution source file
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'execution_source_file.actions.delete', :default=>['Remove This Execution source file']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
 <!-- ====== Execution Pages ====== -->
 
 <def tag="index-page" for="Execution">
@@ -841,7 +963,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="statut, passerelle" param/>
+            <field-list fields="type_exe, statut, passerelle" param/>
           </section>
     </content:>
 

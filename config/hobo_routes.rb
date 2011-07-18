@@ -75,6 +75,16 @@ GatewayManagerHobo::Application.routes.draw do
   delete 'executions/:id(.:format)' => 'executions#destroy', :as => 'destroy_execution', :constraints => { :id => %r([^/.?]+) }
 
 
+  # Resource routes for controller "execution_source_files"
+  get 'execution_source_files(.:format)' => 'execution_source_files#index', :as => 'execution_source_files'
+  get 'execution_source_files/new(.:format)', :as => 'new_execution_source_file'
+  get 'execution_source_files/:id/edit(.:format)' => 'execution_source_files#edit', :as => 'edit_execution_source_file'
+  get 'execution_source_files/:id(.:format)' => 'execution_source_files#show', :as => 'execution_source_file', :constraints => { :id => %r([^/.?]+) }
+  post 'execution_source_files(.:format)' => 'execution_source_files#create', :as => 'create_execution_source_file'
+  put 'execution_source_files/:id(.:format)' => 'execution_source_files#update', :as => 'update_execution_source_file', :constraints => { :id => %r([^/.?]+) }
+  delete 'execution_source_files/:id(.:format)' => 'execution_source_files#destroy', :as => 'destroy_execution_source_file', :constraints => { :id => %r([^/.?]+) }
+
+
   # Resource routes for controller "installations"
   get 'installations(.:format)' => 'installations#index', :as => 'installations'
   get 'installations/new(.:format)', :as => 'new_installation'

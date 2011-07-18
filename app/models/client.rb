@@ -13,12 +13,14 @@ class Client < ActiveRecord::Base
   def create
 	super
 	Dir.mkdir "#{$base_client_medias}/#{self.id}" unless File.exist? "#{$base_client_medias}/#{self.id}"
+	Dir.mkdir "#{$base_executions_sources}/#{self.id}" unless File.exist? "#{$base_executions_sources}/#{self.id}"
 	return self
   end
   
   def destroy
 	super
 	Dir.rmdir "#{$base_client_medias}/#{self.id}" if File.exist? "#{$base_client_medias}/#{self.id}"
+	Dir.mkdir "#{$base_executions_sources}/#{self.id}" unless File.exist? "#{$base_executions_sources}/#{self.id}"
 	return nil
   end
   
