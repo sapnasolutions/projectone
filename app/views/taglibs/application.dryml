@@ -17,3 +17,36 @@
     </footer:>
   </old-page>
 </extend>
+
+<!-- Fixed Date formats
+<extend tag='view' for='Date' attrs="format">
+  <%= this && (format ? this.strftime(format) : l(this, :format => :long)) %>
+</extend>
+<def attrs='name' tag='input' for='date'>
+  <%= text_field_tag(name, this, attributes) %>
+</def> -->
+
+<!-- jQuery support 
+rappel : jquery-forms-2.45.js -->
+<include plugin="hobo-jquery" />
+<extend tag="page">
+  <old-page merge>
+	<custom-scripts:>
+	  <hjq-assets/>
+	</custom-scripts>
+  </old-page>
+</extend>
+<extend tag="jquery-assets">
+  <old-jquery-assets/>
+  <javascript name="jquery.form.js" />
+</extend>
+
+<extend tag="card" for="Bien">
+  <old-card merge>
+    <append-body:>
+    <div class="test">
+      Blabla de test pour savoir ou il va ?
+    </div>
+    </append-body:>
+  </old-card>
+</extend>

@@ -1,0 +1,14 @@
+<show-page>
+
+
+<edit-link: replace>
+</edit-link:>
+<field-list: fields="logiciel,parametres" tag="editor"/>
+
+<!--
+<prepend-field-list:>
+	<editor for="string" attr=":parametres"/>
+</prepend-field-list:>
+-->
+
+</show-page>

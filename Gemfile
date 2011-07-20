@@ -10,6 +10,15 @@ gem 'mysql'
 gem 'rake', '0.8.7'
 gem 'paperclip'
 
+gem 'htmlentities'
+gem 'xml-simple'
+gem 'typed_serialize'
+gem 'mimetype-fu'
+gem 'imagesize'
+gem 'rubyzip'
+
+#gem 'hobo-jquery', :git => 'github.com/bryanlarsen/hobo-jquery.git', :branch => 'rails3'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

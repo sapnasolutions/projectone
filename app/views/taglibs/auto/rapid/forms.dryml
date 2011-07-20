@@ -1,5 +1,125 @@
 <!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
 
+<def tag="form" for="BienEmplacement">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="position_gps, code_postal, pays, ville, addresse, secteur" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_emplacement.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="BienPhoto">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="ordre, titre, hashsum, attributs, bien" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_photo.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="BienTransaction">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nom" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_transaction.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="BienType">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nom" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien_type.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Bien">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nb_piece, prix, surface, surface_terrain, titre, description, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, passerelle" param/>
+    <div param="actions">
+      <submit label="#{ht 'bien.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Client">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, raison_social" param/>
+    <div param="actions">
+      <submit label="#{ht 'client.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="ExecutionSourceFile">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="hashsum, attributs, execution" param/>
+    <div param="actions">
+      <submit label="#{ht 'execution_source_file.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Execution">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="type_exe, description, statut, passerelle" param/>
+    <div param="actions">
+      <submit label="#{ht 'execution.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Installation">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="informations_supplementaires, code_acces_distant, client" param/>
+    <div param="actions">
+      <submit label="#{ht 'installation.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Passerelle">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="logiciel, parametres, installation" param/>
+    <div param="actions">
+      <submit label="#{ht 'passerelle.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="User">
   <form merge param="default">
     <error-messages param/>

@@ -1,0 +1,8 @@
+<show-page>
+
+
+<edit-link: replace>
+</edit-link:>
+<field-list: fields="code_acces_distant, informations_supplementaires" tag="editor"/>
+
+</show-page>

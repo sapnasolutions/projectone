@@ -2,7 +2,7 @@ GatewayManagerHobo::Application.routes.draw do
   root :to => 'front#index'
 
   match 'search' => 'front#search', :as => 'site_search'
-
+  match 'export' => 'installations#export'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -58,5 +58,13 @@ GatewayManagerHobo::Application.routes.draw do
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
+  
+  # gateway's all routes : gateway is the alias of the proxypass of apache
+  match 'gateway/search' => 'front#search', :as => 'site_search'
+  match 'gateway/export' => 'installations#export'
+  match 'gateway/login(.:format)' => 'users#login', :as => 'user_login'
+  get 'gateway/logout(.:format)' => 'users#logout', :as => 'user_logout'
+  match 'gateway/forgot_password(.:format)' => 'users#forgot_password', :as => 'user_forgot_password'
+  
+  match 'gateway/:controller(/:action(/:id(.:format)))'
 end
