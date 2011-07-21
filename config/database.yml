@@ -19,7 +19,7 @@ test:
 
 production:
   adapter: mysql
-  database: gateway_test
+  database: gateway_production
   encoding: utf8
   username: root
   password: 876B7BUs4E8UF3Q
