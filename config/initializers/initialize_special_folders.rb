@@ -16,8 +16,8 @@ end
 
 case RAILS_ENV.to_s
   when "development"      then $domain = "http://localhost:3000"
-  when "production" then $domain = "http://gateway.com"
-  when "test"       then $domain = "http://gateway.com"
+  when "production" then $domain = "http://81.93.24.42:60100"
+  when "test"       then $domain = "http://localhost"
 else
   raise "Unknown environnement : #{RAILS_ENV}"
 end

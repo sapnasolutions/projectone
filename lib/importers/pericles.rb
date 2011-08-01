@@ -6,7 +6,7 @@ class Importers::Pericles < Importers::FromFtp
   
   ######## to delete; only for test
   def import
-  #  scan_files
+  scan_files
     # import non-imported files
 	Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order_by(:created_at).each{ |execution|
 		result = import_exe execution

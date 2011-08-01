@@ -60,6 +60,7 @@ GatewayManagerHobo::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   
   # gateway's all routes : gateway is the alias of the proxypass of apache
+  match 'gateway' => 'front#index'
   match 'gateway/search' => 'front#search', :as => 'site_search'
   match 'gateway/export' => 'installations#export'
   match 'gateway/login(.:format)' => 'users#login', :as => 'user_login'
