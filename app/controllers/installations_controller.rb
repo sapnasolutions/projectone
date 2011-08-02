@@ -6,23 +6,9 @@ class InstallationsController < ApplicationController
 
   auto_actions_for :client, [:new, :create]
   
-  # hash :
-  # {
-  # :categories => [{:categorie => {attrs_cat}},{:categorie => {attrs_cat}},{:categorie => {attrs_cat}}]
-  # :medias => [{:media => {attrs_med}},{:media => {attrs_med}},{:media => {attrs_med}}]
-  # }
-  # attrs_med = {:titre => "", :titre2 => "", :text => "", :img_principal => {attrs_img_principal},
-  #  	:img_autres => [{:img_autre => {attrs_img_autre}},{:img_autre => {attrs_img_autre}},{:img_autre => {attrs_img_autre}}]
-  #		:categories => [{:id => 1},{:id => 2},{:id => 3}]}
+  web_method :data
   
-  # attrs_cat = {:nom => "", :id => ""}
-  
-  # attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
-  # attrs_img_principal = {:titre => "", :url => "", :ordre => ""}
-  
-  #les catégories : type de transaction actives, type de biens actif, tri par budget malin 5 paliés.
-  
-  def export
+  def data
 	request.format = :xml
 	
     if params[:instal_code].nil?
@@ -66,7 +52,7 @@ class InstallationsController < ApplicationController
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
-			root[:medias].push({:titre => b.titre, :titre2 => titre2, :text => b.description,
+			root[:medias].push({:titre => b.titre, :titre2 => titre2, :text => b.description, :acceuil => true,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
 			:img_autres => others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}},
 			:categories => cats})

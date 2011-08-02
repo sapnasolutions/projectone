@@ -86,7 +86,7 @@ class BienPhoto < ActiveRecord::Base
 
       # Check if the hash is already known
       if bien.nil?
-		photo = self.where(:hashsum => hash, :bien_id => nil).first
+		photo = self.where(:hashsum => hash).first
         return photo unless photo.nil?
       else
 		photo = self.where(:hashsum => hash, :bien_id => bien.id).first

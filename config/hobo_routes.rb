@@ -98,6 +98,9 @@ GatewayManagerHobo::Application.routes.draw do
   get 'clients/:client_id/installations/new(.:format)' => 'installations#new_for_client', :as => 'new_installation_for_client'
   post 'clients/:client_id/installations(.:format)' => 'installations#create_for_client', :as => 'create_installation_for_client'
 
+  # Web method routes for controller "installations"
+  post 'installations/:id/data(.:format)' => 'installations#data', :as => 'installation_data'
+
 
   # Resource routes for controller "passerelles"
   get 'passerelles(.:format)' => 'passerelles#index', :as => 'passerelles'

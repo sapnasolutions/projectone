@@ -8,6 +8,7 @@ class Importers::BaseImporters
   # +mime+ is a list of valid file mime types
   def initialize passerelle, mime = nil
     @passerelle = passerelle
+	$passerelle = passerelle
     @mime = mime
 	@parameters = {}
 	unless @passerelle.parametres.empty? || @passerelle.parametres.nil?
@@ -26,11 +27,11 @@ class Importers::BaseImporters
 	Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order_by(:created_at).each{ |execution|
 		result = import_exe execution
 		# if result
-			# execution.statut = "ok"
+		execution.statut = "ok"
 		# else
 			# execution.statut = "err"
 		# end
-		# execution.save!
+		execution.save!
 	}
     @passerelle.updated_at = DateTime.now
     @passerelle.save!

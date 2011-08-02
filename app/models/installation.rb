@@ -19,6 +19,10 @@ class Installation < ActiveRecord::Base
   def create_permitted?
     acting_user.administrator?
   end
+  
+  def data_permitted?
+	true
+  end
 
   def update_permitted?
     acting_user.administrator?

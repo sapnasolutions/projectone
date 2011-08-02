@@ -1,4 +1,4 @@
-class Importers::Pericles < Importers::FromFtp
+class Importers::Pericles < Importers::FromFiles
   
   FTP_ADRESS = "ftp.hilabs.net"
   FTP_MEDIA_REPO = "/"
@@ -23,7 +23,7 @@ class Importers::Pericles < Importers::FromFtp
   
   # un fichier zip est un fichier binaire :)
   def initialize passerelle
-    super passerelle, %w(application/zip), "zip", FTP_ADRESS, FTP_FILE_REPO, FTP_MEDIA_REPO
+    super passerelle, %w(application/zip)
   end
   
   def import_exe execution
