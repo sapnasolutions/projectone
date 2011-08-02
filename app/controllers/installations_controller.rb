@@ -52,7 +52,7 @@ class InstallationsController < ApplicationController
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
-			root[:medias].push({:titre => b.titre, :titre2 => titre2, :text => b.description, :acceuil => true,
+			root[:medias].push({:titre => b.titre, :titre2 => titre2, :text => b.description, :accueil => true,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
 			:img_autres => others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}},
 			:categories => cats})
