@@ -52,7 +52,7 @@ module Importers
     Passerelle.all.each do |passerelle|
 	  next passerelle.logiciel
       #self.send_later(:import,client)
-	  self.import_passerelle(passerelle)
+	  self.import_passerelle(passerelle, Time.now)
     end
   end
   

@@ -22,7 +22,8 @@ class InstallationsController < ApplicationController
 		text_err = "ok"
 	end
 
-	root = {:categories => [], :medias => [], :result => {:err_code => code_err,:desc => text_err}}
+	last_update = installation.passerelles.map{ |p| p.executions.select{|e| e.statut == "ok"}.map{|e| e.updated_at}}.flatten.sort.last.strftime("%d/%m/%Y")
+	root = {:categories => [], :medias => [], :result => {:err_code => code_err,:desc => text_err,:last_update => last_update}}
 	
 	if code_err == 0
 		tous_biens = installation.passerelles.map{ |p| p.biens }.flatten
@@ -46,13 +47,14 @@ class InstallationsController < ApplicationController
 			photos = b.bien_photos
 			first = photos.first
 			others = photos - [first]
+			titre1 = "#{b.titre} - #{b.prix}"
 			next if photos.empty?
-			titre2 = nil
-			titre2 = b.bien_emplacement.ville if b.bien_emplacement
+			titre2 = b.reference
+			titre2 = "#{titre2} - #{b.bien_emplacement.ville}" if b.bien_emplacement
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
-			root[:medias].push({:titre => b.titre, :titre2 => titre2, :text => b.description, :accueil => true,
+			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => b.description, :accueil => true,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
 			:img_autres => others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}},
 			:categories => cats})
