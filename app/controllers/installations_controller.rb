@@ -47,10 +47,10 @@ class InstallationsController < ApplicationController
 			photos = b.bien_photos
 			first = photos.first
 			others = photos - [first]
-			titre1 = "#{b.titre} - #{b.prix}"
+			titre1 = "#{b.prix.to_s} \€ F.A.I."
+			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement
 			next if photos.empty?
-			titre2 = b.reference
-			titre2 = "#{titre2} - #{b.bien_emplacement.ville}" if b.bien_emplacement
+			titre2 = "#{b.titre} - #{b.reference}"
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
