@@ -231,7 +231,11 @@ class Importers::BaseImporters
     end
 	
 	matcher_good_and_medias.each{ |media_id,good|
-		m = BienPhoto.find media_id
+		begin
+			m = BienPhoto.find media_id
+		rescue
+			next
+		end
 		next if m.nil?
 		next if good.bien_photos.include? m
 		m.bien = good
