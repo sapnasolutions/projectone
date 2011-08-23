@@ -26,7 +26,7 @@ class InstallationsController < ApplicationController
 	root = {:categories => [], :medias => [], :result => {:err_code => code_err,:desc => text_err,:last_update => last_update}}
 	
 	if code_err == 0
-		tous_biens = installation.passerelles.map{ |p| p.biens }.flatten
+		tous_biens = installation.passerelles.map{ |p| p.biens.select{ |b| b.statut == "cur" && !b.bien_photos.empty? }}.flatten
 		cat_actives_id = tous_biens.map{ |b| b.bien_type_id}.compact.uniq
 		transaction_actives_id = tous_biens.map{ |b| b.bien_transaction_id}.compact.uniq
 
