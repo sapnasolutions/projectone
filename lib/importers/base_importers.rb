@@ -226,14 +226,15 @@ class Importers::BaseImporters
     
     # Before import media, clear media for new good who's medias is update
     goods_img_clear.each do |id, good|
-      good.bien_photos.clear
-      good.save!
+     good.bien_photos.clear
+     good.save!
     end
 	
 	matcher_good_and_medias.each{ |media_id,good|
 		begin
 			m = BienPhoto.find media_id
 		rescue
+			Logger.send("warn", "No corresponding bien_photo to this id : #{media_id}")
 			next
 		end
 		next if m.nil?
