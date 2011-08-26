@@ -51,7 +51,7 @@ class InstallationsController < ApplicationController
 			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement
 			next if photos.empty?
 			titre2 = "#{b.titre} - #{b.reference}"
-			media_accueil = false
+			media_accueil = b.is_accueil
 			media_text = b.custom_description
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
