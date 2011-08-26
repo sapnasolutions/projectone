@@ -83,15 +83,19 @@
 	return "#{ListeAttrPossible[attr]} : #{self.attributes[attr]}"
   end
   
+  # def custom_description
+	# return DefaultCustomDescription.map{ |key,value|
+		# next if self.attributes[key].nil? || self.attributes[key].to_s.empty?
+		# if value
+			# self.stringed_attr key
+		# else
+			# self.attributes[key].to_s
+		# end
+	# }.select{|s| !(s.nil? || s.empty?)}.join("\n")
+  # end
+  
   def custom_description
-	return DefaultCustomDescription.map{ |key,value|
-		next if self.attributes[key].nil? || self.attributes[key].to_s.empty?
-		if value
-			self.stringed_attr key
-		else
-			self.attributes[key].to_s
-		end
-	}.select{|s| !(s.nil? || s.empty?)}.join("\n")
+	return self.description
   end
 
 end
