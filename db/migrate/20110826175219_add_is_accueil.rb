@@ -4,6 +4,6 @@ class AddIsAccueil < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :biens, :is_accueil
+    remove_column :biens, :is_acceuil
   end
 end
