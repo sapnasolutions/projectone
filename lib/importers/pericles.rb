@@ -143,7 +143,12 @@ class Importers::Pericles < Importers::FromFiles
     b["SURF_HAB"] ||= b["SURF_CARREZ"]
 	
 	desc = b["TEXTE_FR"]
-    desc = b["TEXTE_MAILING"] if b["TEXTE_MAILING"] && !b["TEXTE_MAILING"].to_s.empty?
+	
+	if b["TEXTE_MAILING"] && b["TEXTE_MAILING"].to_s.downcase =~ /.*virtual.*touch.*/
+		nb.is_accueil = true
+	else
+		nb.is_accueil = false
+	end
 
     nb.passerelle = @passerelle
     nb.reference = ref

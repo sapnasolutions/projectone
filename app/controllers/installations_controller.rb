@@ -51,10 +51,12 @@ class InstallationsController < ApplicationController
 			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement
 			next if photos.empty?
 			titre2 = "#{b.titre} - #{b.reference}"
+			media_accueil = false
+			media_text = b.custom_description
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
-			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => b.description, :accueil => true,
+			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => media_text, :accueil => media_accueil,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
 			:img_autres => others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}},
 			:categories => cats})

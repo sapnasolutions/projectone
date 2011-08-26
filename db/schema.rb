@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110713140508) do
+ActiveRecord::Schema.define(:version => 20110826175219) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20110713140508) do
     t.integer  "bien_transaction_id"
     t.integer  "bien_type_id"
     t.integer  "passerelle_id"
+    t.boolean  "is_acceuil"
   end
 
   add_index "biens", ["bien_emplacement_id"], :name => "index_biens_on_bien_emplacement_id"
