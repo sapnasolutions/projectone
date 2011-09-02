@@ -48,16 +48,15 @@ module Importers
   GroupImporter = ['chronotech']
 
   # Run `import` on all known clients who have an app, an importer and importer's is not a group importer
-  def self.run
+  def self.run (recent = 1.hours.ago)
     Passerelle.all.each do |passerelle|
-	  next passerelle.logiciel
       #self.send_later(:import,client)
-	  self.import_passerelle(passerelle, Time.now)
+	  self.import_passerelle(passerelle, recent)
     end
   end
   
   # Import unknown object (can be client, installation, passerelle, nil ...). FIXME (do the import methods in the model)
-  def self.import(object, recent = 1.hours.ago)
+  def self.import (object, recent = 1.hours.ago)
 	case object.class.name
 	when "Client" then
 		self.import_client(object, recent)

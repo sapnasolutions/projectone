@@ -17,6 +17,9 @@ class Importers::BaseImporters
 		}
 	end
     #@agency = nil
+	@result = Hash.new
+	@result[:ok] = true
+	@result[:description] = ""
     @medias = {}
   end
   
@@ -24,14 +27,23 @@ class Importers::BaseImporters
   def import
     scan_files
     # import non-imported files
-	Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order_by(:created_at).each{ |execution|
-		result = import_exe execution
-		# if result
-		execution.statut = "ok"
-		# else
-			# execution.statut = "err"
-		# end
+	to_be_executed = Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order_by(:created_at)
+	to_be_executed.each{ |execution|
+		execution.statut = "ece" #note : En Cours d'Execution
 		execution.save!
+	}
+	to_be_executed.each{ |execution|
+	
+		import_exe execution
+		
+		exe_to_save = Execution.find execution.id
+		if @result[:ok]
+			exe_to_save.statut = "ok"
+		else
+			exe_to_save.statut = "err"
+		end
+		exe_to_save.description = @result[:description]
+		exe_to_save.save!
 	}
     @passerelle.updated_at = DateTime.now
     @passerelle.save!
@@ -39,7 +51,7 @@ class Importers::BaseImporters
   
   
   # Overload this in inherited classes
-  def import_file
+  def import_exe
     raise "import_file must be redefined in children classes"
   end
   
@@ -59,7 +71,7 @@ class Importers::BaseImporters
   def dl_and_update_medias zip_file
     nb_medias = 0
     zip_file.each do |entry|
-      begin
+      # begin
         next unless entry.name.to_s.downcase =~ /.(jpg|jpeg|png|bmp)$/
       
         data = zip_file.read(entry)
@@ -68,21 +80,16 @@ class Importers::BaseImporters
 		#params for from_data : filename,image_data,bien,ordre,titre
         p = BienPhoto.from_data name, data, nil, nil, name
         next if p.nil?
-		#FIXME this part can be in from_datas method
-        if p.attributs.nil? || p.attributs.empty?
-          p.attributs = name
-        else
-          (p.attributs += "|"+name) unless (p.attributs.split('|').include? name)
-        end
-        p.save!
 		
         nb_medias += 1
         @medias[name] = p
-      rescue
-		Logger.send("warn","[Import] Error during reading entry : #{entry.name.to_s}")
-      end
+      # rescue
+		# Logger.send("warn","[Import] Error during reading entry : #{entry.name.to_s}")
+		# @result[:description] << "[Import] Error during reading entry : #{entry.name.to_s}"
+      # end
     end
 	Logger.send("warn","[Import] #{nb_medias.to_s} medias registered")
+	@result[:description] << "[Import] #{nb_medias.to_s} medias registered"
   end
   
   # If media are not with data's file, and we have to download them we reference all active media of the gateway
@@ -120,9 +127,11 @@ class Importers::BaseImporters
      p = BienPhoto.from_url(url, nil, nil, nil)
      if p.nil?
 		Logger.send("warn","[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded")
+		@result[:description] << "[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded"
 		p = last_chance_find_media url
 		if p.nil?
 			Logger.send("warn", "Media will miss : [#{url}]")
+			@result[:description] << "Media will miss : [#{url}]"
 			return nil 
 		end
      end
@@ -135,6 +144,7 @@ class Importers::BaseImporters
     return p
   rescue Exception => e
 	Logger.send("warn", "Misformatted image entry : [#{url}]")
+	@result[:description] << "Misformatted image entry : [#{url}]"
     #ExceptionLogger.log e, :client => @client
     return nil
   end
@@ -149,9 +159,11 @@ class Importers::BaseImporters
 		p = @medias[research_file_name]
     else
 		Logger.send("warn", "Media not found in new downloaded medias. Try to find [#{research_file_name}] in all client medias")
+		@result[:description] << "Media not found in new downloaded medias. Try to find [#{research_file_name}] in all client medias"
 		p = last_chance_find_media research_file_name
 		if p.nil?
 			Logger.send("warn", "Don't find file_name : ["+research_file_name+"]")
+			@result[:description] << "Don't find file_name : ["+research_file_name+"]"
 			return nil
 		end
     end
@@ -180,7 +192,9 @@ class Importers::BaseImporters
       end
 	  
 	  Logger.send("warn", "[Import] Marked #{to_age.size} good entries as old.")
+	  @result[:description] << "[Import] Marked #{to_age.size} good entries as old."
 	  Logger.send("warn", "[Import] Activated #{to_activate.size} new good entries.")
+	  @result[:description] << "[Import] Activated #{to_activate.size} new good entries."
     end
   end
   
@@ -192,11 +206,13 @@ class Importers::BaseImporters
     bien_ref = match_agency_ref_by_name(name)    
     if bien_ref.nil?
 	  Logger.send("warn", "No corresponding ref to this media name : #{name}")
+	  @result[:description] << "No corresponding ref to this media name : #{name}"
       return nil
     end
 	b = Bien.where(:statut => "new", :reference => bien_ref).first
     if b.nil?
 	  Logger.send("warn", "No corresponding 'bien' to this media name : #{name} - 'bien' ref : #{bien_ref}")
+	  @result[:description] << "No corresponding 'bien' to this media name : #{name} - 'bien' ref : #{bien_ref}"
       return nil
     end
     return b
@@ -226,8 +242,11 @@ class Importers::BaseImporters
     
     # Before import media, clear media for new good who's medias is update
     goods_img_clear.each do |id, good|
-     good.bien_photos.clear
-     good.save!
+	# un-associate the photos to the goods (equivalent to clear, but not destroy the photos.
+     good.bien_photos.each{ |photo|
+		 photo.bien = nil
+		 photo.save!
+	 }
     end
 	
 	matcher_good_and_medias.each{ |media_id,good|
@@ -235,6 +254,7 @@ class Importers::BaseImporters
 			m = BienPhoto.find media_id
 		rescue
 			Logger.send("warn", "No corresponding bien_photo to this id : #{media_id}")
+			@result[:description] << "No corresponding bien_photo to this id : #{media_id}"
 			next
 		end
 		next if m.nil?

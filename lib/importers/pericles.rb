@@ -1,25 +1,8 @@
 class Importers::Pericles < Importers::FromFiles
   
-  FTP_ADRESS = "ftp.hilabs.net"
-  FTP_MEDIA_REPO = "/"
-  FTP_FILE_REPO = "/"
-  
-  ######## to delete; only for test
-  def import
-  scan_files
-    # import non-imported files
-	Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order_by(:created_at).each{ |execution|
-		result = import_exe execution
-		# if result
-			# execution.statut = "ok"
-		# else
-			# execution.statut = "err"
-		# end
-		# execution.save!
-	}
-    @passerelle.updated_at = DateTime.now
-    @passerelle.save!
-  end
+  # FTP_ADRESS = "ftp.hilabs.net"
+  # FTP_MEDIA_REPO = "/"
+  # FTP_FILE_REPO = "/"
   
   # un fichier zip est un fichier binaire :)
   def initialize passerelle
@@ -28,6 +11,7 @@ class Importers::Pericles < Importers::FromFiles
   
   def import_exe execution
 	Logger.send("warn","[Pericles] Starting PERICLES execution import")
+	@result[:description] << "[Pericles] Starting PERICLES execution import"
 
     z = Zip::ZipFile.open(execution.execution_source_file.file.path)
 
@@ -49,13 +33,15 @@ class Importers::Pericles < Importers::FromFiles
 
     count_media_update = matching_import_image
 	Logger.send("warn","Updated the media of #{count_media_update} good")
+	@result[:description] << "Updated the media of #{count_media_update} good"
     
     z.close
 
-    update_goods    
+    update_goods
     
 	Logger.send("warn","Finished PERICLES zipfile import")
-    return
+	@result[:description] << "Finished PERICLES zipfile import"
+    return @result
   end
   
     # return the good associated at the media name
@@ -69,7 +55,8 @@ class Importers::Pericles < Importers::FromFiles
       source_key =( @agencyName+"-"+$1).to_s.downcase
       agency_code = ("V"+$1+$2).to_s.downcase
     else
-	  Logger.send("warn","dataType non Connu : [#{@dataType.to_s}]")
+	  Logger.send("warn","dataType unknown : [#{@dataType.to_s}]")
+	  @result[:description] << "dataType unknown : [#{@dataType.to_s}]"
       return nil
     end
     
@@ -83,6 +70,7 @@ class Importers::Pericles < Importers::FromFiles
   # Return the list of agencies in the tree.
   def import_hash hashtree
 	Logger.send("warn","Start XML(hash) import")
+	@result[:description] << "Start XML(hash) import"
 
     # Create and list new goods
     hashtree["BIENS"]["BIEN"].each { |b|
@@ -91,6 +79,7 @@ class Importers::Pericles < Importers::FromFiles
     }
 	
 	Logger.send("warn","End XML import")
+	@result[:description] << "End XML import"
     return true
   end
   
@@ -120,6 +109,7 @@ class Importers::Pericles < Importers::FromFiles
 		transaction_type = BienTransaction.where(:nom => 'Location').first
       else
 		Logger.send("warn","Prix vente | location null pour le bien ref : #{b["NO_ASP"]}")
+		@result[:description] << "Prix vente | location null pour le bien ref : #{b["NO_ASP"]}"
         return false
       end
     end
@@ -237,6 +227,7 @@ class Importers::Pericles < Importers::FromFiles
             push = true;
           else
 			Logger.send("warn","Nombre de champs non conformes : nb : #{(strGoodAttrs.size).to_s}")
+			@result[:description] << "Nombre de champs non conformes : nb : #{(strGoodAttrs.size).to_s}"
           end
           hashTree["BIENS"]["BIEN"].push(goodTree) if push
       }

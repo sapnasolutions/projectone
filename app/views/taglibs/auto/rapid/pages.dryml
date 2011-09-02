@@ -576,7 +576,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="is_acceuil" param/>
+            <record-flags fields="is_accueil" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="bien.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">

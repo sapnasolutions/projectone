@@ -14,12 +14,12 @@ class BienPhoto < ActiveRecord::Base
   end
 
   has_attached_file :photo,
-	:styles => {
-		:thumb=> "100x100#",
-		:small  => "150x150>",
-		:medium => "400x300>",
-		:large =>   "800x600>"
-	},
+	# :styles => {
+		# :thumb=> "100x100#",
+		# :small  => "150x150>",
+		# :medium => "400x300>",
+		# :large =>   "800x600>"
+	# },
 	:path  => "#{$base_client_medias}/:client_folder/:id.:style.:extension",
 	:url  => "#{$url_client_medias}/:client_folder/:id.:style.:extension",
     :default_url => '/images/blank.gif'
@@ -87,23 +87,29 @@ class BienPhoto < ActiveRecord::Base
       # Check if the hash is already known
       if bien.nil?
 		photo = self.where(:hashsum => hash).first
-        return photo unless photo.nil?
       else
 		photo = self.where(:hashsum => hash, :bien_id => bien.id).first
-        return photo unless photo.nil?
       end
-          
-	  # Create the new media using a temporary file
-	  tmp = File.new("#{$tmp_path}/tmp.jpg","w+b")
-	  tmp.write data
-      
-      photo = self.new
-      photo.hashsum = hash
-      photo.bien = bien
-	  photo.photo = tmp
-      photo.titre = titre
-	  photo.ordre = ordre
-
+        
+	  if photo.nil?
+		  # Create the new media using a temporary file
+		  Logger.send("warn","Register a new photo : #{filename}")
+		  tmp = File.new("#{$tmp_path}/tmp.jpg","w+b")
+		  tmp.write data
+		  
+		  photo = self.new
+		  photo.hashsum = hash
+		  photo.bien = bien
+		  photo.photo = tmp
+		  photo.titre = titre
+		  photo.ordre = ordre
+	  end
+	  if photo.attributs.nil? || photo.attributs.empty?
+          photo.attributs = titre
+      else
+          (photo.attributs += "|"+titre) unless (photo.attributs.split('|').include? titre)
+      end
+	  
       begin
         photo.save!
       rescue Exception => e  
@@ -112,8 +118,10 @@ class BienPhoto < ActiveRecord::Base
       else
         return photo
       ensure
-        tmp.close
-		File.delete tmp if File.exist? tmp.path
+		if tmp
+			tmp.close
+			File.delete tmp if File.exist? tmp.path
+		end
       end
     end
   

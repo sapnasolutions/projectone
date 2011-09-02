@@ -10,7 +10,7 @@ class Execution < ActiveRecord::Base
   end
 
   belongs_to :passerelle
-  has_one :execution_source_file
+  has_one :execution_source_file, :dependent => :destroy
   
   # --- Permissions --- #
 
