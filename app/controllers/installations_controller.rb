@@ -40,6 +40,34 @@ class InstallationsController < ApplicationController
 			next if t.nil?
 			root[:categories].push ({:nom => t.nom, :id => "transaction-#{t.id}"})
 		}
+		
+		# gestion des paliers de prix
+		tous_biens_ventes = tous_biens.select{ |b| b.bien_transaction.nom}
+		min = 0
+        max = 225000
+        pas = 25000 
+		coef = 1
+        increment = 1
+        while((tous_biens_ventes.select{ |b| b.prix > max*coef }.size) > (tous_biens_ventes.size / 10)) do
+          coef += increment
+          increment *= 10 if coef == 10*increment
+        end
+        max *= coef
+        pas *= coef
+		if !tous_biens_ventes.select{ |b| b.prix < pas}.empty?
+			root[:categories].push ({:nom => "Moins de #{pas.to_s} \€", :id => "prix-0"})
+		end
+		compteur = 1
+		pas.step((max-pas),pas) { |i|
+			if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
+				root[:categories].push ({:nom => "Entre de #{i.to_s} \€ et #{pas+i} \€", :id => "prix-#{compteur}"})
+			end
+			compteur += 1
+		}
+		if !tous_biens_ventes.select{ |b| b.prix >= max}.empty?
+			root[:categories].push ({:nom => "Plus de #{max.to_s} \€", :id => "prix-#{compteur}"})
+		end
+		
 
 		# attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
 		# attrs_img_principal = {:titre => "", :url => ""}
@@ -63,6 +91,13 @@ class InstallationsController < ApplicationController
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
+			if b.prix
+				if b.prix/pas >= 9
+					cats.push ({:id => "prix-9"})
+				else
+					cats.push ({:id => "prix-#{b.prix/pas}"})
+				end
+			end
 			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => media_text, :accueil => media_accueil,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
 			:img_autres => all_img,
