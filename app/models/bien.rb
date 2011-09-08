@@ -97,5 +97,65 @@
   def custom_description
 	return self.description
   end
+  
+  def classe_energie
+	return self.classe_dpe if self.classe_dpe
+	return nil if self.valeur_dpe.nil? || self.valeur_dpe == 0
+	case self.valeur_dpe
+	  when 1..50 then
+		return 'A'
+	  when 51..90 then
+		return 'B'
+	  when 91..150 then
+		return 'C'
+	  when 151..230 then
+		return 'D'
+	  when 231..330 then
+		return 'E'
+	  when 331..450 then
+		return 'F'
+	  else
+		return 'G'
+	end    
+  end
+  
+  def classe_ges
+	return self.class_ges if self.class_ges
+	return nil if self.valeur_ges.nil? || self.valeur_ges == 0
+	case self.valeur_ges
+	  when 1..5 then
+		return 'A'
+	  when 6..10 then
+		return 'B'
+	  when 11..20 then
+		return 'C'
+	  when 21..35 then
+		return 'D'
+	  when 36..55 then
+		return 'E'
+	  when 56..80 then
+		return 'F'
+	  else
+		return 'G'
+	end    
+  end
+  
+  def save
+	self.valeur_ges = nil if self.valeur_ges == 0
+    self.class_ges = nil unless self.class_ges != "" && self.class_ges =~ /^[A-Ga-g]$/
+	
+	self.valeur_dpe = nil if self.valeur_dpe == 0
+    self.classe_dpe = nil unless self.classe_dpe != "" && self.classe_dpe =~ /^[A-Ga-g]$/
+	super
+  end
+  
+  def save!
+	self.valeur_ges = nil if self.valeur_ges == 0
+    self.class_ges = nil unless self.class_ges != "" && self.class_ges =~ /^[A-Ga-g]$/
+	
+	self.valeur_dpe = nil if self.valeur_dpe == 0
+    self.classe_dpe = nil unless self.classe_dpe != "" && self.classe_dpe =~ /^[A-Ga-g]$/
+	super
+  end
 
 end

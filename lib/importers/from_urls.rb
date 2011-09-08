@@ -1,109 +1,43 @@
 # Superclass for importers that use (uploaded) files as input.
-class Importers::FromUrls
+class Importers::FromUrls < Importers::BaseImporters
   require 'open-uri'
   
-  # Setup for a +client+ and an +importer+ name (short string).
-  # +mime+ is a list of valid file mime types
-  def initialize client, importer, mime, uri
-    @client = client
-    @app = @client.application
-    @logger = PrefixedLogger.new self.class
-    @importer = importer
-    @mime = mime
-    @agency = nil
-    @medias = {}
-    @uri = uri
+  # no waiting parameters
+  
+  def create_uri
+	raise "create_uri must be redefined in children classes"
   end
   
-  
-  # Completely reset the imports for the client:
-  # don't destroy any data, but mark all already-imported files as not imported.
-  # Parameter : 
-  # => nb_last_file : if nil : reset all
-  #                   if <= max datas for client reset as much as value passed
-  #                   if > max datas for client reset all
-  def reset nb_last_file = nil
-    @logger.info "Start reset #{@client.to_label}"
-    scan_files
-    
-    datas = Media::Data.find(:all, :conditions => {:client_id => @client.id}, :order => :created_at).select { |z|
-      z.attrs[@importer]      
-    }
-    total_imported_file = datas.size
-    datas.slice!(-nb_last_file..-1) if nb_last_file && nb_last_file <= datas.size
-    
-    datas.each { |z|
-      z.attrs[:imported] = false
-      z.save!
-    }
-    @logger.info "End reset #{@client.to_label} => #{datas.size.to_s} last file reseted (total : #{total_imported_file.to_s})"
-  end
-  
-  # List all medias for actual Client
-  def update_medias
-    Media::Image.find(:all, :conditions => {:client_id => @client.id}).each do |m|
-      url = m.attrs[:url]
-      next unless url
-      next unless m.attrs[@importer]
-      @medias[url] = m
-    end
-    return
-  end
-  
-  # Import the non-imported zipfiles for a given client.
-  def import
-    scan_files
-    
-    # import non-imported zipfiles
-    Media::Data.find(:all, :conditions => {:client_id => @client.id}, :order => :created_at).select { |z|
-      z.attrs[@importer] and not z.attrs[:imported]      
-    }.each { |xml|
-      update_medias
-      
-      import_file xml.data.path if File.exist? z.data.path
-      xml.attrs[:imported] = true
-      xml.save!
-    }
-    
-    @app.last_import = DateTime.now
-    @app.save!
-  end
-  
-  
-  # Overload this in inherited classes
-  def import_file
-    raise "import_file must be redefined in children classes"
-  end
-  
-  
-  # Scan for zipfiles in the client's directory, and copy them to Media::Data
+  # Scan the web service for check if the file was updated
   def scan_files
-    if @app.importer != @importer.to_s
-      raise "Client #{@client.to_label} doesn't use the #{@importer} importer."
-    end
-        
-    @logger.info "Loading from URI #{@uri}"
+	Logger.send("warn","[FILE] Start scan files")
+	@result[:description] << "[FILE] Start scan files"
+    
+	uri = create_uri
+	Logger.send("warn","Loading from URI #{uri}")
+	@result[:description] << "Loading from URI #{uri}"
+	data = ""
     begin
-      uriOpener = open(URI.encode(@uri))
-      xml = uriOpener.read
-      xml.gsub!(/&([^ ;]{0,20}) /,"&amp;#{'\1'} ")
-      tmp = Paperclip::Tempfile.new "tempxml"
-      tmp.write xml
-      tmp.rewind
-      raise "Fail Read" unless Importers::Check.check(tmp.path, @mime)
+      uriOpener = open(URI.encode(uri))
+      data = uriOpener.read
+      data.gsub!(/&([^ ;]{0,20}) /,"&amp;#{'\1'} ") #remplace le signe & par son equivalent HTML : &amp;
+	  ### check if the file is a well formated xml ###
     rescue
-      @logger.error "Failure: (#{$!})"
+	  Logger.send("warn","Failure: (#{$!})")
+	  @result[:description] << "Failure: (#{$!})"
       return false
     end
-    
-    
     # check if the xlm returned by the uri have been already downloaded
-    m = Media::Data.from_data(xml, @client)
-    return false if m.nil?
-    m.attrs[@importer] = true
-    m.refcount = 1
-    m.save!
-    
+	return unless ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest data)).first.nil?
+    e = Execution.new
+	e.passerelle = @passerelle
+	e.statut = "nex"
+	e.save!
+	
+	f = ExecutionSourceFile.from_data("data_file", data, e)
+	
+	e.execution_source_file = f
+	e.save!
   end
 
 end

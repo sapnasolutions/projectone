@@ -10,8 +10,8 @@ class Importers::Pericles < Importers::FromFiles
   end
   
   def import_exe execution
-	Logger.send("warn","[Pericles] Starting PERICLES execution import")
-	@result[:description] << "[Pericles] Starting PERICLES execution import"
+	Logger.send("warn","[Pericles] Starting execution import")
+	@result[:description] << "[Pericles] Starting execution import"
 
     z = Zip::ZipFile.open(execution.execution_source_file.file.path)
 
@@ -31,16 +31,16 @@ class Importers::Pericles < Importers::FromFiles
 	  import_hash(tree)
     end
 
-    count_media_update = matching_import_image
+    count_media_update = import_bien_par_correspondance
 	Logger.send("warn","Updated the media of #{count_media_update} good")
 	@result[:description] << "Updated the media of #{count_media_update} good"
     
     z.close
 
-    update_goods
+    maj_biens
     
-	Logger.send("warn","Finished PERICLES zipfile import")
-	@result[:description] << "Finished PERICLES zipfile import"
+	Logger.send("warn","[Pericles] Finished execution import")
+	@result[:description] << "[Pericles] Finished execution import"
     return @result
   end
   
@@ -125,9 +125,9 @@ class Importers::Pericles < Importers::FromFiles
 	nb = Bien.where(:reference => ref).first
     nb = Bien.new if nb.nil?
 
-	cat = BienType.where(:nom => b["CATEGORIE"]).first
+	cat = BienType.where(:nom => b["CATEGORIE"].to_s.titlecase).first
 	if cat.nil?
-		cat = BienType.new(:nom => b["CATEGORIE"])
+		cat = BienType.new(:nom => b["CATEGORIE"].to_s.titlecase)
 		cat.save!
 	end
     b["SURF_HAB"] ||= b["SURF_CARREZ"]
@@ -148,7 +148,13 @@ class Importers::Pericles < Importers::FromFiles
     nb.titre = b["CATEGORIE"]
     nb.prix = price
     nb.description = desc
+	
     nb.valeur_dpe = b["DPE_VAL1"]
+	nb.classe_dpe = b["DPE_ETIQ1"]
+	
+	nb.valeur_ges = b["DPE_VAL2"]
+	nb.class_ges = b["DPE_ETIQ2"]
+	
     nb.statut = 'new'
     nb.save!
 

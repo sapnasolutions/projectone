@@ -58,6 +58,7 @@ class ExecutionSourceFile < ActiveRecord::Base
       
       begin
 		# delete the old execution source file if exist (FIXME : bad, very bad way to do)
+		Logger.send("warn","New execution source file registered : #{filename}")
 		execution.execution_source_file.destroy unless execution.execution_source_file.nil?
 		execution.save!
         file.save!

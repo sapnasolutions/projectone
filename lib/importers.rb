@@ -1,11 +1,11 @@
 module Importers
   ModuleMapping = {
-    'pericles' => Importers::Pericles
+    'pericles' => Importers::Pericles,
     # 'goventis' => Importers::Goventis,
     # 'cimm'     => Importers::Cimm,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
-    # 'aptalis' => Importers::Aptalis,
+    'aptalis' => Importers::Aptalis,
     # 'phacreation' => Importers::Phacreation,
     # 'hilabs' => Importers::Hilabs,
     # 'gercop' => Importers::Gercop,

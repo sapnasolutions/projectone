@@ -53,12 +53,19 @@ class InstallationsController < ApplicationController
 			titre2 = "#{b.titre} - #{b.reference}"
 			media_accueil = b.is_accueil
 			media_text = b.custom_description
+			all_img = others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}}
+			if b.classe_ges
+				all_img = [{:titre => "dpe-schema-#{b.classe_ges}", :url => "#{$domain}/public/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
+			end
+			if b.classe_energie
+				all_img = [{:titre => "dpe-schema-#{b.classe_energie}", :url => "#{$domain}/public/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
+			end
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
 			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => media_text, :accueil => media_accueil,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
-			:img_autres => others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}},
+			:img_autres => all_img,
 			:categories => cats})
 		}
 		

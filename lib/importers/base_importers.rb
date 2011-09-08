@@ -51,8 +51,8 @@ class Importers::BaseImporters
   
   
   # Overload this in inherited classes
-  def import_exe
-    raise "import_file must be redefined in children classes"
+  def import_exe execution
+    raise "import_exe must be redefined in children classes"
   end
   
   
@@ -93,8 +93,7 @@ class Importers::BaseImporters
   end
   
   # If media are not with data's file, and we have to download them we reference all active media of the gateway
-######def update_remote_medias <-- FIXME change the name
-  def update_medias
+  def update_remote_medias
 	@passerelle.biens.each{ |b|
 		b.bien_photos.each{ |p|
 			next unless p.attributs
@@ -119,16 +118,17 @@ class Importers::BaseImporters
   end
   
   # Import an image from the given url
-######def import_remote_media <-- FIXME change the name
-  def import_image(url, ordre, img_name = "")
+  def import_remote_media(url, ordre, bien = nil, img_name = "")
     # Check if the media have been already download in a previous execution
     unless p = @medias[url]
 	 #params : from_url(url, bien, ordre, titre)
-     p = BienPhoto.from_url(url, nil, nil, nil)
+     p = BienPhoto.from_url(url, bien, ordre, nil)
      if p.nil?
 		Logger.send("warn","[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded")
 		@result[:description] << "[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded"
 		p = last_chance_find_media url
+		p.bien = bien
+		p.save!
 		if p.nil?
 			Logger.send("warn", "Media will miss : [#{url}]")
 			@result[:description] << "Media will miss : [#{url}]"
@@ -150,8 +150,7 @@ class Importers::BaseImporters
   end
 
   # Find an image already imported (via dl_and_update_medias's method) from the given name
-######def import_local_media <-- FIXME change the name  
-  def import_local_image(file_name, ordre, img_name = "")
+  def import_local_media(file_name, ordre, img_name = "")
     # Test if media is in those who's been downloaded
     research_file_name = file_name.to_s.downcase
     if @medias.has_key? research_file_name
@@ -173,8 +172,7 @@ class Importers::BaseImporters
   end
   
 	# Update the status of the "bien" (the one who had been updated will become "current" bien, the others will become "old")
-######def maj_bien <-- FIXME change the name
-  def update_goods
+  def maj_biens
     
     # Commit: age old goods, activate newly imported goods
     to_age = @passerelle.biens.where(:statut => "cur")
@@ -225,9 +223,7 @@ class Importers::BaseImporters
   
   # Special Import Method for importer who we don't know the list of the media for a given goods.
   # So we have to find the corresponding good thanks to the name of the media (with matching methods)
-######def match_import_bien <-- FIXME change the name  
-######def import_bien_par_correspondance <-- FIXME change the name
-  def matching_import_image
+  def import_bien_par_correspondance
     goods_img_clear = Hash.new
     good_medias = []
 	matcher_good_and_medias = Hash.new
