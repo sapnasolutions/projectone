@@ -42,31 +42,31 @@ class InstallationsController < ApplicationController
 		}
 		
 		# gestion des paliers de prix
-		# tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
-		# min = 0
-        # max = 225000
-        # pas = 25000 
-		# coef = 1
-        # increment = 1
-        # while((tous_biens_ventes.select{ |b| b.prix > max*coef }.size) > (tous_biens_ventes.size / 10)) do
-          # coef += increment
-          # increment *= 10 if coef == 10*increment
-        # end
-        # max *= coef
-        # pas *= coef
-		# if !tous_biens_ventes.select{ |b| b.prix < pas}.empty?
-			# root[:categories].push ({:nom => "Moins de #{pas.to_s} \€", :id => "prix-0"})
-		# end
-		# compteur = 1
-		# pas.step((max-pas),pas) { |i|
-			# if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
-				# root[:categories].push ({:nom => "Entre de #{i.to_s} \€ et #{pas+i} \€", :id => "prix-#{compteur}"})
-			# end
-			# compteur += 1
-		# }
-		# if !tous_biens_ventes.select{ |b| b.prix >= max}.empty?
-			# root[:categories].push ({:nom => "Plus de #{max.to_s} \€", :id => "prix-#{compteur}"})
-		# end
+		tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
+		min = 0
+        max = 225000
+        pas = 25000
+		coef = 1
+        increment = 1
+        while((tous_biens_ventes.select{ |b| b.prix > max*coef }.size) > (tous_biens_ventes.size / 10)) do
+          coef += increment
+          increment *= 10 if coef == 10*increment
+        end
+        max *= coef
+        pas *= coef
+		if !tous_biens_ventes.select{ |b| b.prix < pas}.empty?
+			root[:categories].push ({:nom => "Moins de #{pas.to_s} \€", :id => "prix-0"})
+		end
+		compteur = 1
+		pas.step((max-pas),pas) { |i|
+			if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
+				root[:categories].push ({:nom => "Entre de #{i.to_s} \€ et #{pas+i} \€", :id => "prix-#{compteur}"})
+			end
+			compteur += 1
+		}
+		if !tous_biens_ventes.select{ |b| b.prix >= max}.empty?
+			root[:categories].push ({:nom => "Plus de #{max.to_s} \€", :id => "prix-#{compteur}"})
+		end
 		
 		compteur_dpe_img = 0
 		# attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
@@ -83,22 +83,22 @@ class InstallationsController < ApplicationController
 			media_accueil = b.is_accueil
 			media_text = b.custom_description
 			all_img = others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}}
-			if b.classe_ges
-				all_img = [{:titre => "dpe-schema-#{b.classe_ges}-#{compteur_dpe_img}", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
-			end
-			if b.classe_energie
-				all_img = [{:titre => "dpe-schema-#{b.classe_energie}-#{compteur_dpe_img}", :url => "#{$domain}/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
-			end
+			# if b.classe_ges
+				# all_img = [{:titre => "dpe-schema-#{b.classe_ges}-#{compteur_dpe_img}", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
+			# end
+			# if b.classe_energie
+				# all_img = [{:titre => "dpe-schema-#{b.classe_energie}-#{compteur_dpe_img}", :url => "#{$domain}/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
+			# end
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
 			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
-			# if b.prix
-				# if b.prix/pas >= 9
-					# cats.push ({:id => "prix-9"})
-				# else
-					# cats.push ({:id => "prix-#{b.prix/pas}"})
-				# end
-			# end
+			if b.prix
+				if b.prix/pas >= 9
+					cats.push ({:id => "prix-9"})
+				else
+					cats.push ({:id => "prix-#{b.prix/pas}"})
+				end
+			end
 			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => media_text, :accueil => media_accueil,
 			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
 			:img_autres => all_img,
