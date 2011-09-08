@@ -55,10 +55,10 @@ class InstallationsController < ApplicationController
 			media_text = b.custom_description
 			all_img = others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
-				all_img = [{:titre => "dpe-schema-#{b.classe_ges}", :url => "#{$domain}/public/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
+				all_img = [{:titre => "dpe-schema-#{b.classe_ges}", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
 			end
 			if b.classe_energie
-				all_img = [{:titre => "dpe-schema-#{b.classe_energie}", :url => "#{$domain}/public/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
+				all_img = [{:titre => "dpe-schema-#{b.classe_energie}", :url => "#{$domain}/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
 			end
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
