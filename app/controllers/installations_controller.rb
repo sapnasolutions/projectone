@@ -68,10 +68,11 @@ class InstallationsController < ApplicationController
 			root[:categories].push ({:nom => "Plus de #{max.to_s} \€", :id => "prix-#{compteur}"})
 		end
 		
-
+		compteur_dpe_img = 0
 		# attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
 		# attrs_img_principal = {:titre => "", :url => ""}
 		tous_biens.each{ |b|
+			compteur_dpe_img += 1
 			photos = b.bien_photos
 			first = photos.first
 			others = photos - [first]
@@ -83,10 +84,10 @@ class InstallationsController < ApplicationController
 			media_text = b.custom_description
 			all_img = others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
-				all_img = [{:titre => "dpe-schema-#{b.classe_ges}", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
+				all_img = [{:titre => "dpe-schema-#{b.classe_ges}-#{compteur_dpe_img}", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
 			end
 			if b.classe_energie
-				all_img = [{:titre => "dpe-schema-#{b.classe_energie}", :url => "#{$domain}/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
+				all_img = [{:titre => "dpe-schema-#{b.classe_energie}-#{compteur_dpe_img}", :url => "#{$domain}/images/dpe_schema/dpe_schema_#{b.classe_energie}.JPG", :ordre => 0}]+all_img
 			end
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
