@@ -42,7 +42,7 @@ class InstallationsController < ApplicationController
 		}
 		
 		# gestion des paliers de prix
-		# tous_biens_ventes = tous_biens.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
+		tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
 		min = 0
         max = 225000
         pas = 25000 
