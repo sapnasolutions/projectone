@@ -138,7 +138,7 @@ class Importers::Aptalis < Importers::FromUrls
       pl = [pl] unless pl.kind_of? Array
       # Map photo-hashes to medias, filter out failures, and add medias to good
 	  number = 0
-      pl.map { |p| import_remote_media(p['Url'],p['Position'],nb) }
+      pl.map { |p| import_remote_media(p['UrlOriginal'],p['Position'],nb) }
     end
     nb.save!
 
