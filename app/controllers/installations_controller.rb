@@ -8,6 +8,16 @@ class InstallationsController < ApplicationController
   
   web_method :data
   
+  def auto_import
+	puts "Start Cron Automatic Import"
+	Importers.run Time.now
+	puts "done."
+	
+	respond_to do |format|
+      format.text  { render :text  => "done" }
+    end
+  end
+  
   def data
 	request.format = :xml
 	
