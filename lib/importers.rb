@@ -151,7 +151,7 @@ module Importers
   
   def self.reset_passerelle(passerelle, nb_file_reseted = nil)
 	Logger.send("warn","[Passerelle] Start reset #{passerelle.logiciel}")
-	result = Execution.where(:passerelle_id => passerelle.id).order_by(:created_at,"desc")
+	result = Execution.where(:passerelle_id => passerelle.id).order("created_at desc")
 	total = result.size
 	reseted = result.size
 	unless nb_file_reseted.nil?

@@ -27,7 +27,7 @@ class Importers::BaseImporters
   def import
     scan_files
     # import non-imported files
-	to_be_executed = Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order_by(:created_at)
+	to_be_executed = Execution.where(:passerelle_id => @passerelle.id, :statut => "nex").order('created_at')
 	to_be_executed.each{ |execution|
 		execution.statut = "ece" #note : En Cours d'Execution
 		execution.save!

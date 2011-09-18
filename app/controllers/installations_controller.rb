@@ -9,13 +9,14 @@ class InstallationsController < ApplicationController
   web_method :data
   
   def auto_import
-	puts "Start Cron Automatic Import"
-	Importers.run Time.now
-	puts "done."
-	
-	respond_to do |format|
-      format.text  { render :text  => "done" }
-    end
+	begin
+		puts "Start Cron Automatic Import"
+		Importers.run Time.now
+		puts "done."
+		render :text => "Done"
+	rescue	
+		render :text => "Fail"
+	end
   end
   
   def data
