@@ -116,7 +116,7 @@ class InstallationsController < ApplicationController
 				end
 			end
 			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => media_text, :accueil => media_accueil,
-			:img_principal => ({:titre => first.titre, :url => first.absolute_url}),
+			:img_principal => ({:titre => (first.titre ? first.titre : "img_inconnue_#{(compteur_img_sans_nom +=1)}.jpg"), :url => first.absolute_url}),
 			:img_autres => all_img,
 			:categories => cats})
 		}
