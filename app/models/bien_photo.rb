@@ -84,12 +84,13 @@ class BienPhoto < ActiveRecord::Base
         return nil
       end
 
-      # Check if the hash is already known
-      if bien.nil?
+      # Check if the hash is already known, now don't differenciate with the goods
+      # if bien.nil?
 		photo = self.where(:hashsum => hash).first
-      else
-		photo = self.where(:hashsum => hash, :bien_id => bien.id).first
-      end
+		photo.bien = bien
+      # else
+		# photo = self.where(:hashsum => hash, :bien_id => bien.id).first
+      # end
         
 	  if photo.nil?
 		  # Create the new media using a temporary file

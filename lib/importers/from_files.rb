@@ -33,7 +33,6 @@ class Importers::FromFiles < Importers::BaseImporters
 		e.execution_source_file = f
 		e.save!
     }
-	
   end
   
   def dl_and_update_medias_directly_from_root

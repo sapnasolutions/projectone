@@ -80,6 +80,7 @@ class InstallationsController < ApplicationController
 		end
 		
 		compteur_dpe_img = 0
+		compteur_img_sans_nom = 0
 		# attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
 		# attrs_img_principal = {:titre => "", :url => ""}
 		tous_biens.each{ |b|
@@ -87,13 +88,17 @@ class InstallationsController < ApplicationController
 			photos = b.bien_photos
 			first = photos.first
 			others = photos - [first]
-			titre1 = "#{b.prix.to_s} \€ F.A.I."
+			if b.prix && b.prix > 0
+				titre1 = "#{b.prix.to_s} \€ F.A.I."
+			else
+				titre1 = "Prix non renseign\é"
+			end
 			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement
 			next if photos.empty?
 			titre2 = "#{b.titre} - #{b.reference}"
 			media_accueil = b.is_accueil
 			media_text = b.custom_description
-			all_img = others.map{ |p| {:titre => p.titre, :url => p.absolute_url, :ordre => p.ordre}}
+			all_img = others.map{ |p| {:titre => (p.titre ? p.titre : "img_inconnue_#{(compteur_img_sans_nom +=1)}.jpg"), :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
 				all_img = [{:titre => "ges_schema_#{b.classe_ges}_#{compteur_dpe_img}.jpg", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
 			end

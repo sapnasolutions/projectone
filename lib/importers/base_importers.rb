@@ -118,11 +118,12 @@ class Importers::BaseImporters
   end
   
   # Import an image from the given url
-  def import_remote_media(url, ordre, bien = nil, img_name = "")
+  def import_remote_media(url, ordre, bien = nil, img_name = nil)
     # Check if the media have been already download in a previous execution
     unless p = @medias[url]
 	 #params : from_url(url, bien, ordre, titre)
-     p = BienPhoto.from_url(url, bien, ordre, nil)
+	 img_name = File.basename url unless img_name
+     p = BienPhoto.from_url(url, bien, ordre, img_name)
      if p.nil?
 		Logger.send("warn","[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded")
 		@result[:description] << "[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded"
