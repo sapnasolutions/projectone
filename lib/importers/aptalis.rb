@@ -83,8 +83,8 @@ class Importers::Aptalis < Importers::FromUrls
     good_address = {}
     loc = BienEmplacement.new
 	loc.pays = "France"
-	loc.code_postal = b['Ville']
-	loc.ville = b['CodePostal']
+	loc.code_postal = b['CodePostal']
+	loc.ville = b['CodePostalVille']
 
 	# Category & Transaction type
 	cat = BienType.where(:nom => b['TypeBien'].to_s.titlecase).first
