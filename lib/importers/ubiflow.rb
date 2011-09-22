@@ -143,6 +143,9 @@ class Importers::Ubiflow < Importers::FromFiles
     nb.prix = price
     nb.description = desc
 	
+	nb.statut = 'new'
+    nb.save!
+	
 	if b["bien"]["diagnostiques"]
 		nb.valeur_dpe = b["bien"]["diagnostiques"]["dpe_valeur_conso"]
 		nb.classe_dpe = b["bien"]["diagnostiques"]["dpe_etiquette_conso"]
@@ -168,7 +171,6 @@ class Importers::Ubiflow < Importers::FromFiles
       pl.map { |p| import_remote_media(p.to_s,(counter+=1),nb) }
     end
 	
-    nb.statut = 'new'
     nb.save!
 
     return
