@@ -87,7 +87,6 @@ class BienPhoto < ActiveRecord::Base
       # Check if the hash is already known, now don't differenciate with the goods
       # if bien.nil?
 		photo = self.where(:hashsum => hash).first
-		photo.bien = bien
       # else
 		# photo = self.where(:hashsum => hash, :bien_id => bien.id).first
       # end
@@ -100,11 +99,13 @@ class BienPhoto < ActiveRecord::Base
 		  
 		  photo = self.new
 		  photo.hashsum = hash
-		  photo.bien = bien
 		  photo.photo = tmp
 		  photo.titre = titre
 		  photo.ordre = ordre
 	  end
+	  
+	  photo.bien = bien
+	  
 	  if photo.attributs.nil? || photo.attributs.empty?
           photo.attributs = titre
       else
