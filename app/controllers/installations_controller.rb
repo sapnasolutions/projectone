@@ -80,7 +80,7 @@ class InstallationsController < ApplicationController
 		end
 		
 		compteur_dpe_img = 0
-		compteur_img_sans_nom = 0
+		compteur_img = 0
 		# attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
 		# attrs_img_principal = {:titre => "", :url => ""}
 		tous_biens.each{ |b|
@@ -98,7 +98,7 @@ class InstallationsController < ApplicationController
 			titre2 = "#{b.titre} - #{b.reference}"
 			media_accueil = b.is_accueil
 			media_text = b.custom_description
-			all_img = others.map{ |p| {:titre => (p.titre ? p.titre : "img_inconnue_#{(compteur_img_sans_nom +=1)}.jpg"), :url => p.absolute_url, :ordre => p.ordre}}
+			all_img = others.map{ |p| {:titre => "img_#{(compteur_img +=1)}.jpg", :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
 				all_img = [{:titre => "ges_schema_#{b.classe_ges}_#{compteur_dpe_img}.jpg", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
 			end
@@ -116,7 +116,7 @@ class InstallationsController < ApplicationController
 				end
 			end
 			root[:medias].push({:titre => titre1, :titre2 => titre2, :text => media_text, :accueil => media_accueil,
-			:img_principal => ({:titre => (first.titre ? first.titre : "img_inconnue_#{(compteur_img_sans_nom +=1)}.jpg"), :url => first.absolute_url}),
+			:img_principal => ({:titre => "img_#{(compteur_img +=1)}.jpg", :url => first.absolute_url}),
 			:img_autres => all_img,
 			:categories => cats})
 		}
