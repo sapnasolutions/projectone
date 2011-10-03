@@ -71,7 +71,7 @@ class InstallationsController < ApplicationController
 		compteur = 1
 		pas.step((max-pas),pas) { |i|
 			if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
-				root[:categories].push ({:nom => "Entre de #{i.to_s} \€ et #{pas+i} \€", :id => "prix-#{compteur}"})
+				root[:categories].push ({:nom => "Entre #{i.to_s} \€ et #{pas+i} \€", :id => "prix-#{compteur}"})
 			end
 			compteur += 1
 		}

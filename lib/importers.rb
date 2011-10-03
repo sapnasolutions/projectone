@@ -13,7 +13,7 @@ module Importers
     # 'immostore' => Importers::Immostore,
     # 'totalimmo' => Importers::Totalimmo,
     # 'boiteimmo' => Importers::BoiteImmo,
-    # 'trans21' => Importers::Trans21,
+    'trans21' => Importers::Trans21,
     # 'pages_immo_ws' => Importers::PagesImmoWs,
     # 'ipsofacto' => Importers::IpsoFacto,
     # 'abita_vision' => Importers::AbitaVision,
