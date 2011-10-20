@@ -3,7 +3,9 @@
 
 <edit-link: replace>
 </edit-link:>
-<field-list: fields="logiciel,parametres" tag="editor"/>
+<field-list: fields="logiciel,parametres,tous_accueil" tag="editor">
+<editor:tous_accueil for="boolean"/>
+</field-list:>
 
 <!--
 <prepend-field-list:>

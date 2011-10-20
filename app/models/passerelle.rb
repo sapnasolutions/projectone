@@ -5,6 +5,7 @@ class Passerelle < ActiveRecord::Base
   fields do
     logiciel   	:string
     parametres 	:string
+	tous_accueil :boolean
 	#parametres 	:text
 	# or create a model named parametres, bug with editor and text or hash
     timestamps

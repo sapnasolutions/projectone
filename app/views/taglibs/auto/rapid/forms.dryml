@@ -111,7 +111,7 @@
 <def tag="form" for="Passerelle">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="logiciel, parametres, installation" param/>
+    <field-list fields="logiciel, parametres, tous_accueil, installation" param/>
     <div param="actions">
       <submit label="#{ht 'passerelle.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

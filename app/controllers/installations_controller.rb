@@ -97,6 +97,7 @@ class InstallationsController < ApplicationController
 			next if photos.empty?
 			titre2 = "#{b.titre} - #{b.reference}"
 			media_accueil = b.is_accueil
+			media_accueil = true if b.passerelle.tous_accueil
 			media_text = b.custom_description
 			all_img = others.map{ |p| {:titre => "img_#{(compteur_img +=1)}.jpg", :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
@@ -121,42 +122,6 @@ class InstallationsController < ApplicationController
 			:categories => cats})
 		}
 		
-		# snippet for generate "paliers" of price (create cat)
-		# if type == "vente"
-		  # min = 0
-		  # max = 225000
-		  # pas = 25000         
-		# else
-		  # min = 0
-		  # max = 500
-		  # pas = 50
-		# end
-		
-		# coef = 1
-		# increment = 1
-		# while((goods.select{ |g| g.price > max*coef }.size) > (goods.size / 10)) do
-		  # coef += increment
-		  # increment *= 10 if coef == 10*increment
-		# end
-		# max *= coef
-		# pas *= coef
-		# min.step(max,pas) { |i|
-			# newPalier = Hash.new
-			# newPalier['indice'] = i
-			
-			# if typePalier == "rooms"
-			  # newPalier['txt'] = signe+"pièce".count_enum(i)
-			# else
-			  # newPalier['txt'] = signe+i.humanize+" "+paliers["unite"]
-			# end
-					
-			# if ordre.nil? || ordre == "ASC"
-			  # newPalier['goods'] = goods.select{ |good|  good[typePalier] >= i && good[typePalier] < i + pas }
-			# else
-			  # newPalier['goods'] = goods.select{ |good|  good[typePalier] < i && good[typePalier] >= i + pas }
-			# end
-			# paliers["paliers"].push newPalier
-		# }
 	end
 	
     respond_to do |format|

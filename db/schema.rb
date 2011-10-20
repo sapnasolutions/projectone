@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110826212351) do
+ActiveRecord::Schema.define(:version => 20111019185300) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20110826212351) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "installation_id"
+    t.boolean  "tous_accueil"
   end
 
   add_index "passerelles", ["installation_id"], :name => "index_passerelles_on_installation_id"
