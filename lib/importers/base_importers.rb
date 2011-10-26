@@ -47,6 +47,12 @@ class Importers::BaseImporters
 	}
     @passerelle.updated_at = DateTime.now
     @passerelle.save!
+	
+	res = Hash.new
+	res["updated"] = true
+	# res["message"] = "desc"
+	
+	return res
   end
   
   
@@ -151,7 +157,7 @@ class Importers::BaseImporters
   end
 
   # Find an image already imported (via dl_and_update_medias's method) from the given name
-  def import_local_media(file_name, ordre, img_name = "")
+  def import_local_media(file_name, ordre, bien = nil, img_name = "")
     # Test if media is in those who's been downloaded
     research_file_name = file_name.to_s.downcase
     if @medias.has_key? research_file_name
@@ -168,6 +174,7 @@ class Importers::BaseImporters
 		end
     end
 	p.ordre = ordre
+	p.bien = bien
 	p.save!
 	return p
   end

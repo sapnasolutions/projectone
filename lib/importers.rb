@@ -2,7 +2,7 @@ module Importers
   ModuleMapping = {
     'pericles' => Importers::Pericles,
 	'ubiflow' => Importers::Ubiflow,
-    # 'goventis' => Importers::Goventis,
+    'goventis' => Importers::Goventis,
     # 'cimm'     => Importers::Cimm,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
@@ -50,10 +50,14 @@ module Importers
 
   # Run `import` on all known clients who have an app, an importer and importer's is not a group importer
   def self.run (recent = 1.hours.ago)
+	@rapport_import = ""
+	@nb_fail = 0
     Passerelle.all.each do |passerelle|
       #self.send_later(:import,client)
 	  self.import_passerelle(passerelle, recent)
     end
+	@rapport_import << "Fin import #{Passerelle.all} de passerelles : #{@nb_fail} imports en echec"
+	
   end
   
   # Import unknown object (can be client, installation, passerelle, nil ...). FIXME (do the import methods in the model)
@@ -91,6 +95,9 @@ module Importers
   end
   
   def self.import_passerelle(passerelle, recent = 1.hours.ago)
+	@rapport_import = "" if @rapport_import.nil?
+	@rapport_import << "-> #{passerelle.installation.client.name} | #{passerelle.installation.code_acces_distant} | #{passerelle.logiciel}/#{passerelle.parametres} : "
+	
 	Logger.send("warn","[Passerelle] Start import #{passerelle.logiciel}/#{passerelle.parametres}")
 	# check time
     unless passerelle.updated_at.nil? or passerelle.updated_at < recent
@@ -104,12 +111,20 @@ module Importers
 		return
     end
 	# Import the passerelle
-	# begin
-		mod.new(passerelle).import
+	begin
+		res = mod.new(passerelle).import
+		if res["updated"]
+			@rapport_import << "Updated<br\>"
+		else
+			@rapport_import << "Not updated<br\>"
+		end
 		Logger.send("warn","[Passerelle] Import completed")
-    # rescue
-		# Logger.send("warn","[Passerelle] Import FAIL !")
-    # end
+    rescue Exception => e
+		@rapport_import << "Fail<\br>"
+		@rapport_import << "Error message : #{e.message}<\br>"
+		@nb_fail += 1
+		Logger.send("warn","[Passerelle] Import FAIL !")
+    end
   end
   
   
