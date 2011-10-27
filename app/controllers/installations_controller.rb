@@ -19,8 +19,16 @@ class InstallationsController < ApplicationController
 	end
   end
   
+  def conversion text
+	tab_conversion = {'sdl' => "\<br\/\>",'euro' => "euros"}
+	tab_conversion.each{ |elt,rpl|
+		text = text.to_s.gsub(/\[#{elt}\]/,rpl)
+	}
+	return text
+  end
+	
   def data
-	request.format = :xml
+	request.format = :xml	
 	
     if params[:instal_code].nil?
 		code_err = 1
@@ -89,7 +97,11 @@ class InstallationsController < ApplicationController
 			first = photos.first
 			others = photos - [first]
 			if b.prix && b.prix > 0
-				titre1 = "#{b.prix.to_s} \€ F.A.I."
+				if b.bien_transaction && b.bien_transaction.nom.to_s.downcase == "location"
+					titre1 = "#{b.prix.to_s} \€ C.C."
+				else
+					titre1 = "#{b.prix.to_s} \€ F.A.I."
+				end
 			else
 				titre1 = "Prix non renseign\é"
 			end
@@ -99,6 +111,8 @@ class InstallationsController < ApplicationController
 			media_accueil = b.is_accueil
 			media_accueil = true if b.passerelle.tous_accueil
 			media_text = b.custom_description
+			media_text = conversion(media_text)
+			# media_text = media_text.to_s.gsub(/\[([^\[\]]*)\]/, "#{conversion('\1').to_s}")
 			all_img = others.map{ |p| {:titre => "img_#{(compteur_img +=1)}.jpg", :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
 				all_img = [{:titre => "ges_schema_#{b.classe_ges}_#{compteur_dpe_img}.jpg", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
