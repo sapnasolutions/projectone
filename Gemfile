@@ -7,7 +7,7 @@ gem 'rails', '3.0.9'
 
 gem 'sqlite3'
 gem 'mysql'
-gem 'rake', '0.9.2.2'
+gem 'rake', '0.8.7'
 gem 'paperclip'
 
 gem 'htmlentities'
