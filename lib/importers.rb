@@ -11,7 +11,7 @@ module Importers
     # 'hilabs' => Importers::Hilabs,
     # 'gercop' => Importers::Gercop,
     # 'immostore' => Importers::Immostore,
-    # 'totalimmo' => Importers::Totalimmo,
+    'totalimmo' => Importers::Totalimmo,
     # 'boiteimmo' => Importers::BoiteImmo,
     'trans21' => Importers::Trans21,
     # 'pages_immo_ws' => Importers::PagesImmoWs,

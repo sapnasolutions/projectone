@@ -120,7 +120,7 @@ class Importers::BaseImporters
 			@medias[p.attributs] = p
 		}
 	}
-	return false
+	return nil
   end
   
   # Import an image from the given url
@@ -180,10 +180,16 @@ class Importers::BaseImporters
   end
   
 	# Update the status of the "bien" (the one who had been updated will become "current" bien, the others will become "old")
-  def maj_biens
+  def maj_biens(transaction_type = nil)
     
     # Commit: age old goods, activate newly imported goods
-    to_age = @passerelle.biens.where(:statut => "cur")
+	if transaction_type
+		to_age = @passerelle.biens.where(:statut => "cur", :bien_transaction_id => transaction_type.id)
+		nom = transaction_type.nom
+	else
+		to_age = @passerelle.biens.where(:statut => "cur")
+		nom = "Tous type"
+	end
 	to_activate = @passerelle.biens.where(:statut => "new")
     
     Bien.transaction do
@@ -197,10 +203,10 @@ class Importers::BaseImporters
         b.save!
       end
 	  
-	  Logger.send("warn", "[Import] Marked #{to_age.size} good entries as old.")
-	  @result[:description] << "[Import] Marked #{to_age.size} good entries as old."
-	  Logger.send("warn", "[Import] Activated #{to_activate.size} new good entries.")
-	  @result[:description] << "[Import] Activated #{to_activate.size} new good entries."
+	  Logger.send("warn", "[Import : #{nom}] Marked #{to_age.size} good entries as old.")
+	  @result[:description] << "[Import : #{nom}] Marked #{to_age.size} good entries as old."
+	  Logger.send("warn", "[Import : #{nom}] Activated #{to_activate.size} new good entries.")
+	  @result[:description] << "[Import : #{nom}] Activated #{to_activate.size} new good entries."
     end
   end
   
