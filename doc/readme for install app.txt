@@ -35,7 +35,15 @@ etape a suivre :
 	- se placer dans projet\vendor\plugins\
 	- git clone git://github.com/bryanlarsen/hobo-jquery.git --branch rails3 
 - rails s
-- goto localhost:3000/
+- goto localhost:3000/x
+
+Git :
+- vérifier toutes les dernières mises à jour :
+	- git fetch -v --all
+- se brancher sur une branch distante
+	- git branch -t nom_de_la_branche_locale origin/nom_de_la_branche_distante
+- detruire une branche : git branch -d nom_de_la_branche
+- detruire une branche distante : git push origin :nom_de_la_branche_distante
 
 
 - install smargit a faire
