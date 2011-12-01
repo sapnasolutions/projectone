@@ -3,6 +3,7 @@ module Importers
     'pericles' => Importers::Pericles,
 	'ubiflow' => Importers::Ubiflow,
     'goventis' => Importers::Goventis,
+	'immolog' => Importers::Immolog,
     # 'cimm'     => Importers::Cimm,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,

@@ -1,9 +1,41 @@
 etape a suivre :
-recupérer le projet par clone via smartgit
-install ruby
-install rails
-gem install bundle
-bundle update rake (pour réglé le bug du rake)
-copie des dll mysql et sqlite3 dans system32 ou system64
-go git récupérer hobojquery :
-- git clone git://github.com/bryanlarsen/hobo-jquery.git --branch rails3
+- git install : next next next
+- créer dossier c:\web applications\
+- (au cas ou créer un compte github)
+- ensuite sur github rattacher l'ordinateur (pour push and update) :
+	http://help.github.com/win-set-up-git/
+	- Git bash :
+		- Vérifier qu'il existe un dossier .ssh dans le compte User windows
+		- ssh-keygen -t rsa -C "email mis dans github"
+		- mettre un mot de passe
+		- ouvrir le fichier .\.ssh\id_rsa.pub
+		- copier dans github : account setting : ssh public key : add an other key : copier le ssh : add key
+- git bash :
+	- go to c:\web applications\
+	- git clone git@github.com:charleric/projectone.git
+	- mettre yes
+	- mettre mot de passe
+	- chouette ça clone
+- Install ruby : ATTENTION penser a mettre ruby dans le PATH
+- Install rails :
+	- ouvrir commande prompt ruby
+	- se placer dans c:\web applications\nom du projet
+	- extract le devkit dans le dossier de ruby (normalement c:\ruby1.9)
+	- se placer dans le dossier devkit :
+		- ruby dk.rb init
+		- ruby dk.rb install
+	- gem install rails (normalement il install plein de bordel)
+	- gem install bundle
+	- bundle install
+	- bundle update rake (pour réglé le bug du rake : vérifier que rake soit bien a la version 0.8.7)
+- copie des dll mysql et sqlite3 dans system32 ou system64
+- rake db:create ( au cas ajouter : RAILS_ENV="development" ) au cas ne pas tenir compte de l'erreur sur la création de la base mysql de test
+- rake db:migrate ( au cas ajouter : RAILS_ENV="development" )
+- Récupérer hobo-jquery :
+	- se placer dans projet\vendor\plugins\
+	- git clone git://github.com/bryanlarsen/hobo-jquery.git --branch rails3 
+- rails s
+- goto localhost:3000/
+
+
+- install smargit a faire
