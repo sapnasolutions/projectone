@@ -1,0 +1,15 @@
+<show-page>
+
+<content-header: replace>
+<div class="header content-header">
+<h2 class="heading"><%= this.titre.to_s + " a " + this.bien_emplacement.ville %>Bien <editor:titre/> a </h2>
+</div>
+</content-header:>
+<field-list: fields="nb_piece, prix, surface, surface_terrain, titre, date_disponibilite, statut, nb_chambre, valeur_dpe, valeur_ges, classe_dpe, class_ges, reference, bien_emplacement, bien_transaction, bien_type, passerelle" tag="editor">
+<nb_piece-label:>Nombre de pieces</nb_piece-label:>
+<titre-label:>Type de bien</titre-label:>
+<date_disponibilite-view:>Date de disponibilite</date_disponibilite-view:>
+<statut-label:>Statut</statut-label:>
+
+</field-list>
+</show-page>
