@@ -26,26 +26,107 @@ class InstallationsController < ApplicationController
 	}
 	return text
   end
+
+  def export_immauto_installations
+	request.format = :xml
 	
-  def data
-	request.format = :xml	
+	root = {:installations => []}
+	Installation.all.each{ |i|
+		ih = {}
+		ih["description"] = i.informations_supplementaires
+		ih["adresse_xml_import"] = "#{$domain}/export_immauto_agence?code_installation=#{i.code_acces_distant}"
+		root[:installations].push ih
+	}
 	
-    if params[:instal_code].nil?
+	respond_to do |format|
+      format.xml  { render :xml  => root.to_xml }
+    end
+  end
+ 
+  def export_immauto_biens
+    request.format = :xml
+	last_update = ""
+	tous_biens = []
+	if params[:code_installation].nil?
 		code_err = 1
-		text_err = "need a value in params instal_code"
-	elsif (installation = Installation.where(:code_acces_distant => params[:instal_code]).first).nil?
+		text_err = "L'appel de ce service n\écessite un code_installation"
+	elsif (installation = Installation.where(:code_acces_distant => params[:code_installation]).first).nil?
 		code_err = 2
-		text_err = "Installation Uknown"
+		text_err = "Installation inconnue, code_installation non valide"
+	elsif (installation.passerelles.empty?)
+		code_err = 3
+		text_err = "Pas de passerelle active"
+	elsif (tous_biens = installation.passerelles.map{ |p| p.biens.select{ |b| b.statut == "cur" && !b.bien_photos.empty? }}.flatten).empty?
+		code_err = 4
+		text_err = "Aucun biens actif et avec images"
     else
 		code_err = 0
-		text_err = "ok"
+		text_err = "ok : #{tous_biens.size} actifs et avec images"
+		last_update = installation.passerelles.map{ |p| p.executions.select{|e| e.statut == "ok"}.map{|e| e.updated_at}}.flatten.sort.last.strftime("%d/%m/%Y")
+	end
+	
+	root = {:biens => [], :result => {:err_code => code_err,:desc => text_err,:last_update => last_update}}
+	
+	if code_err = 0		
+		tous_biens.each{ |b|
+			photos = b.bien_photos
+			hb = b.attributes
+			hb.delete "is_accueil"
+			hb.delete "created_at"
+			hb.delete "updated_at"
+			hb.delete "passerelle_id"
+			hb.delete "id"
+			hb["type_categorie"] = b.bien_type.nom if b.bien_type
+			hb["type_transaction"] = b.bien_transaction.nom if b.bien_transaction
+			if b.bien_emplacement
+				he = b.bien_emplacement.attributes
+				he.delete "id"
+				he.delete "created_at"
+				he.delete "updated_at"
+				hb["localisation"] = he
+			end
+			hb.delete "bien_emplacement_id"
+			hb.delete "bien_type_id"
+			hb.delete "bien_transaction_id"
+			hb.delete "statut"
+			hb["description"] = conversion(hb["description"])
+			all_img = photos.map{ |p| {:url => p.absolute_url, :ordre => p.ordre}}
+			hb["images"] = all_img
+
+			root[:biens].push(hb)
+		}
+	end
+	
+	respond_to do |format|
+      format.xml  { render :xml  => root.to_xml }
+    end
+  end
+  
+  def data
+	request.format = :xml	
+	last_update = ""
+	tous_biens = []
+	if params[:instal_code].nil?
+		code_err = 1
+		text_err = "L'appel de ce service n\écessite un instal_code"
+	elsif (installation = Installation.where(:code_acces_distant => params[:instal_code]).first).nil?
+		code_err = 2
+		text_err = "Installation inconnue, instal_code non valide"
+	elsif (installation.passerelles.empty?)
+		code_err = 3
+		text_err = "Pas de passerelle active"
+	elsif (tous_biens = installation.passerelles.map{ |p| p.biens.select{ |b| b.statut == "cur" && !b.bien_photos.empty? }}.flatten).empty?
+		code_err = 4
+		text_err = "Aucun bien actif et avec images"
+    else
+		code_err = 0
+		text_err = "ok : #{tous_biens.size} actifs et avec images"
+		last_update = installation.passerelles.map{ |p| p.executions.select{|e| e.statut == "ok"}.map{|e| e.updated_at}}.flatten.sort.last.strftime("%d/%m/%Y")
 	end
 
-	last_update = installation.passerelles.map{ |p| p.executions.select{|e| e.statut == "ok"}.map{|e| e.updated_at}}.flatten.sort.last.strftime("%d/%m/%Y")
 	root = {:categories => [], :medias => [], :result => {:err_code => code_err,:desc => text_err,:last_update => last_update}}
 	
 	if code_err == 0
-		tous_biens = installation.passerelles.map{ |p| p.biens.select{ |b| b.statut == "cur" && !b.bien_photos.empty? }}.flatten
 		cat_actives_id = tous_biens.map{ |b| b.bien_type_id}.compact.uniq
 		transaction_actives_id = tous_biens.map{ |b| b.bien_transaction_id}.compact.uniq
 

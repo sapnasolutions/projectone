@@ -61,6 +61,8 @@ GatewayManagerHobo::Application.routes.draw do
   # gateway's all routes : gateway is the alias of the proxypass of apache
   match 'export' => 'installations#data'
   match 'auto_import' => 'installations#auto_import'
+  match 'export_immauto_agence' => 'installations#export_immauto_biens'
+  match 'export_immauto' => 'installations#export_immauto_installations'
   
   match 'gateway' => 'front#index'
   match 'gateway/search' => 'front#search', :as => 'site_search'

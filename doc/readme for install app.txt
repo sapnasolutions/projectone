@@ -42,8 +42,23 @@ Git :
 	- git fetch -v --all
 - se brancher sur une branch distante
 	- git branch -t nom_de_la_branche_locale origin/nom_de_la_branche_distante
+- pusher sa branche (et créer la branche distante si elle n'existe pas) :
+	- git push nom_de_la_branche_locale:nom_de_la_branche_distante
+	- ducoup la branche local track sur la branche distante
 - detruire une branche : git branch -d nom_de_la_branche
 - detruire une branche distante : git push origin :nom_de_la_branche_distante
+- rebase sa branche sur un master qui a avancer :
+	- option branch/rebase a partir de la branche que l'on veut rebase
+	- HEAD commits to selected commits
+	- Selection du master et rebase
+- git stash pour faire des sauvergarde temporaire pour au cas où
 
+Notepadd ++ : Bon choix pour le dev : petit ajout personnel de module :
+- file switcher (penser a configurer le raccourci clavier)
+- explorer
 
-- install smargit a faire
+Rails console :
+- pour test : ajout d'un client avec comme passerelle : logiciel = aptalis & params = code_agence:HOQUET774
+- lancer un import globale : Importers.run Time.now
+- lancer un import sur une passerelle : Importers.import objet_passerelle
+- lancer un import sur un client : Importers.import objet_client
