@@ -108,19 +108,15 @@ class Importers::Totalimmo < Importers::FromFiles
 	ref = b["BIEN_REFERENCE"]
 	
 	if @transaction_type.nom == "Vente"
-		cat = b["BIEN_TYPE"].to_s
+		cat_s = b["BIEN_TYPE"].to_s
 		price = b["BIEN_PRIX"]
 	else
 		cat_code = b["BIEN_TYPE"].to_s
-		cat = CODE_MATCHING[cat_code]
+		cat_s = CODE_MATCHING[cat_code]
 		price = b["BIEN_LOYER"]
 	end
 	
-	cat = BienType.where(:nom => cat.to_s.titlecase).first
-	if cat.nil?
-		cat = BienType.new(:nom => cat.to_s.titlecase)
-		cat.save!
-	end
+	cat = BienType.find_or_create cat_s.up_first
     
 	nb = Bien.where(:reference => ref).first
     nb = Bien.new if nb.nil?

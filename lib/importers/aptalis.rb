@@ -87,12 +87,9 @@ class Importers::Aptalis < Importers::FromUrls
 	loc.ville = b['Ville']
 
 	# Category & Transaction type
-	cat = BienType.where(:nom => b['TypeBien'].to_s.titlecase).first
-	if cat.nil?
-		cat = BienType.new(:nom => b['TypeBien'].to_s.titlecase)
-		cat.save!
-	end
-	transaction_type = BienTransaction.where(:nom => b['TypeTransaction'].to_s.titlecase).first
+	cat = BienType.find_or_create b['TypeBien'].up_first
+	
+	transaction_type = BienTransaction.where(:nom => b['TypeTransaction'].up_first).first
 	return if transaction_type.nil?
 
 	# find if good already exist, unless create it
@@ -114,7 +111,7 @@ class Importers::Aptalis < Importers::FromUrls
     nb.nb_chambre = b['NbChambres'].to_i
     nb.surface = b['SurfaceHabitable'].to_i
     nb.surface_terrain = b['SurfaceTerrain1'].to_i
-    nb.titre = b['TypeBien'].to_s.titlecase
+    nb.titre = b['TypeBien'].up_first
 	
     nb.prix = b['Prix']
     nb.description = b['Texte']

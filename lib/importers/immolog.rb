@@ -105,7 +105,7 @@ class Importers::Immolog < Importers::FromFiles
 
 	ref = b[0]
 	
-	#cat = b["BIEN_TYPE"].to_s
+	cat = nil
 	price = b[6]
 	
 	if b[1] == "Vente"
@@ -123,14 +123,14 @@ class Importers::Immolog < Importers::FromFiles
 
     nb.passerelle = @passerelle
     nb.reference = ref
-    # nb.bien_type = cat
+    nb.bien_type = cat
     nb.bien_transaction = ttype
     nb.bien_emplacement = loc
     nb.nb_piece = b[7]
     nb.nb_chambre = b[8]
     nb.surface = b[9]
     #nb.surface_terrain = b["BIEN_SURFACE_TERRAIN"]
-    nb.titre = ""
+    nb.titre = b[3].to_s
     nb.prix = price
     nb.description = desc
 	
@@ -141,8 +141,10 @@ class Importers::Immolog < Importers::FromFiles
 	#nb.valeur_ges = b["BIEN_EMISSION_GES"]
 		
 	# If new images : Drop old images, add current images
-	photo = [b[11],b[12]]
-    if photo[0]
+	photo = []
+	10.times{ |i| photo.push b[i+11].to_s }
+	photo.reject!{ |p| p.nil? || p.empty?}
+    if photo && !photo.empty?
       # un-attach old
 	  nb.bien_photos.each{ |photo|
 		 photo.bien = nil

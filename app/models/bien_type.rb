@@ -6,6 +6,15 @@ class BienType < ActiveRecord::Base
     nom :string
     timestamps
   end
+  
+  has_many :biens, :dependent => :nullify
+  
+  def self.find_or_create nom
+    return nil if nom.nil? || nom.empty?
+	return BienType.where(:nom => nom).first unless BienType.where(:nom => nom).empty?	
+	return BienType.where(:nom => nom).first if BienType.new(:nom => nom).save
+	return nil
+  end
 
   # --- Permissions --- #
 

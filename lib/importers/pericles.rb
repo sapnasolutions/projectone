@@ -125,11 +125,8 @@ class Importers::Pericles < Importers::FromFiles
 	nb = Bien.where(:reference => ref).first
     nb = Bien.new if nb.nil?
 
-	cat = BienType.where(:nom => b["CATEGORIE"].to_s.titlecase).first
-	if cat.nil?
-		cat = BienType.new(:nom => b["CATEGORIE"].to_s.titlecase)
-		cat.save!
-	end
+	cat = BienType.find_or_create b["CATEGORIE"].up_first
+	
     b["SURF_HAB"] ||= b["SURF_CARREZ"]
 	
 	desc = b["TEXTE_FR"]

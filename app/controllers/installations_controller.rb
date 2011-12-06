@@ -67,7 +67,7 @@ class InstallationsController < ApplicationController
 	
 	root = {:biens => [], :result => {:err_code => code_err,:desc => text_err,:last_update => last_update}}
 	
-	if code_err = 0		
+	if code_err == 0		
 		tous_biens.each{ |b|
 			photos = b.bien_photos
 			hb = b.attributes
