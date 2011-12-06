@@ -55,20 +55,16 @@ class Importers::Goventis < Importers::FromFiles
     loc = BienEmplacement.new
 	loc.pays = "France"
 	loc.code_postal = nil	
-	loc.ville = b["Affaire_ville"].to_s.titlecase
+	loc.ville = b["Affaire_ville"].up_first
 	
-	transaction_type = BienTransaction.where(:nom => b['Affaire_type_annonce'].titlecase).first
+	transaction_type = BienTransaction.where(:nom => b['Affaire_type_annonce'].up_first).first
 	price = b["Affaire_prix"].to_i
     
 	ref = b["Affaire_reference"]
 	nb = Bien.where(:reference => ref).first
     nb = Bien.new if nb.nil?
 
-	cat = BienType.where(:nom => b['Affaire_type_bien'].titlecase).first
-	if cat.nil?
-		cat = BienType.new(:nom => b['Affaire_type_bien'].titlecase)
-		cat.save!
-	end
+	cat = BienType.find_or_create b['Affaire_type_bien'].up_first
 	
 	desc = b["Affaire_desc_magazine"]
     if desc.blank?

@@ -142,15 +142,11 @@ class Importers::Trans21 < Importers::FromFiles
     good_address = {}
     loc = BienEmplacement.new
 	loc.pays = "France"
-	loc.ville = b["ville"].to_s.titlecase
+	loc.ville = b["ville"].up_first
 
 	ref = b["reference"]
 	
-	cat = BienType.where(:nom => b['type_bien'].to_s.titlecase).first
-	if cat.nil?
-		cat = BienType.new(:nom => b['type_bien'].to_s.titlecase)
-		cat.save!
-	end
+	cat = BienType.find_or_create b['type_bien'].up_first
 	
 	# Determine if the good is a sell or a rent
     if b['type_transaction'] == "vente"

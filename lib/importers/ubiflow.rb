@@ -101,16 +101,10 @@ class Importers::Ubiflow < Importers::FromFiles
 	ref = b["reference"]
 	
 	cat_code = b["bien"]["code_type"].to_s
-	cat = CAT_CODE_MATCHING[cat_code]
+	cat_s = CAT_CODE_MATCHING[cat_code]
 	
-	cat = BienType.where(:nom => cat.to_s.titlecase).first
-	if cat.nil?
-		cat = BienType.new(:nom => cat.to_s.titlecase)
-		cat.save!
-	end
-	
-	# b["bien"][""]
-	
+	cat = BienType.find_or_create cat_s.up_first
+
 	# Determine if the good is a sell or a rent
 	price = b["prestation"]["prix"].to_i
     if b["prestation"]["type"] == "V"
