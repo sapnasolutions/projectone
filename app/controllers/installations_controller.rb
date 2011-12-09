@@ -130,11 +130,20 @@ class InstallationsController < ApplicationController
 		cat_actives_id = tous_biens.map{ |b| b.bien_type_id}.compact.uniq
 		transaction_actives_id = tous_biens.map{ |b| b.bien_transaction_id}.compact.uniq
 
-		cat_actives_id.each{ |id|
-			c = BienType.find id
-			next if c.nil?
-			root[:categories].push ({:nom => c.nom, :id => "type-#{c.id}"})
-		}
+		if(cat_actives_id.size > 10)
+			use_meta = true
+			BienType.metas.each{ |m|
+				root[:categories].push ({:nom => m.nom, :id => "type-#{m.id}"})
+			}
+		else
+			use_meta = false
+			cat_actives_id.each{ |id|
+				c = BienType.find id
+				next if c.nil?
+				root[:categories].push ({:nom => c.nom, :id => "type-#{c.id}"})
+			}
+		end
+		
 		transaction_actives_id.each{ |id|
 			t = BienTransaction.find id
 			next if t.nil?
@@ -203,7 +212,11 @@ class InstallationsController < ApplicationController
 			end
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
-			cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
+			if use_meta
+				cats.push ({:id => "type-#{b.bien_type.get_meta.id}"}) if b.bien_type
+			else
+				cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
+			end
 			if b.prix
 				if b.prix/pas >= 9
 					cats.push ({:id => "prix-9"})

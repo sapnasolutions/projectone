@@ -4,6 +4,32 @@ class String
 		self[0] = self.first.upcase
 		return self
 	end
+	
+  def count_enum value=0
+    value.to_s + ' ' + ((value > 1) ? self.pluralize : self)
+  end
+  
+  # Kill accent (and all special Chars, so be careful)
+  def pretty_url
+    Iconv.iconv("ASCII//IGNORE//TRANSLIT", "UTF-8", self).join.sanitize
+  rescue
+    self.sanitize
+  end
+  
+  def pretty_sms
+    Iconv.iconv("ASCII//IGNORE//TRANSLIT", "UTF-8", self).join.sanitize_sms
+  rescue
+    self.sanitize_sms
+  end
+  
+  def sanitize
+    self.gsub(/[^a-z._0-9 -]/i, "").tr(".", "_").gsub(/(\s+)/, "_").dasherize.downcase
+  end
+  
+  def sanitize_sms
+    self.gsub(/[^a-zA-Z\/\n()?!:._0-9 -]/i, "")
+  end
+  
 end
 
 class Numeric
