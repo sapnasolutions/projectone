@@ -51,6 +51,9 @@ Git :
 	- option branch/rebase a partir de la branche que l'on veut rebase
 	- HEAD commits to selected commits
 	- Selection du master et rebase
+	ou alors en ligne de commande git
+	- se mettre sur la branche que l'on veux rebase
+	- git rebase master (ou nom de la branche sur laquelle on veux se rebase)
 - git stash pour faire des sauvergarde temporaire pour au cas où
 
 Notepadd ++ : Bon choix pour le dev : petit ajout personnel de module :
