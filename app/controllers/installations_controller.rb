@@ -132,7 +132,7 @@ class InstallationsController < ApplicationController
 
 		if(cat_actives_id.size > 10)
 			use_meta = true
-			meta_cat_actives_id = tous_biens.map{ |b| b.bien_type.get_meta.id}.compact.uniq
+			meta_cat_actives_id = tous_biens.select{ |b| b.bien_type}.map{ |b| b.bien_type.get_meta.id}.compact.uniq
 			meta_cat_actives_id.each{ |mid|
 				mc = BienType.find mid
 				next if mc.nil?
