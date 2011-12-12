@@ -132,8 +132,11 @@ class InstallationsController < ApplicationController
 
 		if(cat_actives_id.size > 10)
 			use_meta = true
-			BienType.metas.each{ |m|
-				root[:categories].push ({:nom => m.nom, :id => "type-#{m.id}"})
+			meta_cat_actives_id = tous_biens.map{ |b| b.bien_type.get_meta.id}.compact.uniq
+			meta_cat_actives_id.each{ |mid|
+				mc = BienType.find mid
+				next if mc.nil?
+				root[:categories].push ({:nom => mc.nom, :id => "type-#{mc.id}"})
 			}
 		else
 			use_meta = false

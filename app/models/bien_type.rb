@@ -17,7 +17,7 @@ class BienType < ActiveRecord::Base
   end
   
   def self.metas
-	return [(BienType.find_or_create "Maisons"),(BienType.find_or_create "Appartements"),(BienType.find_or_create "Commerces et Locaux commerciaux"),(BienType.find_or_create "Parkings et Garages"),(BienType.find_or_create "Batiments"),(BienType.find_or_create "Autre")]
+	return [(BienType.find_or_create "Maisons"),(BienType.find_or_create "Appartements"),(BienType.find_or_create "Terrains"),(BienType.find_or_create "Commerces et Locaux commerciaux"),(BienType.find_or_create "Parkings et Garages"),(BienType.find_or_create "Batiments"),(BienType.find_or_create "Autre")]
   end
   
   def get_meta
