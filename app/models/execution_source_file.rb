@@ -1,4 +1,4 @@
-class ExecutionSourceFile < ActiveRecord::Base
+﻿class ExecutionSourceFile < ActiveRecord::Base
 
   hobo_model # Don't put anything above this
 

@@ -1,7 +1,7 @@
 # Superclass for importers that use (uploaded) files as input.
 class Importers::FromUrls < Importers::BaseImporters
   require 'open-uri'
-  
+  require 'iconv'
   # no waiting parameters
   
   def create_uri
@@ -18,8 +18,9 @@ class Importers::FromUrls < Importers::BaseImporters
 	@result[:description] << "Loading from URI #{uri}"
 	data = ""
     begin
+   	  # i = Iconv.new('ASCII-8BIT','UTF-8')
       uriOpener = open(URI.encode(uri))
-      data = uriOpener.read
+      data =  Iconv.conv("utf-8//ignore","gb2312//ignore",uriOpener.read)
       data.gsub!(/&([^ ;]{0,20}) /,"&amp;#{'\1'} ") #remplace le signe & par son equivalent HTML : &amp;
 	  ### check if the file is a well formated xml ###
     rescue

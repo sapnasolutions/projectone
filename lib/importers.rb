@@ -4,6 +4,7 @@ module Importers
 	'ubiflow' => Importers::Ubiflow,
     'goventis' => Importers::Goventis,
 	'immolog' => Importers::Immolog,
+	'ac3' => Importers::Ac3,
     # 'cimm'     => Importers::Cimm,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
@@ -122,7 +123,8 @@ module Importers
 		Logger.send("warn","[Passerelle] Import completed")
     rescue Exception => e
 		@rapport_import << "Fail<\br>"
-		@rapport_import << "Error message : #{e.message}<\br>"
+		@rapport_import << "Error message => #{e.error} : #{e.message}<\br>"
+		@rapport_import << "Error backtrace => #{e.backtrace}<\br>"
 		@nb_fail += 1
 		Logger.send("warn","[Passerelle] Import FAIL !")
     end
