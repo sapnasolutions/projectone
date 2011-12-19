@@ -19,10 +19,9 @@ class Importers::FromUrls < Importers::BaseImporters
 	data = ""
     begin
    	  # i = Iconv.new('ASCII-8BIT','UTF-8')
-      uriOpener = open(URI.encode(uri),"r:ISO-8859-1")
-      data =  Iconv.conv("iso-8859-1//ignore","utf-8//ignore",uriOpener.read)
-	  # data =  uriOpener.read
-      data.gsub!(/&([^ ;]{0,20}) /,"&amp;#{'\1'} ") #remplace le signe & par son equivalent HTML : &amp;
+      uriOpener = open(URI.encode(uri),"r:utf-8")
+	  data =  uriOpener.read
+      # data.gsub!(/&([^ ;]{0,20}) /,"&amp;#{'\1'} ") #remplace le signe & par son equivalent HTML : &amp;
 	  ### check if the file is a well formated xml ###
     rescue
 	  Logger.send("warn","Failure: (#{$!})")
