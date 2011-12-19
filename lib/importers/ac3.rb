@@ -19,6 +19,7 @@
     hash = Hash.from_xml(data)
     
     # Create and list new goods
+	return if hash.nil?
 	return if hash['LISTEPA'].nil?
     goods = hash['LISTEPA']['BIEN']
     return if goods.nil?
