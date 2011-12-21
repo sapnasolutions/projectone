@@ -52,8 +52,8 @@
 	if b['LOCALISATION']['VISIBLE'].to_s == "true"
 		loc = BienEmplacement.new
 		loc.pays = "France"
-		loc.code_postal = b['LOCALISATION']['VILLE']
-		loc.ville = b['LOCALISATION']['CODE_POSTAL']
+		loc.code_postal = b['LOCALISATION']['CODE_POSTAL']
+		loc.ville = b['LOCALISATION']['VILLE']
 	else
 		loc = nil
 	end
