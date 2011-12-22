@@ -45,7 +45,7 @@ module Importers
     # 'activimmo' => Importers::Activimmo,
     # 'agence_plus' => Importers::AgencePlus,
     # 'jsimmo' => Importers::Jsimmo,
-    # 'immovision' => Importers::Immovision,
+    'immovision' => Importers::Immovision,
   }
   # New family of importer : the group importer
   GroupImporter = ['chronotech']
@@ -123,7 +123,7 @@ module Importers
 		Logger.send("warn","[Passerelle] Import completed")
     rescue Exception => e
 		@rapport_import << "Fail<\br>"
-		@rapport_import << "Error message => #{e.name} : #{e.message}<\br>"
+		@rapport_import << "Error message => : #{e.message}<\br>"
 		@rapport_import << "Error backtrace => #{e.backtrace}<\br>"
 		@nb_fail += 1
 		Logger.send("warn","[Passerelle] Import FAIL !")
