@@ -22,7 +22,7 @@ module Importers
     # 'tourismoffice' => Importers::Tourismoffice,
     # 'krier' => Importers::Krier,
     # 'wizzimmo' => Importers::Wizzimmo,
-    # 'cosmosoft' => Importers::Cosmosoft,
+    'cosmosoft' => Importers::Cosmosoft,
     # 'altimax' => Importers::Altimax,
     # 'tetrawin' => Importers::Tetrawin,
     # 'multimport' => Importers::Multimport,
