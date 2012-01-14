@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111117132736) do
+ActiveRecord::Schema.define(:version => 20120113100518) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20111117132736) do
     t.datetime "photo_updated_at"
     t.integer  "bien_id"
     t.string   "hashsum"
+    t.integer  "passerelle_id"
   end
 
   add_index "bien_photos", ["bien_id"], :name => "index_bien_photos_on_bien_id"
@@ -118,6 +119,8 @@ ActiveRecord::Schema.define(:version => 20111117132736) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id"
+    t.integer  "fichier_id"
+    t.string   "adresse_fichier"
   end
 
   add_index "installations", ["client_id"], :name => "index_installations_on_client_id"

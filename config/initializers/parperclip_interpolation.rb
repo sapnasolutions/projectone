@@ -1,8 +1,11 @@
 Paperclip.interpolates :client_folder do |attachment, style|
   if attachment.instance.bien
-	attachment.instance.bien.passerelle.installation.client.id
-  elsif $passerelle && $passerelle.installation && $passerelle.installation.client
-    $passerelle.installation.client.id
+	p = attachment.instance.bien.passerelle
+  else
+    p = attachment.instance.passerelle
+  end
+  if p && p.installation && p.installation.client
+    p.installation.client.id
   else
 	$default_client_folder
   end

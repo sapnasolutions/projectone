@@ -27,6 +27,7 @@ class BienPhoto < ActiveRecord::Base
     #:url  => "#{$base_url_media}/:login/:style_:basename_:id.:extension"
 	
 	belongs_to :bien
+	belongs_to :passerelle
 	default_scope :order => :ordre
 	#process_in_background :photo
 	#typed_serialize :attributs, Hash
@@ -35,13 +36,13 @@ class BienPhoto < ActiveRecord::Base
 		return "#{$domain}/#{self.photo.url}"
 	end
   
-    def self.from_local(local_path, bien, ordre, titre)
+    def self.from_local(local_path, bien, ordre, titre, passerelle)
       filename = File.basename local_path
       f = File.open(local_path)
-      self.from_data(filename,f.read,bien,ordre,titre)
+      self.from_data(filename,f.read,bien,ordre,titre,passerelle)
     end
     
-    def self.from_url(url, bien, ordre, titre)
+    def self.from_url(url, bien, ordre, titre, passerelle)
       
       Logger.send("warn","Opening URL '#{url}'")
       filename = File.basename url
@@ -51,7 +52,7 @@ class BienPhoto < ActiveRecord::Base
       Logger.send("warn","Content type is #{mime}")
       fd.close
 
-      self.from_data(filename,image_data,bien,ordre,titre)
+      self.from_data(filename,image_data,bien,ordre,titre,passerelle)
     end
 	
 	def save
@@ -76,7 +77,7 @@ class BienPhoto < ActiveRecord::Base
 		super
 	end
 	
-    def self.from_data(filename,data,bien,ordre,titre)
+    def self.from_data(filename,data,bien,ordre,titre,passerelle)
       begin
         hash = Digest::MD5.hexdigest data
       rescue   Exception => e
@@ -85,11 +86,15 @@ class BienPhoto < ActiveRecord::Base
       end
 
       # Check if the hash is already known, now don't differenciate with the goods
-      # if bien.nil?
-		photo = self.where(:hashsum => hash).first
-      # else
-		# photo = self.where(:hashsum => hash, :bien_id => bien.id).first
-      # end
+      if bien.nil?
+		if passerelle.nil?
+			photo = self.where(:hashsum => hash, :bien_id => nil, :passerelle_id => passerelle.id).first
+		else
+			photo = self.where(:hashsum => hash, :passerelle_id => passerelle.id).first
+		end
+      else
+		photo = self.where(:hashsum => hash, :bien_id => bien.id).first
+      end
         
 	  if photo.nil?
 		  # Create the new media using a temporary file
@@ -102,9 +107,9 @@ class BienPhoto < ActiveRecord::Base
 		  photo.photo = tmp
 		  photo.titre = titre
 		  photo.ordre = ordre
+		  photo.bien = bien
+		  photo.passerelle = passerelle
 	  end
-	  
-	  photo.bien = bien
 	  
 	  if photo.attributs.nil? || photo.attributs.empty?
           photo.attributs = titre

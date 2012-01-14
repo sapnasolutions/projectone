@@ -15,6 +15,7 @@ class Passerelle < ActiveRecord::Base
 
   has_many :executions, :dependent => :destroy
   has_many :biens, :dependent => :destroy
+  has_many :bien_photos
   
   #typed_serialize :parametres, Hash
   

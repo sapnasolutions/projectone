@@ -15,7 +15,7 @@
 <def tag="form" for="BienPhoto">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="ordre, titre, hashsum, attributs, bien" param/>
+    <field-list fields="ordre, titre, hashsum, attributs, bien, passerelle" param/>
     <div param="actions">
       <submit label="#{ht 'bien_photo.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

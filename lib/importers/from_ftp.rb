@@ -25,20 +25,6 @@ class Importers::FromFtp < Importers::BaseImporters
 		# Logger.send("warn","[FTP] Error during navigation in FTP : #{@ftp_adress}; log|pass : #{@parameters.to_s}.")
 		# Logger.send("warn","[FTP] #{e} :\n#{e.backtrace.join("\n")}")
   end
-  
-  def dl_and_update_medias_directly_from_root
-    # @logger.info "Start Root's medias registeration"
-    # @nb_medias = 0
-    
-    # remote_files = search_file(@ftp_media_repository,/\.(jpg|jpeg|png|bmp)$/)
-
-    # download_file @ftp_media_repository, remote_files, :bin, "download_images"
-    # @logger.info "#{@nb_medias} Root's medias registered"
-    
-  # rescue Exception => e
-    # @logger.error "Error during navigation in FTP : #{@ftp_adress}; log|pass : #{@app.parameter}."
-    # @logger.error "#{e} :\n#{e.backtrace.join("\n")}"
-  end
 
   def search_file repository, filter = nil
     # connect to FTP

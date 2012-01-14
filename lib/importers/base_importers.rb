@@ -8,7 +8,6 @@ class Importers::BaseImporters
   # +mime+ is a list of valid file mime types
   def initialize passerelle, mime = nil
     @passerelle = passerelle
-	$passerelle = passerelle
     @mime = mime
 	@parameters = {}
 	unless @passerelle.parametres.empty? || @passerelle.parametres.nil?
@@ -84,7 +83,7 @@ class Importers::BaseImporters
 		# find a way to create media without "bien" linked, but only "passerelle" ?
 		name = File.basename entry.name.to_s.downcase
 		#params for from_data : filename,image_data,bien,ordre,titre
-        p = BienPhoto.from_data name, data, nil, nil, name
+        p = BienPhoto.from_data name, data, nil, nil, name, @passerelle
         next if p.nil?
 		
         nb_medias += 1
@@ -109,27 +108,12 @@ class Importers::BaseImporters
 	return true
   end
   
-  # Find in all existing medias for actual imported gateway, if there is one who have the research name
-  def last_chance_find_media research_name
-	@passerelle.biens.each{ |b|
-		b.bien_photos.each{ |p|
-			next unless p.attributs
-			p.attributs.split('|').each{ |n|
-				return p if research_name.to_s.downcase == n.to_s.downcase
-			}
-			@medias[p.attributs] = p
-		}
-	}
-	return nil
-  end
-  
   # Import an image from the given url
   def import_remote_media(url, ordre, bien = nil, img_name = nil)
     # Check if the media have been already download in a previous execution
     unless p = @medias[url]
-	 #params : from_url(url, bien, ordre, titre)
 	 img_name = File.basename url unless img_name
-     p = BienPhoto.from_url(url, bien, ordre, img_name)
+     p = BienPhoto.from_url(url, bien, ordre, img_name, @passerelle)
      if p.nil?
 		Logger.send("warn","[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded")
 		@result[:description] << "[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded"
@@ -179,6 +163,20 @@ class Importers::BaseImporters
 	return p
   end
   
+    # Find in all existing medias for actual imported gateway, if there is one who have the research name
+  def last_chance_find_media research_name
+	@passerelle.biens.each{ |b|
+		b.bien_photos.each{ |p|
+			next unless p.attributs
+			p.attributs.split('|').each{ |n|
+				return p if research_name.to_s.downcase == n.to_s.downcase
+			}
+			@medias[p.attributs] = p
+		}
+	}
+	return nil
+  end
+  
 	# Update the status of the "bien" (the one who had been updated will become "current" bien, the others will become "old")
   def maj_biens(transaction_type = nil)
     
@@ -221,7 +219,7 @@ class Importers::BaseImporters
 	  @result[:description] << "No corresponding ref to this media name : #{name}"
       return nil
     end
-	b = Bien.where(:statut => "new", :reference => bien_ref).first
+	b = Bien.where(:statut => "new", :reference => bien_ref, :passerelle_id => @passerelle.id).first
     if b.nil?
 	  Logger.send("warn", "No corresponding 'bien' to this media name : #{name} - 'bien' ref : #{bien_ref}")
 	  @result[:description] << "No corresponding 'bien' to this media name : #{name} - 'bien' ref : #{bien_ref}"
