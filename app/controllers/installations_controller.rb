@@ -206,7 +206,7 @@
 					titre1 = "#{b.prix.to_s} \€ C.C."
 				else
 					if exception_asterisque params[:instal_code]
-						titre1 = "#{b.prix.to_s} \€ \*"
+						titre1 = "#{b.prix.to_s} \€\*"
 					else
 						titre1 = "#{b.prix.to_s} \€"
 					end
@@ -214,9 +214,10 @@
 			else
 				titre1 = "Prix non renseign\é"
 			end
-			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement
+			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement && b.bien_emplacement.ville && (not b.bien_emplacement.ville.empty?)
 			next if photos.empty?
-			titre2 = "#{b.titre} - #{b.reference}"
+			titre2 = "#{b.reference}"
+			titre2 = "#{b.titre} - #{titre2}" if b.titre && (not b.titre.empty?)
 			media_accueil = b.is_accueil
 			media_accueil = true if b.passerelle.tous_accueil
 			media_text = b.custom_description
