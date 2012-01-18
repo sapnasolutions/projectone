@@ -33,7 +33,7 @@
   end
   
   def asterisque text
-	# text = text.force_encoding('utf-8')
+	text = text.force_encoding('utf-8')
 	text = "#{text}\<br\/\>\* Prix net\, hors frais notariés\, d\'enregistrement et de publicité foncière"
 	return text
   end
