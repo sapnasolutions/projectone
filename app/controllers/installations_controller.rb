@@ -1,4 +1,4 @@
-class InstallationsController < ApplicationController
+Ôªøclass InstallationsController < ApplicationController
 
   hobo_model_controller
 
@@ -24,6 +24,17 @@ class InstallationsController < ApplicationController
 	tab_conversion.each{ |elt,rpl|
 		text = text.to_s.gsub(/\[#{elt}\]/,rpl)
 	}
+	text = text.to_s.gsub(/<br>/,"\<br\/\>")
+	return text
+  end
+  
+  def exception_asterisque code
+	not ["afimmonaco"].include? code
+  end
+  
+  def asterisque text
+	# text = text.force_encoding('utf-8')
+	text = "#{text}\<br\/\>\* Prix net\, hors frais notari√©s\, d\'enregistrement et de publicit√© fonci√®re"
 	return text
   end
 
@@ -49,7 +60,7 @@ class InstallationsController < ApplicationController
 	tous_biens = []
 	if params[:code_installation].nil?
 		code_err = 1
-		text_err = "L'appel de ce service n\Ècessite un code_installation"
+		text_err = "L'appel de ce service n√©cessite un code_installation"
 	elsif (installation = Installation.where(:code_acces_distant => params[:code_installation]).first).nil?
 		code_err = 2
 		text_err = "Installation inconnue, code_installation non valide"
@@ -108,7 +119,7 @@ class InstallationsController < ApplicationController
 	tous_biens = []
 	if params[:instal_code].nil?
 		code_err = 1
-		text_err = "L'appel de ce service n\Ècessite un instal_code"
+		text_err = "L'appel de ce service n√©cessite un instal_code"
 	elsif (installation = Installation.where(:code_acces_distant => params[:instal_code]).first).nil?
 		code_err = 2
 		text_err = "Installation inconnue, instal_code non valide"
@@ -185,15 +196,20 @@ class InstallationsController < ApplicationController
 		# attrs_img_autre = {:titre => "", :url => "", :ordre => ""}
 		# attrs_img_principal = {:titre => "", :url => ""}
 		tous_biens.each{ |b|
+			next if b.bien_transaction.nil?
 			compteur_dpe_img += 1
 			photos = b.bien_photos
 			first = photos.first
 			others = photos - [first]
 			if b.prix && b.prix > 0
-				if b.bien_transaction && b.bien_transaction.nom.to_s.downcase == "location"
+				if b.bien_transaction.nom.to_s.downcase == "location"
 					titre1 = "#{b.prix.to_s} \Ä C.C."
 				else
-					titre1 = "#{b.prix.to_s} \Ä F.A.I."
+					if exception_asterisque params[:instal_code]
+						titre1 = "#{b.prix.to_s} \Ä \*"
+					else
+						titre1 = "#{b.prix.to_s} \Ä"
+					end
 				end
 			else
 				titre1 = "Prix non renseign\È"
@@ -205,6 +221,7 @@ class InstallationsController < ApplicationController
 			media_accueil = true if b.passerelle.tous_accueil
 			media_text = b.custom_description
 			media_text = conversion(media_text)
+			media_text = asterisque(media_text) if exception_asterisque params[:instal_code] && b.bien_transaction.nom.to_s.downcase == "vente"
 			# media_text = media_text.to_s.gsub(/\[([^\[\]]*)\]/, "#{conversion('\1').to_s}")
 			all_img = others.map{ |p| {:titre => "img_#{(compteur_img +=1)}.jpg", :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
