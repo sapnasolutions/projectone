@@ -99,7 +99,7 @@
 <def tag="form" for="Installation">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="informations_supplementaires, code_acces_distant, client" param/>
+    <field-list fields="informations_supplementaires, code_acces_distant, client, execution_source_file" param/>
     <div param="actions">
       <submit label="#{ht 'installation.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

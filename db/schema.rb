@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120113100518) do
+ActiveRecord::Schema.define(:version => 20120119110743) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -119,8 +119,7 @@ ActiveRecord::Schema.define(:version => 20120113100518) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id"
-    t.integer  "fichier_id"
-    t.string   "adresse_fichier"
+    t.integer  "execution_source_file_id"
   end
 
   add_index "installations", ["client_id"], :name => "index_installations_on_client_id"

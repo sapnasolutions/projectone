@@ -11,9 +11,7 @@ class Importers::BaseImporters
     @mime = mime
 	@parameters = {}
 	unless @passerelle.parametres.empty? || @passerelle.parametres.nil?
-		@passerelle.parametres.split(";").each{ |couple|
-			@parameters[couple.split(":").first] = couple.split(":").second
-		}
+		@parameters = @passerelle.parametres.to_hashtribute
 	end
     #@agency = nil
 	@result = Hash.new

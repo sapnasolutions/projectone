@@ -12,5 +12,9 @@ Paperclip.interpolates :client_folder do |attachment, style|
 end
 
 Paperclip.interpolates :execution_client_folder do |attachment, style|
-  attachment.instance.execution.passerelle.installation.client.id
+  if attachment.instance.execution
+	attachment.instance.execution.passerelle.installation.client.id
+  else
+    $firmware_folder
+  end
 end

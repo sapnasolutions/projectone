@@ -11,8 +11,16 @@ class Installation < ActiveRecord::Base
   end
 
   belongs_to :client
+  belongs_to :execution_source_file
 
   has_many :passerelles, :dependent => :destroy
+  
+  def get_last_firmware
+	self.execution_source_file = ExecutionSourceFile.order_by("updated_at").select{ |esf|
+		esf.attributs.to_s.to_hashtribute["type"] == "firmware"
+	}.last
+	self.save!
+  end
   
   # --- Permissions --- #
 

@@ -63,6 +63,7 @@ GatewayManagerHobo::Application.routes.draw do
   match 'auto_import' => 'installations#auto_import'
   match 'export_immauto_agence' => 'installations#export_immauto_biens'
   match 'export_immauto' => 'installations#export_immauto_installations'
+  match 'get_firmware' => 'installations#export_firmware'
   
   match 'gateway' => 'front#index'
   match 'gateway/search' => 'front#search', :as => 'site_search'

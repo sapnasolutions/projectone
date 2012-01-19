@@ -53,6 +53,35 @@
       format.xml  { render :xml  => root.to_xml }
     end
   end
+  
+  def export_firmware
+	request.format = :xml
+	
+	if params[:instal_code].nil?
+		code_err = 1
+		text_err = "L'appel de ce service nécessite un instal_code"
+	elsif (installation = Installation.where(:code_acces_distant => params[:instal_code]).first).nil?
+		code_err = 2
+		text_err = "Installation inconnue, instal_code non valide"
+    elsif installation.execution_source_file.nil?
+		code_err = 5
+		text_err = "Pas de firmware associé à cette installation"
+	else
+		code_err = 0
+		text_err = "ok pour #{params[:instal_code]}"
+		firmware = installation.execution_source_file
+	end
+
+	root = {:firmware => {}, :result => {:err_code => code_err,:desc => text_err}}
+	if code_err == 0
+		root[:firmware]["md5sum"] = firmware.hashsum
+		root[:firmware]["adresse_firmware"] = firmware.absolute_url
+	end
+	
+	respond_to do |format|
+      format.xml  { render :xml  => root.to_xml }
+    end
+  end
  
   def export_immauto_biens
     request.format = :xml

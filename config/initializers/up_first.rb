@@ -22,6 +22,14 @@ class String
     self.sanitize_sms
   end
   
+  def to_hashtribute
+	hashtribute = {}
+	self.split(";").each{ |couple|
+			hashtribute[couple.split(":").first] = couple.split(":").second
+		}
+	return hashtribute
+  end
+  
   def sanitize
     self.gsub(/[^a-z._0-9 -]/i, "").tr(".", "_").gsub(/(\s+)/, "_").dasherize.downcase
   end
