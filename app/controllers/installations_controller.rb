@@ -34,7 +34,8 @@
   
   def asterisque text
 	text = text.force_encoding('utf-8')
-	text = "#{text}\<br\/\>\* Prix net\, hors frais notariés\, d\'enregistrement et de publicité foncière"
+	# text = "#{text}\<br\/\>\* Prix net\, hors frais notariés\, d\'enregistrement et de publicité foncière"
+	text = "#{text} \-\-\> \* Prix net\, hors frais notariés\, d\'enregistrement et de publicité foncière"
 	return text
   end
 
@@ -251,7 +252,7 @@
 			media_accueil = true if b.passerelle.tous_accueil
 			media_text = b.custom_description
 			media_text = conversion(media_text)
-			media_text = asterisque(media_text) if exception_asterisque params[:instal_code] && b.bien_transaction.nom.to_s.downcase == "vente"
+			media_text = asterisque(media_text) if ((exception_asterisque params[:instal_code]) && (b.bien_transaction.nom.to_s.downcase == "vente"))
 			# media_text = media_text.to_s.gsub(/\[([^\[\]]*)\]/, "#{conversion('\1').to_s}")
 			all_img = others.map{ |p| {:titre => "img_#{(compteur_img +=1)}.jpg", :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
