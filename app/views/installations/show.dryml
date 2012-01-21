@@ -3,6 +3,6 @@
 
 <edit-link: replace>
 </edit-link:>
-<field-list: fields="code_acces_distant, informations_supplementaires, adresse_fichier" tag="editor"/>
+<field-list: fields="code_acces_distant, informations_supplementaires" tag="editor"/>
 
 </show-page>

@@ -20,11 +20,11 @@
   end
   
   def conversion text
-	tab_conversion = {'sdl' => "\<br\/\>",'euro' => "euros"}
+	tab_conversion = {'sdl' => "<br/>",'euro' => "euros"}
 	tab_conversion.each{ |elt,rpl|
 		text = text.to_s.gsub(/\[#{elt}\]/,rpl)
 	}
-	text = text.to_s.gsub(/<br>/,"\<br\/\>")
+	text = text.to_s.gsub(/<br>/,"<br/>")
 	return text
   end
   
@@ -35,7 +35,7 @@
   def asterisque text
 	text = text.force_encoding('utf-8')
 	# text = "#{text}\<br\/\>\* Prix net\, hors frais notariés\, d\'enregistrement et de publicité foncière"
-	text = "#{text} \-\-\> \* Prix net\, hors frais notariés\, d\'enregistrement et de publicité foncière"
+	text = "#{text} \-\-\> \* Prix net, hors frais notariés, d'enregistrement et de publicité foncière"
 	return text
   end
 
@@ -208,17 +208,17 @@
         max *= coef
         pas *= coef
 		if !tous_biens_ventes.select{ |b| b.prix < pas}.empty?
-			root[:categories].push ({:nom => "Moins de #{pas.to_s} \�", :id => "prix-0"})
+			root[:categories].push ({:nom => "Moins de #{pas.to_s} €", :id => "prix-0"})
 		end
 		compteur = 1
 		pas.step((max-pas),pas) { |i|
 			if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
-				root[:categories].push ({:nom => "Entre #{i.to_s} \� et #{pas+i} \�", :id => "prix-#{compteur}"})
+				root[:categories].push ({:nom => "Entre #{i.to_s} € et #{pas+i} €", :id => "prix-#{compteur}"})
 			end
 			compteur += 1
 		}
 		if !tous_biens_ventes.select{ |b| b.prix >= max}.empty?
-			root[:categories].push ({:nom => "Plus de #{max.to_s} \�", :id => "prix-#{compteur}"})
+			root[:categories].push ({:nom => "Plus de #{max.to_s} €", :id => "prix-#{compteur}"})
 		end
 		
 		compteur_dpe_img = 0
@@ -233,18 +233,18 @@
 			others = photos - [first]
 			if b.prix && b.prix > 0
 				if b.bien_transaction.nom.to_s.downcase == "location"
-					titre1 = "#{b.prix.to_s} \� C.C."
+					titre1 = "#{b.prix.to_s} € C.C."
 				else
 					if exception_asterisque params[:instal_code]
-						titre1 = "#{b.prix.to_s} \�\*"
+						titre1 = "#{b.prix.to_s} €*"
 					else
-						titre1 = "#{b.prix.to_s} \�"
+						titre1 = "#{b.prix.to_s} €"
 					end
 				end
 			else
-				titre1 = "Prix non renseign\�"
+				titre1 = "Prix non renseigné"
 			end
-			titre1 = "#{b.bien_emplacement.ville} - #{titre1}" if b.bien_emplacement && b.bien_emplacement.ville && (not b.bien_emplacement.ville.empty?)
+			titre1 = "#{b.bien_emplacement.ville.force_encoding('utf-8')} - #{titre1}" if b.bien_emplacement && b.bien_emplacement.ville && (not b.bien_emplacement.ville.empty?)
 			next if photos.empty?
 			titre2 = "#{b.reference}"
 			titre2 = "#{b.titre} - #{titre2}" if b.titre && (not b.titre.empty?)
@@ -253,7 +253,6 @@
 			media_text = b.custom_description
 			media_text = conversion(media_text)
 			media_text = asterisque(media_text) if ((exception_asterisque params[:instal_code]) && (b.bien_transaction.nom.to_s.downcase == "vente"))
-			# media_text = media_text.to_s.gsub(/\[([^\[\]]*)\]/, "#{conversion('\1').to_s}")
 			all_img = others.map{ |p| {:titre => "img_#{(compteur_img +=1)}.jpg", :url => p.absolute_url, :ordre => p.ordre}}
 			if b.classe_ges
 				all_img = [{:titre => "ges_schema_#{b.classe_ges}_#{compteur_dpe_img}.jpg", :url => "#{$domain}/images/dpe_schema/ges_schema_#{b.classe_ges}.JPG", :ordre => 0}]+all_img
