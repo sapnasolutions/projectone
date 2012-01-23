@@ -50,3 +50,56 @@ rappel : jquery-forms-2.45.js -->
     </append-body:>
   </old-card>
 </extend>
+
+<def tag="installationListe" for="Client"/>
+
+<extend tag="card" for="Client">
+  <old-card merge>
+    <append-body: param>
+		(<%= this.installations.map{ |i| i.code_acces_distant}.join(",") %>)
+    </append-body:>
+  </old-card>
+</extend>
+
+<extend tag="card" for="Installation">
+  <old-card merge>
+	<header: param>
+      <h4 param="heading"><a>Installation <%= this.code_acces_distant %></a></h4>
+    </header:>
+    <append-body: param>
+		(<%= this.passerelles.map{ |i| i.logiciel}.join(",") %>)
+    </append-body:>
+  </old-card>
+</extend>
+<!--
+<def tag="card" for="Installation">
+  <card class="installation" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <ht key="passerelle.collection.count" count="&this.passerelles.size">
+         <count:passerelles param/>
+      </ht>
+    </body:>
+  </card>
+</def>-->
+
+<def tag="main-nav">
+  <navigation class="main-nav" param="default">
+    <nav-item href="#{base_url}/">Home</nav-item>
+	
+	<nav-item with="&Client" if="&current_user.admin?"><ht key="client.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+	<nav-item with="&Installation" if="&current_user.admin?"><ht key="installation.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+	<nav-item with="&Passerelle" if="&current_user.admin?"><ht key="passerelle.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&Execution" if="&current_user.admin?"><ht key="execution.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&ExecutionSourceFile" if="&current_user.admin?"><ht key="execution_source_file.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <!-- 
+	<nav-item with="&BienEmplacement" if="&current_user.client?"><ht key="bien_emplacement.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&BienPhoto" if="&current_user.client?"><ht key="bien_photo.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&BienTransaction" if="&current_user.client?"><ht key="bien_transaction.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+    <nav-item with="&BienType" if="&current_user.client?"><ht key="bien_type.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+	-->	
+	<nav-item with="&Bien" if="&current_user.client?"><ht key="bien.nav_item" count="100"><model-name-human count="100"/></ht></nav-item>
+  </navigation>
+</def>

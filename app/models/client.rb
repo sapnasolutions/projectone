@@ -24,6 +24,10 @@ class Client < ActiveRecord::Base
 	return nil
   end
   
+  def installationListe
+	self.installations.map{ |i| i.code_acces_distant}.join(',')
+  end
+  
   # --- Permissions --- #
 
   def create_permitted?

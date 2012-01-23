@@ -1,6 +1,15 @@
 <show-page>
+<!--
+<content-header: replace>
+<div class="header content-header">
+            <a:client>&laquo; <ht key="installation.actions.back_to_parent" parent="Client" name="&this">Back to <name/></ht></a:client>
+            <h2>
+              Installation prout <%= this.code_acces_distant %>
+            </h2>
 
-
+            <record-flags fields=""/>
+</div>
+</content-header> -->
 <edit-link: replace>
 </edit-link:>
 <field-list: fields="code_acces_distant, informations_supplementaires" tag="editor"/>

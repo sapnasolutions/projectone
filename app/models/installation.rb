@@ -15,6 +15,10 @@ class Installation < ActiveRecord::Base
 
   has_many :passerelles, :dependent => :destroy
   
+  def name
+	return self.code_acces_distant
+  end
+  
   def get_last_firmware
 	self.execution_source_file = ExecutionSourceFile.order_by("updated_at").select{ |esf|
 		esf.attributs.to_s.to_hashtribute["type"] == "firmware"

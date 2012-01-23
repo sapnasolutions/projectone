@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120119110743) do
+ActiveRecord::Schema.define(:version => 20120120101550) do
 
   create_table "bien_emplacements", :force => true do |t|
     t.string   "position_gps"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(:version => 20120119110743) do
     t.datetime "updated_at"
     t.string   "state",                                   :default => "invited"
     t.datetime "key_timestamp"
+    t.string   "role"
   end
 
   add_index "users", ["state"], :name => "index_users_on_state"

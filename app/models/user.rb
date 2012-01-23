@@ -54,6 +54,14 @@ class User < ActiveRecord::Base
   def signed_up?
     state=="active"
   end
+  
+  def admin?
+    self.role == "admin" or self.administrator?
+  end
+  
+  def client?
+    self.role == "client"
+  end
 
   # --- Permissions --- #
 

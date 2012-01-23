@@ -16,6 +16,7 @@ gem 'typed_serialize'
 gem 'mimetype-fu'
 gem 'imagesize'
 gem 'rubyzip'
+gem 'unicode'
 
 #gem 'hobo-jquery', :git => 'github.com/bryanlarsen/hobo-jquery.git', :branch => 'rails3'
 

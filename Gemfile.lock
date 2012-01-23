@@ -89,6 +89,7 @@ GEM
       polyglot (>= 0.3.1)
     typed_serialize (0.1.1)
     tzinfo (0.3.29)
+    unicode (0.4.0.1-x86-mingw32)
     will_paginate (3.0.pre2)
     xml-simple (1.1.0)
 
@@ -107,4 +108,5 @@ DEPENDENCIES
   rubyzip
   sqlite3
   typed_serialize
+  unicode
   xml-simple

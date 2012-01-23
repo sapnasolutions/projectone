@@ -5,6 +5,17 @@ class String
 		return self
 	end
 	
+  def to_slug
+    silence_warnings {
+		str = Unicode.normalize_KD(self).gsub(/[^\x00-\x7F]/n,'')
+		str = str.gsub(/\W+/, '-').gsub(/^-+/,'').gsub(/-+$/,'').downcase
+	}
+  end
+  
+  def format_research
+    self.downcase.to_slug
+  end
+	
   def count_enum value=0
     value.to_s + ' ' + ((value > 1) ? self.pluralize : self)
   end

@@ -19,6 +19,10 @@ class Passerelle < ActiveRecord::Base
   
   #typed_serialize :parametres, Hash
   
+  def name
+	return self.logiciel
+  end
+  
   # --- Permissions --- #
 
   def create_permitted?
