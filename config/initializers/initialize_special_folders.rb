@@ -68,6 +68,14 @@ else
   raise "Unknown environnement : #{RAILS_ENV}"
 end
 
+case RAILS_ENV.to_s
+  when "development"      then $filezilla_server_folder = "C:/Program Files (x86)/FileZilla Server"
+  when "production" then $filezilla_server_folder = "C:/Program Files (x86)/FileZilla Server"
+  when "test"       then $filezilla_server_folder = "C:/Program Files (x86)/FileZilla Server"
+else
+  raise "Unknown environnement : #{RAILS_ENV}"
+end
+
 Dir.mkdir $base_client_medias unless File.exist? $base_client_medias
 Dir.mkdir $tmp_path unless File.exist? $tmp_path
 Dir.mkdir $base_executions_sources unless File.exist? $base_executions_sources
