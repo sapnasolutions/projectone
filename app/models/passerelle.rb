@@ -45,18 +45,24 @@ class Passerelle < ActiveRecord::Base
 			existing_user = ftp_config['Users'].first['User'].select{ |u| u['Name'] == attrs["loginFtp"]}.first
 			if existing_user
 				Logger.send("warn","Login #{attrs["loginFtp"]} allready exist on FTP : update account")
-				# search and delete the old one
-				ftp_config['Users'].first['User'].delete existing_user
-				# add a new one
-				new_login = attrs["loginFtp"]
-				if attrs["pass"].to_s.empty?
-					new_pass = ""
+				all_dir = ftp_config['Users'].first['User'].map{ |u| u["Permissions"].first["Permission"].first["Dir"] }
+				if (all_dir.include? (($base_ftp_repo+attrs["dir"]).slice(0..-2)).gsub(/\//,"\\\\")) && (existing_user["Permissions"].first["Permission"].first["Dir"] != (($base_ftp_repo+attrs["dir"]).slice(0..-2)).gsub(/\//,"\\\\"))
+					Logger.send("warn","Dir #{attrs["dir"]} allready exist on an other FTP account can't create this new one")
+					# raise ou pas une erreur ?
 				else
-					new_pass = Digest::MD5.hexdigest attrs["pass"].to_s
+					# search and delete the old one
+					ftp_config['Users'].first['User'].delete existing_user
+					# add a new one
+					new_login = attrs["loginFtp"]
+					if attrs["pass"].to_s.empty?
+						new_pass = ""
+					else
+						new_pass = Digest::MD5.hexdigest attrs["pass"].to_s
+					end
+					new_dir = (($base_ftp_repo+attrs["dir"]).slice(0..-2)).gsub(/\//,"\\\\")
+					new_user = {"Name"=> new_login, "Option"=>[{"Name"=>"Pass", "content" => new_pass}, {"Name"=>"Group"}, {"Name"=>"Bypass server userlimit", "content"=>"0"}, {"Name"=>"User Limit", "content"=>"0"}, {"Name"=>"IP Limit", "content"=>"0"}, {"Name"=>"Enabled", "content"=>"1"}, {"Name"=>"Comments"}, {"Name"=>"ForceSsl", "content"=>"0"}], "IpFilter"=>[{"Disallowed"=>[{}], "Allowed"=>[{}]}], "Permissions"=>[{"Permission"=>[{"Dir"=> new_dir, "Option"=>[{"Name"=>"FileRead", "content"=>"1"}, {"Name"=>"FileWrite", "content"=>"1"}, {"Name"=>"FileDelete", "content"=>"1"}, {"Name"=>"FileAppend", "content"=>"1"}, {"Name"=>"DirCreate", "content"=>"1"}, {"Name"=>"DirDelete", "content"=>"1"}, {"Name"=>"DirList", "content"=>"1"}, {"Name"=>"DirSubdirs", "content"=>"1"}, {"Name"=>"IsHome", "content"=>"1"}, {"Name"=>"AutoCreate", "content"=>"1"}]}]}], "SpeedLimits"=>[{"DlType"=>"0", "DlLimit"=>"10", "ServerDlLimitBypass"=>"0", "UlType"=>"0", "UlLimit"=>"10", "ServerUlLimitBypass"=>"0", "Download"=>[{}], "Upload"=>[{}]}]}
+					ftp_config['Users'].first['User'] << new_user
 				end
-				new_dir = (($base_ftp_repo+attrs["dir"]).slice(0..-2)).gsub(/\//,"\\\\")
-				new_user = {"Name"=> new_login, "Option"=>[{"Name"=>"Pass", "content" => new_pass}, {"Name"=>"Group"}, {"Name"=>"Bypass server userlimit", "content"=>"0"}, {"Name"=>"User Limit", "content"=>"0"}, {"Name"=>"IP Limit", "content"=>"0"}, {"Name"=>"Enabled", "content"=>"1"}, {"Name"=>"Comments"}, {"Name"=>"ForceSsl", "content"=>"0"}], "IpFilter"=>[{"Disallowed"=>[{}], "Allowed"=>[{}]}], "Permissions"=>[{"Permission"=>[{"Dir"=> new_dir, "Option"=>[{"Name"=>"FileRead", "content"=>"1"}, {"Name"=>"FileWrite", "content"=>"1"}, {"Name"=>"FileDelete", "content"=>"1"}, {"Name"=>"FileAppend", "content"=>"1"}, {"Name"=>"DirCreate", "content"=>"1"}, {"Name"=>"DirDelete", "content"=>"1"}, {"Name"=>"DirList", "content"=>"1"}, {"Name"=>"DirSubdirs", "content"=>"1"}, {"Name"=>"IsHome", "content"=>"1"}, {"Name"=>"AutoCreate", "content"=>"1"}]}]}], "SpeedLimits"=>[{"DlType"=>"0", "DlLimit"=>"10", "ServerDlLimitBypass"=>"0", "UlType"=>"0", "UlLimit"=>"10", "ServerUlLimitBypass"=>"0", "Download"=>[{}], "Upload"=>[{}]}]}
-				ftp_config['Users'].first['User'] << new_user
 			else
 				Logger.send("warn","Login #{attrs["loginFtp"]} doesn't exist : create account")
 				all_dir = ftp_config['Users'].first['User'].map{ |u| u["Permissions"].first["Permission"].first["Dir"] }
