@@ -31,6 +31,17 @@ class Passerelle < ActiveRecord::Base
 	super
   end
   
+  def get_jobs
+	Delayed::Job.all.select{ |j| 
+			j.handler.include? "object: !ruby/module Importers"
+		}.select{ |j|
+			j.handler.include? "method_name: :import_passerelle"
+		}.select{ |j|
+			j.handler =~ /- !ruby\/ActiveRecord:Passerelle[^-]* id: ([0-9]*)[^-]*-/
+			self.id == $1.to_i
+		}
+  end
+  
   # va verifier et sinon créer l'accès FTP pour la passerelle (si celle ci à été configurée de cette manière)
   def create_or_check_ftp
 	attrs = self.parametres.to_hashtribute

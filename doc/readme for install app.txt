@@ -29,11 +29,12 @@ etape a suivre :
 	- bundle install
 	- bundle update rake (pour réglé le bug du rake : vérifier que rake soit bien a la version 0.8.7)
 - copie des dll mysql et sqlite3 dans system32 ou system64
+NOUVEAU - rails generate delayed_jobs
 - rake db:create ( au cas ajouter : RAILS_ENV="development" ) au cas ne pas tenir compte de l'erreur sur la création de la base mysql de test
 - rake db:migrate ( au cas ajouter : RAILS_ENV="development" )
 - Récupérer hobo-jquery :
 	- se placer dans projet\vendor\plugins\
-	- git clone git://github.com/bryanlarsen/hobo-jquery.git --branch rails3 
+	- git clone git://github.com/bryanlarsen/hobo-jquery.git --branch rails3 	
 - rails s
 - goto localhost:3000/x
 

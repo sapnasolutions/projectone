@@ -52,13 +52,13 @@ module Importers
 
   # Run `import` on all known clients who have an app, an importer and importer's is not a group importer
   def self.run (recent = 1.hours.ago)
-	@rapport_import = ""
-	@nb_fail = 0
+	# @rapport_import = ""
+	# @nb_fail = 0
     Passerelle.all.each do |passerelle|
       #self.send_later(:import,client)
-	  self.import_passerelle(passerelle, recent)
+	  self.delay(:priority => 10).import_passerelle(passerelle, recent)
     end
-	@rapport_import << "Fin import #{Passerelle.all} de passerelles : #{@nb_fail} imports en echec"
+	# @rapport_import << "Fin import #{Passerelle.all} de passerelles : #{@nb_fail} imports en echec"
 	
   end
   
