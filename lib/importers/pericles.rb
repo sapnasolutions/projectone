@@ -90,7 +90,7 @@ class Importers::Pericles < Importers::FromFiles
     good_address = {}
     loc = BienEmplacement.new
 	loc.pays = "France"
-	if b["VILLE_INTERNET"]
+	unless b["VILLE_INTERNET"].to_s.empty?
 		loc.code_postal = b["CP_INTERNET"]	
 		loc.ville = b["VILLE_INTERNET"]
 	else
