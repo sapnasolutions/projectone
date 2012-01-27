@@ -126,6 +126,7 @@ module Importers
 		@rapport_import << "Error message => : #{e.message}<\br>"
 		@rapport_import << "Error backtrace => #{e.backtrace}<\br>"
 		Logger.send("warn","[Passerelle] Import FAIL !")
+		Logger.send("warn","[Passerelle] Rapport : #{@rapport_import}")
     end
   end
   
