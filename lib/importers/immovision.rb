@@ -23,7 +23,11 @@ class Importers::Immovision < Importers::FromFiles
     pattern = File.join($base_ftp_repo+IMMOVISION_FTP_FOLDER, '*')
     Dir[pattern].sort { |a,b|
 		File.mtime(a) <=> File.mtime(b)
-    }.each { |path|
+    }.select{ |path|
+		tmp_file = File.new(path,"r+b")
+		filename = File.basename path
+        return unless ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest tmp_file.read)).select{ |e| e.execution && e.execution.passerelle == @passerelle }.empty?
+	}.each { |path|
 	# self.from_file(filename,file,execution)
 		name = path
 		tmp_file = File.new(path,"r+b")
