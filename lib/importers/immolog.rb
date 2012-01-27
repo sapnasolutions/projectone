@@ -26,7 +26,7 @@ class Importers::Immolog < Importers::FromFiles
     }.select{ |path|
 		tmp_file = File.new(path,"r+b")
 		filename = File.basename path
-        return unless ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest tmp_file.read)).select{ |e| e.execution && e.execution.passerelle == @passerelle }.empty? && filename =~ /#{@parameters["code_agence"]}\.zip/
+        ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest tmp_file.read)).select{ |e| e.execution && e.execution.passerelle == @passerelle }.empty? && filename =~ /#{@parameters["code_agence"]}\.zip/
 	}.each { |path|
 	# self.from_file(filename,file,execution)
 		name = path
