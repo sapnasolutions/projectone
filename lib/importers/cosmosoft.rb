@@ -31,7 +31,7 @@ class Importers::Cosmosoft < Importers::FromUrls
     end
 	data.gsub!(/date="[^"]*"/,"")
     # check if the xlm returned by the uri have been already downloaded
-	return unless ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest tmp_file.read)).select{ |e| e.execution && e.execution.passerelle == @passerelle }.empty?
+	return unless ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest data)).select{ |e| e.execution && e.execution.passerelle == @passerelle }.empty?
     e = Execution.new
 	e.passerelle = @passerelle
 	e.statut = "nex"
