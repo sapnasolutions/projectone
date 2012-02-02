@@ -1,0 +1,7 @@
+@ECHO OFF
+:BEGIN
+CLS
+@ECHO START RAILS JOBS PRODUCTION
+cd "C:\WEB APPLICATIONS\GATEWAY_MANAGER"
+rake jobs:work rails_env="production"
+:END
