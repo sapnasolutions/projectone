@@ -2,6 +2,6 @@
 :BEGIN
 CLS
 @ECHO START RAILS JOBS PRODUCTION
-cd "C:\WEB APPLICATIONS\GATEWAY_MANAGER"
+cd "C:\web applications\projectone"
 rake jobs:work rails_env="production"
 :END

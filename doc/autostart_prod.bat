@@ -2,8 +2,8 @@
 :BEGIN
 CLS
 @ECHO UN POUR LES GOUVERNER TOUS :)
-START console_prod.bat "Rails Console Production"
-START serveur_prod.bat "Rails Server Production"
-START jobs_prod.bat "Rails Jobs Production"
+START "Rails Console Production" "C:\web applications\projectone\doc\console_prod.bat"
+START "Rails Server Production" "C:\web applications\projectone\doc\serveur_prod.bat"
+START "Rails Jobs Production" "C:\web applications\projectone\doc\jobs_prod.bat"
 @ECHO ET DANS LES TENEBRES LES EXECUTER
 :END

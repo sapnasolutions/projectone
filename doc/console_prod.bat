@@ -2,6 +2,6 @@
 :BEGIN
 CLS
 @ECHO START RAILS CONSOLE PRODUCTION
-cd "C:\WEB APPLICATIONS\GATEWAY_MANAGER"
+cd "C:\web applications\projectone"
 rails c production
 :END
