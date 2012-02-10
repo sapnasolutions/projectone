@@ -66,10 +66,10 @@ class Importers::Goventis < Importers::FromFiles
 
 	cat = BienType.find_or_create b['Affaire_type_bien'].up_first
 	
+	
 	desc = b["Affaire_desc_magazine"]
-    if desc.blank?
-      desc = b["Affaire_desc_internet"]
-    end
+    desc = b["Affaire_desc_internet"] if desc.blank?
+	desc = "" if desc.blank?
 	if b["Affaire_honoraires"] && b["Affaire_honoraires"].to_i > 0
 		desc << "[sdl]Honoraires Agence : #{b["Affaire_honoraires"]} [euro]"
 	end
