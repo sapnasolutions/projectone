@@ -5,6 +5,8 @@ module Importers
     'goventis' => Importers::Goventis,
 	'immolog' => Importers::Immolog,
 	'ac3' => Importers::Ac3,
+	#'aftim' => Importers::Aftim,
+	'ics' => Importers::Ics,
     # 'cimm'     => Importers::Cimm,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
