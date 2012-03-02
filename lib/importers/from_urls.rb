@@ -19,7 +19,7 @@ class Importers::FromUrls < Importers::BaseImporters
 	data = ""
     begin
    	  # i = Iconv.new('ASCII-8BIT','UTF-8')
-      uriOpener = open(URI.encode(uri),"r:utf-8")
+      uriOpener = open(URI.encode(uri),"r:utf-8",{:read_timeout => 1800})
 	  data =  uriOpener.read
       # data.gsub!(/&([^ ;]{0,20}) /,"&amp;#{'\1'} ") #remplace le signe & par son equivalent HTML : &amp;
 	  ### check if the file is a well formated xml ###
