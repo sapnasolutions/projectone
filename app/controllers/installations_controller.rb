@@ -171,7 +171,14 @@
 		cat_actives_id = tous_biens.map{ |b| b.bien_type_id}.compact.uniq
 		transaction_actives_id = tous_biens.map{ |b| b.bien_transaction_id}.compact.uniq
 
-		if(cat_actives_id.size > 10)
+		if(installation.code_acces_distant == "abcimmo")
+			# special categories pour abcimmo : APPARTEMENT, MAISON, 1 pièce, 2 pièces, 3 pièces, 4 pièces et plus
+			special_cat = ["APPARTEMENT","MAISON","1 pièce","2 pièces","3 pièces","4 pièces et plus"]
+			special_cat.each{ |c|
+				special_real_cat = BienType.find_or_create c
+				root[:categories].push ({:nom => special_real_cat.nom, :id => "type-#{special_real_cat.id}"})
+			}
+		elsif(cat_actives_id.size > 10)
 			use_meta = true
 			meta_cat_actives_id = tous_biens.select{ |b| b.bien_type}.map{ |b| b.bien_type.get_meta.id}.compact.uniq
 			meta_cat_actives_id.each{ |mid|
@@ -195,30 +202,32 @@
 		}
 		
 		# gestion des paliers de prix
-		tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
-		min = 0
-        max = 225000
-        pas = 25000
-		coef = 1
-        increment = 1
-        while((tous_biens_ventes.select{ |b| b.prix > max*coef }.size) > (tous_biens_ventes.size / 10)) do
-          coef += increment
-          increment *= 10 if coef == 10*increment
-        end
-        max *= coef
-        pas *= coef
-		if !tous_biens_ventes.select{ |b| b.prix < pas}.empty?
-			root[:categories].push ({:nom => "Moins de #{pas.to_s} €", :id => "prix-0"})
-		end
-		compteur = 1
-		pas.step((max-pas),pas) { |i|
-			if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
-				root[:categories].push ({:nom => "Entre #{i.to_s} € et #{pas+i} €", :id => "prix-#{compteur}"})
+		if installation.code_acces_distant != "abcimmo"
+			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
+			min = 0
+			max = 225000
+			pas = 25000
+			coef = 1
+			increment = 1
+			while((tous_biens_ventes.select{ |b| b.prix > max*coef }.size) > (tous_biens_ventes.size / 10)) do
+			  coef += increment
+			  increment *= 10 if coef == 10*increment
 			end
-			compteur += 1
-		}
-		if !tous_biens_ventes.select{ |b| b.prix >= max}.empty?
-			root[:categories].push ({:nom => "Plus de #{max.to_s} €", :id => "prix-#{compteur}"})
+			max *= coef
+			pas *= coef
+			if !tous_biens_ventes.select{ |b| b.prix < pas}.empty?
+				root[:categories].push ({:nom => "Moins de #{pas.to_s} €", :id => "prix-0"})
+			end
+			compteur = 1
+			pas.step((max-pas),pas) { |i|
+				if !tous_biens_ventes.select{ |b| (b.prix >= i) && (b.prix < (pas+i))}.empty?
+					root[:categories].push ({:nom => "Entre #{i.to_s} € et #{pas+i} €", :id => "prix-#{compteur}"})
+				end
+				compteur += 1
+			}
+			if !tous_biens_ventes.select{ |b| b.prix >= max}.empty?
+				root[:categories].push ({:nom => "Plus de #{max.to_s} €", :id => "prix-#{compteur}"})
+			end
 		end
 		
 		compteur_dpe_img = 0
@@ -262,12 +271,38 @@
 			end
 			cats = []
 			cats.push ({:id => "transaction-#{b.bien_transaction.id}"}) if b.bien_transaction
-			if use_meta
+			if(installation.code_acces_distant == "abcimmo")
+				# special categories pour abcimmo : APPARTEMENT, MAISON, 1 pièce, 2 pièces, 3 pièces, 4 pièces et plus
+				if b.nb_piece && b.nb_piece > 0
+					if b.nb_piece == 1
+						special_real_cat = BienType.find_or_create "1 pièce"
+					elsif b.nb_piece == 2
+						special_real_cat = BienType.find_or_create "2 pièces"
+					elsif b.nb_piece == 3
+						special_real_cat = BienType.find_or_create "3 pièces"
+					else
+						special_real_cat = BienType.find_or_create "4 pièces et plus"
+					end
+					cats.push ({:id => "type-#{special_real_cat.id}"})
+				else
+					next
+				end
+				if b.bien_type
+					if b.bien_type.nom.to_s.downcase == "appartement"
+						special_real_cat = BienType.find_or_create "APPARTEMENT"
+					elsif b.bien_type.nom.to_s.downcase == "maison"
+						special_real_cat = BienType.find_or_create "MAISON"
+					else
+						next
+					end
+					cats.push ({:id => "type-#{special_real_cat.id}"})
+				end
+			elsif use_meta
 				cats.push ({:id => "type-#{b.bien_type.get_meta.id}"}) if b.bien_type
 			else
 				cats.push ({:id => "type-#{b.bien_type.id}"}) if b.bien_type
 			end
-			if b.prix
+			if(b.prix && (installation.code_acces_distant != "abcimmo"))
 				if b.prix/pas >= 9
 					cats.push ({:id => "prix-9"})
 				else
