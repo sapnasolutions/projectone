@@ -205,8 +205,13 @@
 		if installation.code_acces_distant != "abcimmo"
 			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
 			min = 0
-			max = 225000
-			pas = 25000
+			if installation.code_acces_distant == "wayenberg"
+				max = 900
+				pas = 100
+			else
+				max = 225000
+				pas = 25000
+			end
 			coef = 1
 			increment = 1
 			while((tous_biens_ventes.select{ |b| b.prix > max*coef }.size) > (tous_biens_ventes.size / 10)) do
