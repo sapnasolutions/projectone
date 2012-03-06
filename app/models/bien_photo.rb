@@ -46,7 +46,7 @@ class BienPhoto < ActiveRecord::Base
       
       Logger.send("warn","Opening URL '#{url}'")
       filename = File.basename url
-      fd = open(URI.encode(url))
+      fd = open(url)
       image_data = fd.read
       mime = fd.content_type
       Logger.send("warn","Content type is #{mime}")
