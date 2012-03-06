@@ -160,7 +160,7 @@ class Importers::Trans21 < Importers::FromFiles
     end
 	price = b["prix"].to_i
 	
-	nb = Bien.where(:reference => ref).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 	
 	desc = b["desc_fr"]

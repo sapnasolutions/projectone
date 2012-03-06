@@ -114,7 +114,7 @@ class Importers::Immolog < Importers::FromFiles
 		ttype = BienTransaction.where(:nom => "Location").first
 	end
     
-	nb = Bien.where(:reference => ref).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 	
 	desc = b[10]

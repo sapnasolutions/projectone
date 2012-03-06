@@ -58,7 +58,7 @@ class Importers::Nexto < Importers::FromUrls
 
 	# find if good already exist, unless create it
 	ref = b['id']       
-	nb = Bien.where(:reference => ref).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 
 	nb.is_accueil = false

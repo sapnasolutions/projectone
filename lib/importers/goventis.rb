@@ -61,7 +61,7 @@ class Importers::Goventis < Importers::FromFiles
 	price = b["Affaire_prix"].to_i
     
 	ref = b["Affaire_reference"]
-	nb = Bien.where(:reference => ref).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 
 	cat = BienType.find_or_create b['Affaire_type_bien'].up_first

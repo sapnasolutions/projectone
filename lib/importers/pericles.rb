@@ -122,7 +122,7 @@ class Importers::Pericles < Importers::FromFiles
 	end
     @mapTable[b["NO_ASP"].to_s.downcase] = ref
     
-	nb = Bien.where(:reference => ref, :passerelle_id => @passerelle.id).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 
 	cat = BienType.find_or_create b["CATEGORIE"].up_first

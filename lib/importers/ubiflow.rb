@@ -117,7 +117,7 @@ class Importers::Ubiflow < Importers::FromFiles
         return false
     end
     
-	nb = Bien.where(:reference => ref).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 	
 	desc = b["texte"]

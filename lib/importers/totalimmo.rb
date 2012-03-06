@@ -118,7 +118,7 @@ class Importers::Totalimmo < Importers::FromFiles
 	
 	cat = BienType.find_or_create cat_s.up_first
     
-	nb = Bien.where(:reference => ref).first
+	nb = Bien.where(:reference => ref).select{ |b| b.passerelle.installation == @passerelle.installation }.first
     nb = Bien.new if nb.nil?
 	
 	desc = b["BIEN_DESCRIPTION"]
