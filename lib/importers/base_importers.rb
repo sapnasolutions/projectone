@@ -189,18 +189,17 @@ class Importers::BaseImporters
 	to_activate = @passerelle.biens.where(:statut => "new")
     
     Bien.transaction do
+	  destroyedsize = to_age.size
       to_age.each do |b|
-        b.statut = 'old'
-        b.bien_photos.clear
-        b.save!
+        b.destroy
       end
       to_activate.each do |b|
         b.statut = 'cur'
         b.save!
       end
 	  
-	  Logger.send("warn", "[Import : #{nom}] Marked #{to_age.size} good entries as old.")
-	  @result[:description] << "[Import : #{nom}] Marked #{to_age.size} good entries as old."
+	  Logger.send("warn", "[Import : #{nom}] Destroy #{destroyedsize} old good entries.")
+	  @result[:description] << "[Import : #{nom}] Destroy #{destroyedsize} old good entries."
 	  Logger.send("warn", "[Import : #{nom}] Activated #{to_activate.size} new good entries.")
 	  @result[:description] << "[Import : #{nom}] Activated #{to_activate.size} new good entries."
     end
