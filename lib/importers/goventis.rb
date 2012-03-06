@@ -71,7 +71,7 @@ class Importers::Goventis < Importers::FromFiles
     desc = b["Affaire_desc_internet"] if desc.blank?
 	desc = "" if desc.blank?
 	if b["Affaire_honoraires"] && b["Affaire_honoraires"].to_i > 0
-		desc << "[sdl]Honoraires Agence : #{b["Affaire_honoraires"]} [euro]"
+		desc << "--> Honoraires Agence : #{b["Affaire_honoraires"]} [euro]"
 	end
 	
 	nb.is_accueil = false
