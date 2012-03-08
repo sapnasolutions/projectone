@@ -127,7 +127,11 @@ class BienPhoto < ActiveRecord::Base
       ensure
 		if tmp
 			tmp.close
-			File.delete tmp if File.exist? tmp.path
+			begin
+				File.delete tmp if File.exist? tmp.path
+			rescue
+				Logger.send("warn","Temporary cound not be deleted !!")
+			end
 		end
       end
     end
