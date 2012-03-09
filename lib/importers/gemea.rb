@@ -104,7 +104,7 @@ class Importers::Gemea < Importers::FromUrls
 	
 	p_urls = []
 	10.times{ |i| 
-		p_urls.push b["picture#{i}"].first if (b["picture#{i}"].first.kind_of? String) && !b["picture#{i}"].first.empty?
+		p_urls.push b["picture#{i+1}"].first if (b["picture#{i+1}"].first.kind_of? String) && !b["picture#{i+1}"].first.empty?
 	}
 	# If new images : Drop old images, add current images
     if !p_urls.empty?
