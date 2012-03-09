@@ -95,7 +95,12 @@
   # end
   
   def custom_description
-	return HTMLEntities.new.decode(self.description.gsub(/<[^<>]*>/,""))
+	begin
+		desc = HTMLEntities.new.decode(self.description.gsub(/<[^<>]*>/,""))
+	rescue
+		desc = self.description
+	end
+	return desc
   end
   
   def classe_energie
