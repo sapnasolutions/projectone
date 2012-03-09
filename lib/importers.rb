@@ -5,6 +5,7 @@ module Importers
     'goventis' => Importers::Goventis,
 	'immolog' => Importers::Immolog,
 	'ac3' => Importers::Ac3,
+	'gemea' => Importers::Gemea,
 	# 'aftim' => Importers::Aftim,
 	'ics' => Importers::Ics,
 	'nexto' => Importers::Nexto,

@@ -212,26 +212,33 @@
 				max = 225000
 				pas = 25000
 			end
-			coef = 1
-			increment = 1
-			while((tous_biens_ventes.select{ |b| b.prix.to_i > max*coef }.size) > (tous_biens_ventes.size / 10)) do
-			  coef += increment
-			  increment *= 10 if coef == 10*increment
+			
+			if ["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant
+				max = 5000000
+				pas = 1000000
+			else
+				coef = 1
+				increment = 1
+				while((tous_biens_ventes.select{ |b| b.prix.to_i > max*coef }.size) > (tous_biens_ventes.size / 10)) do
+				  coef += increment
+				  increment *= 10 if coef == 10*increment
+				end
+				max *= coef
+				pas *= coef
 			end
-			max *= coef
-			pas *= coef
+			
 			if !tous_biens_ventes.select{ |b| b.prix.to_i < pas}.empty?
-				root[:categories].push ({:nom => "Moins de #{pas.to_s} €", :id => "prix-0"})
+				root[:categories].push ({:nom => "Moins de #{pas.humanize} €", :id => "prix-0"})
 			end
 			compteur = 1
 			pas.step((max-pas),pas) { |i|
 				if !tous_biens_ventes.select{ |b| (b.prix.to_i >= i) && (b.prix.to_i < (pas+i))}.empty?
-					root[:categories].push ({:nom => "Entre #{i.to_s} € et #{pas+i} €", :id => "prix-#{compteur}"})
+					root[:categories].push ({:nom => "Entre #{i.humanize} € et #{(pas+i).humanize} €", :id => "prix-#{compteur}"})
 				end
 				compteur += 1
 			}
 			if !tous_biens_ventes.select{ |b| b.prix.to_i >= max}.empty?
-				root[:categories].push ({:nom => "Plus de #{max.to_s} €", :id => "prix-#{compteur}"})
+				root[:categories].push ({:nom => "Plus de #{max.humanize} €", :id => "prix-#{compteur}"})
 			end
 		end
 		
@@ -247,12 +254,14 @@
 			others = photos - [first]
 			if b.prix && b.prix > 0
 				if b.bien_transaction.nom.to_s.downcase == "location"
-					titre1 = "#{b.prix.to_s} € C.C."
+					titre1 = "#{b.prix.humanize} € C.C."
 				else
-					if exception_asterisque params[:instal_code]
-						titre1 = "#{b.prix.to_s} €*"
+					if (["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant) && (b.prix > 5000000)
+						titre1 = "Prix : Nous consulter"
+					elsif exception_asterisque params[:instal_code]
+						titre1 = "#{b.prix.humanize} €*"
 					else
-						titre1 = "#{b.prix.to_s} €"
+						titre1 = "#{b.prix.humanize} €"
 					end
 				end
 			else

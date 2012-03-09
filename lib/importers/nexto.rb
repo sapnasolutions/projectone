@@ -72,7 +72,7 @@ class Importers::Nexto < Importers::FromUrls
     nb.bien_emplacement = loc
 	
     nb.nb_chambre = b['bedrooms'].to_i
-    nb.titre = b['name']
+    nb.titre = b['type'].up_first
 	
     nb.prix = b['sale_price'].to_i if b['sale_price'].to_s != "Nous consulter"
     nb.description = b['description']

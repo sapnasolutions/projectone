@@ -70,4 +70,8 @@ class NilClass
   def up_first
     return self.to_s
   end
+  
+  def humanize
+	return self.to_i.to_s
+  end
 end
