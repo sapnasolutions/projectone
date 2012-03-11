@@ -6,7 +6,7 @@ module Importers
 	'immolog' => Importers::Immolog,
 	'ac3' => Importers::Ac3,
 	'gemea' => Importers::Gemea,
-	# 'aftim' => Importers::Aftim,
+	'aftim' => Importers::Aftim,
 	'ics' => Importers::Ics,
 	'nexto' => Importers::Nexto,
     # 'cimm'     => Importers::Cimm,
