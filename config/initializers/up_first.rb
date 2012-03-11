@@ -52,7 +52,7 @@ class String
 end
 
 class Numeric
-  def humanize(rounding=2,delimiter=' ',separator=',')
+  def humanize(rounding=2,delimiter='.',separator=',')
     value = respond_to?(:round_with_precision) ? round(rounding) : self
 
     #see number with delimeter

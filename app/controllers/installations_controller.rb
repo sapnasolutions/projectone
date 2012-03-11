@@ -214,7 +214,7 @@
 			end
 			
 			if ["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant
-				max = 5000000
+				max = 7000000
 				pas = 1000000
 			else
 				coef = 1
@@ -256,7 +256,7 @@
 				if b.bien_transaction.nom.to_s.downcase == "location"
 					titre1 = "#{b.prix.humanize} € C.C."
 				else
-					if (["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant) && (b.prix > 5000000)
+					if (["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant) && (b.prix > 7000000000)
 						titre1 = "Prix : Nous consulter"
 					elsif exception_asterisque params[:instal_code]
 						titre1 = "#{b.prix.humanize} €*"
