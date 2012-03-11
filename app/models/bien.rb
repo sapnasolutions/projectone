@@ -96,7 +96,12 @@
   
   def custom_description
 	begin
-		desc = HTMLEntities.new.decode(self.description.gsub(/<[^<>]*>/,""))
+		begin
+			desc = HTMLEntities.new.decode(desc)
+		rescue
+			desc = self.description
+		end
+		desc = desc.gsub(/<[^<>]*>/,"")
 	rescue
 		desc = self.description
 	end

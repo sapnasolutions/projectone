@@ -256,7 +256,7 @@
 				if b.bien_transaction.nom.to_s.downcase == "location"
 					titre1 = "#{b.prix.humanize} € C.C."
 				else
-					if (["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant) && (b.prix > 7000000000)
+					if (["littoral1","littoral2","littoralpupitre"].include? installation.code_acces_distant) && (b.prix > 7000000)
 						titre1 = "Prix : Nous consulter"
 					elsif exception_asterisque params[:instal_code]
 						titre1 = "#{b.prix.humanize} €*"
