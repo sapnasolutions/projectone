@@ -97,7 +97,7 @@
   def custom_description
 	begin
 		begin
-			desc = HTMLEntities.new.decode(desc)
+			desc = HTMLEntities.new.decode(self.description)
 		rescue
 			desc = self.description
 		end
