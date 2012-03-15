@@ -178,6 +178,12 @@
 				special_real_cat = BienType.find_or_create c
 				root[:categories].push ({:nom => special_real_cat.nom, :id => "type-#{special_real_cat.id}"})
 			}
+		elsif(installation.code_acces_distant == "pige")
+			special_cat = ["MAISON","TYPE 1-1BIS","TYPE 2","TYPE 3","TYPE 4-5 ET PLUS"]
+			special_cat.each{ |c|
+				special_real_cat = BienType.find_or_create c
+				root[:categories].push ({:nom => special_real_cat.nom, :id => "type-#{special_real_cat.id}"})
+			}
 		elsif(cat_actives_id.size > 10)
 			use_meta = true
 			meta_cat_actives_id = tous_biens.select{ |b| b.bien_type}.map{ |b| b.bien_type.get_meta.id}.compact.uniq
@@ -205,7 +211,7 @@
 		if installation.code_acces_distant != "abcimmo"
 			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
 			min = 0
-			if installation.code_acces_distant == "wayenberg"
+			if ["wayenberg","pige"].include? installation.code_acces_distant
 				max = 900
 				pas = 100
 			else
@@ -304,6 +310,30 @@
 				if b.bien_type
 					if b.bien_type.nom.to_s.downcase == "appartement"
 						special_real_cat = BienType.find_or_create "APPARTEMENT"
+					elsif b.bien_type.nom.to_s.downcase == "maison"
+						special_real_cat = BienType.find_or_create "MAISON"
+					else
+						next
+					end
+					cats.push ({:id => "type-#{special_real_cat.id}"})
+				end
+			elsif(installation.code_acces_distant == "pige")
+				if b.bien_type
+					if b.bien_type.nom.to_s.downcase == "appartement"
+						if b.nb_piece && b.nb_piece > 0
+							if b.nb_piece == 1
+								special_real_cat = BienType.find_or_create "TYPE 1-1BIS"
+							elsif b.nb_piece == 2
+								special_real_cat = BienType.find_or_create "TYPE 2"
+							elsif b.nb_piece == 3
+								special_real_cat = BienType.find_or_create "TYPE 3"
+							else
+								special_real_cat = BienType.find_or_create "TYPE 4-5 ET PLUS"
+							end
+							cats.push ({:id => "type-#{special_real_cat.id}"})
+						else
+							next
+						end
 					elsif b.bien_type.nom.to_s.downcase == "maison"
 						special_real_cat = BienType.find_or_create "MAISON"
 					else
