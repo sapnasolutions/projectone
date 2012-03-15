@@ -212,6 +212,7 @@
 			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
 			min = 0
 			if ["wayenberg","pige"].include? installation.code_acces_distant
+				tous_biens_ventes = tous_biens_ventes.where(:bien_transaction => 2)
 				max = 900
 				pas = 100
 			else
@@ -330,7 +331,6 @@
 							else
 								special_real_cat = BienType.find_or_create "TYPE 4-5 ET PLUS"
 							end
-							cats.push ({:id => "type-#{special_real_cat.id}"})
 						else
 							next
 						end
