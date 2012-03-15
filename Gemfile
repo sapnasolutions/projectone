@@ -17,6 +17,7 @@ gem 'mimetype-fu'
 gem 'imagesize'
 gem 'rubyzip'
 gem 'unicode'
+gem 'savon'
 
 gem "delayed_job", "~> 2.1.4"#,  :git => 'git://github.com/collectiveidea/delayed_job.git'
 
