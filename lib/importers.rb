@@ -9,7 +9,7 @@ module Importers
 	'aftim' => Importers::Aftim,
 	'ics' => Importers::Ics,
 	'nexto' => Importers::Nexto,
-    # 'cimm'     => Importers::Cimm,
+    'immoselect' => Importers::Immoselect,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
     'aptalis' => Importers::Aptalis,
