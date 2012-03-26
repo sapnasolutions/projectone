@@ -210,9 +210,9 @@
 		# gestion des paliers de prix
 		if installation.code_acces_distant != "abcimmo"
 			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
-			if(tous_biens_ventes.size > 250)(
+			if(tous_biens_ventes.size > 250)
 				tous_biens_ventes = tous_biens_ventes[0..249]
-			)
+			end
 			min = 0
 			if ["wayenberg","pige"].include? installation.code_acces_distant
 				tous_biens_ventes = tous_biens_ventes.select{ |b| b.bien_transaction_id == 2}
