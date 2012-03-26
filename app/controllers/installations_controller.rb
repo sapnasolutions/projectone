@@ -184,7 +184,7 @@
 				special_real_cat = BienType.find_or_create c
 				root[:categories].push ({:nom => special_real_cat.nom, :id => "type-#{special_real_cat.id}"})
 			}
-		elsif(cat_actives_id.size > 10)
+		elsif(cat_actives_id.size > 10 and installation.code_acces_distant != "menton")
 			use_meta = true
 			meta_cat_actives_id = tous_biens.select{ |b| b.bien_type}.map{ |b| b.bien_type.get_meta.id}.compact.uniq
 			meta_cat_actives_id.each{ |mid|
@@ -210,6 +210,9 @@
 		# gestion des paliers de prix
 		if installation.code_acces_distant != "abcimmo"
 			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
+			if(tous_biens_ventes.size > 250){
+				tous_biens_ventes = tous_biens_ventes[0..249]
+			}
 			min = 0
 			if ["wayenberg","pige"].include? installation.code_acces_distant
 				tous_biens_ventes = tous_biens_ventes.select{ |b| b.bien_transaction_id == 2}

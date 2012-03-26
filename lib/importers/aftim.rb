@@ -2,7 +2,7 @@ class Importers::Aftim < Importers::FromUrls
   
   URI_WEB_SERVICES = "http://www.aftim.fr/AftimService.svc?wsdl"
 
-  SERVICE_CALLING = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body><GetAchatsToByte xmlns=\"http://tempuri.org/\"/></s:Body></s:Envelope>"
+  SERVICE_CALLING = "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"><s:Body><%s xmlns=\"http://tempuri.org/\"/></s:Body></s:Envelope>"
   
   #waiting parameters : service
   
