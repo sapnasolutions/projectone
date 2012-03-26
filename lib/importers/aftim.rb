@@ -26,7 +26,7 @@ class Importers::Aftim < Importers::FromUrls
 	  h = response.to_hash
 	  response = "#{servicename}_response"
 	  result = "#{servicename}_result"
-	  base = h[response.to_sym][:result.to_sym]
+	  base = h[response.to_sym][result.to_sym]
 	  data = Base64.decode64 base
 	  ### check if the file is a well formated xml ###
     rescue
