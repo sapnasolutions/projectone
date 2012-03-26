@@ -24,7 +24,9 @@ class Importers::Aftim < Importers::FromUrls
 	
 	  response = client.request(servicename.to_sym){soap.xml = service_calls}
 	  h = response.to_hash
-	  base = h[:get_achats_to_byte_response][:get_achats_to_byte_result]
+	  response = "#{servicename}_response"
+	  result = "#{servicename}_result"
+	  base = h[response.to_sym][:result.to_sym]
 	  data = Base64.decode64 base
 	  ### check if the file is a well formated xml ###
     rescue
