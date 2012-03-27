@@ -42,6 +42,14 @@ class Passerelle < ActiveRecord::Base
 		}
   end
   
+  def get_execution_failed
+	self.executions.select{ |e| e.statut != "ok" && e.statut != "nex" }
+  end
+  
+  def get_jobs_failed
+	self.get_jobs.select{ |j| j.attemps.to_i >= 3}
+  end
+  
   # va verifier et sinon créer l'accès FTP pour la passerelle (si celle ci à été configurée de cette manière)
   def create_or_check_ftp
 	attrs = self.parametres.to_hashtribute
@@ -113,8 +121,38 @@ class Passerelle < ActiveRecord::Base
 	return self.logiciel
   end
   
+  def execute
+	Importers.delay(:priority => 0).import_passerelle(self,Time.now)
+	Logger.send("warn","Passerelle is executed")
+  end
+  
+  def force_execution
+	Logger.send("warn","Passerelle is forced to be executed")
+	self.executions.last.destroy
+	self.execute
+  end
+  
+  def execution_from_scratch
+	Logger.send("warn","Passerelle is executed from scratch")
+	self.executions.each{ |e| e.destroy }
+	self.biens.each{ |e| e.destroy }
+	self.execute
+  end
+  
+  def update_exe
+
+  end
+  
   # --- Permissions --- #
 
+  def execute_permitted?
+	acting_user.administrator?
+  end
+  
+  def update_exe_permitted?
+	acting_user.administrator?
+  end
+  
   def create_permitted?
     acting_user.administrator?
   end
