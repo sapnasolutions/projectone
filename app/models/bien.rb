@@ -107,6 +107,7 @@
 		desc = desc.gsub(/<br \/>/,"")
 		desc = desc.gsub(/<p>/,"")
 		desc = desc.gsub(/<\/p>/,"")
+		desc = desc.gsub(/<[^>]*>/,"")
 	rescue
 		desc = self.description
 	end
