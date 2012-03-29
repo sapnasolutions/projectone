@@ -1,6 +1,7 @@
 module Importers
   ModuleMapping = {
     'pericles' => Importers::Pericles,
+	'adaptimmo' => Importers::Adaptimmo,
 	'ubiflow' => Importers::Ubiflow,
     'goventis' => Importers::Goventis,
 	'immolog' => Importers::Immolog,
