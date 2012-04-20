@@ -116,19 +116,20 @@ class Importers::BaseImporters
 		Logger.send("warn","[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded")
 		@result[:description] << "[Import] Media not download correctly. Try to find [#{url}] in all client medias already downloaded"
 		p = last_chance_find_media url
-		p.bien = bien
-		p.save!
-		if p.nil?
+		p_safe = BienPhoto.find(p.id)
+		p_safe.bien = bien
+		p_safe.save!
+		if p_safe.nil?
 			Logger.send("warn", "Media will miss : [#{url}]")
 			@result[:description] << "Media will miss : [#{url}]"
 			return nil 
 		end
      end
     end
-
+    p_safe = BienPhoto.find(p.id)
     # if allready imported just update order
-    p.ordre = ordre
-    p.save!
+    p_safe.ordre = ordre
+    p_safe.save!
 
     return p
   rescue Exception => e
@@ -144,7 +145,7 @@ class Importers::BaseImporters
     research_file_name = file_name.to_s.downcase
     if @medias.has_key? research_file_name
 		# Then update order
-		p = @medias[research_file_name]
+		p = BienPhoto.find(@medias[research_file_name].id)
     else
 		Logger.send("warn", "Media not found in new downloaded medias. Try to find [#{research_file_name}] in all client medias")
 		@result[:description] << "Media not found in new downloaded medias. Try to find [#{research_file_name}] in all client medias"

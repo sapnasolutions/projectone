@@ -159,9 +159,13 @@
 	elsif (tous_biens = installation.passerelles.map{ |p| p.biens.select{ |b| b.statut == "cur" && !b.bien_photos.empty? }}.flatten).empty?
 		code_err = 4
 		text_err = "Aucun bien actif et avec images"
-    else
-		code_err = 0
+	else
 		text_err = "ok : #{tous_biens.size} actifs et avec images"
+		if(tous_biens.size > 150){
+		    text_err = "ok (max atteint 150)"
+		    tous_biens = tous_biens.shuffle[0..149]
+		}
+		code_err = 0
 		last_update = installation.passerelles.map{ |p| p.executions.select{|e| e.statut == "ok"}.map{|e| e.updated_at}}.flatten.sort.last.strftime("%d/%m/%Y")
 	end
 
@@ -210,9 +214,6 @@
 		# gestion des paliers de prix
 		if installation.code_acces_distant != "abcimmo"
 			tous_biens_ventes = tous_biens#.select{ |b| b.bien_transaction && b.bien_transaction.nom == "Vente"}
-			if(tous_biens_ventes.size > 250)
-				tous_biens_ventes = tous_biens_ventes[0..249]
-			end
 			min = 0
 			if ["wayenberg","pige"].include? installation.code_acces_distant
 				tous_biens_ventes = tous_biens_ventes.select{ |b| b.bien_transaction_id == 2}

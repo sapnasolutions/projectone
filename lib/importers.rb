@@ -11,6 +11,7 @@ module Importers
 	'ics' => Importers::Ics,
 	'nexto' => Importers::Nexto,
     'immoselect' => Importers::Immoselect,
+    'enova' => Importers::Enova,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
     'aptalis' => Importers::Aptalis,
