@@ -99,7 +99,6 @@ class Importers::Enova < Importers::FromFiles
 	end
 	return if ref.nil? or ref.empty?
 	
-	b['type_transaction'] = "location" if b['type_transaction'] == "location saisonniere"
 	transaction_type = BienTransaction.where(:nom => b['type_transaction'].up_first).first
 	return if transaction_type.nil?
 	
