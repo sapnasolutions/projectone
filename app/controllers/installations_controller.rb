@@ -161,10 +161,10 @@
 		text_err = "Aucun bien actif et avec images"
 	else
 		text_err = "ok : #{tous_biens.size} actifs et avec images"
-		if(tous_biens.size > 150){
+		if(tous_biens.size > 150)
 		    text_err = "ok (max atteint 150)"
 		    tous_biens = tous_biens.shuffle[0..149]
-		}
+		end
 		code_err = 0
 		last_update = installation.passerelles.map{ |p| p.executions.select{|e| e.statut == "ok"}.map{|e| e.updated_at}}.flatten.sort.last.strftime("%d/%m/%Y")
 	end
