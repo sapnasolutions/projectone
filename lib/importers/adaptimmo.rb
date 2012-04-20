@@ -48,7 +48,7 @@ class Importers::Adaptimmo < Importers::FromFiles
 	f = File.open(execution.execution_source_file.file.path)
     data = f.read
     hash = Hash.from_xml(data)
-	import_hash(tree)
+	import_hash(hash)
 	
 	f.close
 
@@ -109,9 +109,9 @@ class Importers::Adaptimmo < Importers::FromFiles
     nb.bien_emplacement = loc
     nb.nb_piece = b["piece"]
     nb.surface = b["surf_hab"]
-	surf_terrain
-	nb_chambre
-	titre_fr
+	#surf_terrain
+	#nb_chambre
+	#titre_fr
     nb.titre = b["titre_fr"]
     nb.prix = b["prix"]
     nb.description = desc
@@ -138,7 +138,7 @@ class Importers::Adaptimmo < Importers::FromFiles
       # Map photo-hashes to medias, filter out failures, and add medias to good
 	  number = 0
 	  counter = 0
-      pl.map { |p| import_local_media(p.to_s,(counter+=1),nb,p.to_s) }
+      pl.map { |p| import_remote_media(p.to_s,(counter+=1),nb) }
     end
 	
     nb.save!

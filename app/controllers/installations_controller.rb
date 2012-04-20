@@ -281,6 +281,9 @@
 			next if photos.empty?
 			titre2 = "#{b.reference}"
 			titre2 = "#{b.titre} - #{titre2}" if b.titre && (not b.titre.empty?)
+			if installation.code_acces_distant == "golfeze"
+				titre2 = ""
+			end
 			media_accueil = b.is_accueil
 			media_accueil = true if b.passerelle.tous_accueil
 			media_text = b.custom_description
