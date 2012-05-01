@@ -11,6 +11,8 @@ module Importers
 	'ics' => Importers::Ics,
 	'nexto' => Importers::Nexto,
     'immoselect' => Importers::Immoselect,
+    'pagesimmows' => Importers::PagesimmoWs,
+    'pagesimmoftp' => Importers::PagesimmoFtp,
     'enova' => Importers::Enova,
     # 'sitra'    => Importers::Sitra,
     # 'rodacom' => Importers::Rodacom,
