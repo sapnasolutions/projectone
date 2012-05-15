@@ -1,6 +1,6 @@
 ﻿class Importers::Ac3 < Importers::FromUrls
   
-  URI_GOODS = "http://batch.ac3-distribution.com/office/%s/cache/export.xml"
+  URI_GOODS = "http://%s"
   CAT_TYPES = ["APPARTEMENT","MAISON","DEMEURE_CHATEAU","TERRAIN","PARKING_GARAGE","IMMEUBLE","LOCAL_COMMERCIAL"]
   #waiting parameters : code_agence
 
