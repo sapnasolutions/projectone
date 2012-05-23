@@ -130,8 +130,8 @@ class Importers::PagesimmoFtp < Importers::FromFiles
     elsif !(b["LOCATION"].nil?)
       transaction_type = BienTransaction.where(:nom => 'Location').first
       transactionTypeIndex = "LOCATION"
-      b["LOCATION"]["PROVISION_SUR_CHARGES"] ||= 0
-      price = b["LOCATION"]["LOYER"].to_i + b["LOCATION"]["PROVISION_SUR_CHARGES"].to_i
+      b["LOCATION"]["PROVISIONS_CHARGES"] ||= 0
+      price = b["LOCATION"]["LOYER_MENSUEL_TTC"].to_i + b["LOCATION"]["PROVISIONS_CHARGES"].to_i
     # elsif !(b["SAISONNIER"].nil?)
       # transaction_type = Immo::TransactionType.get 'Saisonnier'
       # transactionTypeIndex = "SAISONNIER"
@@ -167,10 +167,16 @@ class Importers::PagesimmoFtp < Importers::FromFiles
     if b['DIAGNOSTICS'] && b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE'] && b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']
       nb.valeur_dpe = b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']['LETTRE']
       nb.classe_dpe = b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']['VALEUR']
+    elsif b['DPE_ENERGIE']
+      nb.valeur_dpe = b['DPE_ENERGIE']['LETTRE']
+      nb.classe_dpe = b['DPE_ENERGIE']['VALEUR']
     end
     if b['DIAGNOSTICS'] && b['DIAGNOSTICS']['DPE_EMISSIONS_GES'] && b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']
       nb.valeur_ges = b['DIAGNOSTICS']['DPE_EMISSIONS_GES']['DONNEES']['VALEUR']
       nb.class_ges = b['DIAGNOSTICS']['DPE_EMISSIONS_GES']['DONNEES']['VALEUR']
+    elsif b['DPE_CO2']
+      nb.valeur_dpe = b['DPE_CO2']['LETTRE']
+      nb.classe_dpe = b['DPE_CO2']['VALEUR']
     end
     nb.statut = 'new'
     nb.save!
