@@ -165,18 +165,18 @@ class Importers::PagesimmoFtp < Importers::FromFiles
     nb.prix = price
     nb.description = b[transactionTypeIndex]["TEXTES"]["DESCRIPTION_FR"]
     if b['DIAGNOSTICS'] && b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE'] && b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']
-      nb.valeur_dpe = b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']['LETTRE']
-      nb.classe_dpe = b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']['VALEUR']
+      nb.valeur_dpe = b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']['VALEUR']
+      nb.classe_dpe = b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']['LETTRE']
     elsif b['DPE_ENERGIE']
-      nb.valeur_dpe = b['DPE_ENERGIE']['LETTRE']
-      nb.classe_dpe = b['DPE_ENERGIE']['VALEUR']
+      nb.valeur_dpe = b['DPE_ENERGIE']['VALEUR']
+      nb.classe_dpe = b['DPE_ENERGIE']['LETTRE']
     end
-    if b['DIAGNOSTICS'] && b['DIAGNOSTICS']['DPE_EMISSIONS_GES'] && b['DIAGNOSTICS']['DPE_CONSOMMATIONS_ENERGIE']['DONNEES']
+    if b['DIAGNOSTICS'] && b['DIAGNOSTICS']['DPE_EMISSIONS_GES'] && b['DIAGNOSTICS']['DPE_EMISSIONS_GES']['DONNEES']
       nb.valeur_ges = b['DIAGNOSTICS']['DPE_EMISSIONS_GES']['DONNEES']['VALEUR']
-      nb.class_ges = b['DIAGNOSTICS']['DPE_EMISSIONS_GES']['DONNEES']['VALEUR']
+      nb.class_ges = b['DIAGNOSTICS']['DPE_EMISSIONS_GES']['DONNEES']['LETTRE']
     elsif b['DPE_CO2']
-      nb.valeur_dpe = b['DPE_CO2']['LETTRE']
-      nb.classe_dpe = b['DPE_CO2']['VALEUR']
+      nb.valeur_ges = b['DPE_CO2']['VALEUR']
+      nb.class_ges = b['DPE_CO2']['LETTRE']
     end
     nb.statut = 'new'
     nb.save!
