@@ -41,7 +41,7 @@ class Importers::FromFtp < Importers::BaseImporters
     max = ftp.list("*.*").size
     ftp.list("*.*") do |file|
       i += 1
-      case file.to_s.downcase 
+      case file.to_s 
       when /:\d\d\s(.*)$/ then
         remote_file_path = $1
       when /\s\d\d\d\d\s(.*)$/ then
@@ -71,7 +71,7 @@ class Importers::FromFtp < Importers::BaseImporters
     ftp.chdir(repository)
     
     remote_files.each{ |remotepath|
-		# begin
+		 
 			if file_type == :text
 				tmp_dl = File.new("#{$tmp_path}/#{remotepath}","w+")
 			else
@@ -82,6 +82,7 @@ class Importers::FromFtp < Importers::BaseImporters
 			# tmp_dl.rewind
 			localpath = tmp_dl.path
 			Logger.send("warn","[FTP] Start download : #{remotepath}")
+		      begin
 			if file_type == :text
 			  ftp.gettextfile(remotepath,localpath)
 			else
@@ -90,18 +91,19 @@ class Importers::FromFtp < Importers::BaseImporters
 			eval "#{action_on_downloaded_file} tmp_dl"
 			
 			Logger.send("warn","[FTP] End download correctly (size : #{File.size tmp_dl.path} )")
-		# rescue
-			# Logger.send("warn","[FTP] End download with errors")
-		# ensure
+		 rescue
+			 Logger.send("warn","[FTP] End download with errors")
+		 ensure
 			tmp_dl.close
 			File.delete tmp_dl if File.exist? tmp_dl.path
-		# end
+		 end
     }
     ftp.close
   end
   ################
   def download_data tmp_dl
 	name = File.basename(tmp_dl.path)
+	data = tmp_dl.read
     # tmp_data = Paperclip::Tempfile.new "temp_file"
     # tmp_data.write Iconv.conv('utf-8','cp1252',data.to_s)
     # tmp_data.rewind
@@ -109,32 +111,39 @@ class Importers::FromFtp < Importers::BaseImporters
     # @logger.info "Download file mime type is : #{mime}"
     # if @mime.include? mime.gsub(/\n/,"")
       # if Importers::Check.check(tmp_data.path)
+	  return unless ExecutionSourceFile.where(:hashsum => (Digest::MD5.hexdigest data)).select{ |e| e.execution && e.execution.passerelle == @passerelle }.empty?
 	  e = Execution.new
 	  e.passerelle = @passerelle
 	  e.statut = "nex"
 	  e.save!
 	  f = ExecutionSourceFile.from_file(name,tmp_dl,e)
 	  e.execution_source_file = f
+	  
+	  e.destroy unless ExecutionSourceFile.where(:file_file_size => f.file_file_size).select{ |esf| esf.execution && esf.execution != e && esf.execution.passerelle == @passerelle }.empty?
       # end
     # end
 #    tmp_data.close
   end
   
-  def download_images tmp_dl
-    # m = Media::Base.from_data tmp_dl.read, @client
-    # next if m.nil?
-    # m.attrs[@importer] = true
-    # name = File.basename tmp_dl.path.to_s.downcase
-    # if m.attrs[:source_name].nil? || m.attrs[:source_name] == ""
-      # m.attrs[:source_name] = name
-    # else
-      # (m.attrs[:source_name] += "|"+name) unless (m.attrs[:source_name].split('|').include? name)
-    # end
-    # m.label = name
+  def dl_and_update_medias
+    @nb_medias = 0
+    
+    remote_files = search_file(@ftp_media_repository,/.(jpg|jpeg|png|bmp)$/)
+    
+    download_file @ftp_media_repository, remote_files, :bin, "download_images"    
 
-    # m.save!
-    # @nb_medias += 1
-    # @medias[name] = m
+    Logger.send("warn","[Import] #{@nb_medias.to_s} medias registered")
+    @result[:description] << "[Import] #{@nb_medias.to_s} medias registered"
+  end
+  
+  def download_images tmp_dl
+    name = File.basename(tmp_dl.path)
+    data = tmp_dl.read
+    p = BienPhoto.from_data name, data, nil, nil, name, @passerelle
+    return if p.nil?
+	    
+    @nb_medias += 1
+    @medias[name.to_s.downcase] = p
   end
   
 end

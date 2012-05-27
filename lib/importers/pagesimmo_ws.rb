@@ -89,7 +89,7 @@ class Importers::PagesimmoWs < Importers::FromUrls
     else
             loc = nil
     end
-
+    description = ""
 	# Category & Transaction type
     cat_text = find_cat(b)
     if(cat_text.nil? or b[cat_text].nil?)
@@ -109,6 +109,7 @@ class Importers::PagesimmoWs < Importers::FromUrls
       transactionTypeIndex = "LOCATION"
       b["LOCATION"]["PROVISION_SUR_CHARGES"] ||= 0
       price = b["LOCATION"]["LOYER"].to_i + b["LOCATION"]["PROVISION_SUR_CHARGES"].to_i
+      description = "Honoraires agence #{b["LOCATION"]["FRAIS_AGENCE"].to_i} euros" if b["LOCATION"]["FRAIS_AGENCE"].to_i > 0
     # elsif !(b["SAISONNIER"].nil?)
       # transaction_type = Immo::TransactionType.get 'Saisonnier'
       # transactionTypeIndex = "SAISONNIER"
@@ -138,10 +139,10 @@ class Importers::PagesimmoWs < Importers::FromUrls
     nb.nb_chambre = cat_root['NBRE_CHAMBRES'].to_i
     nb.surface = cat_root['SURFACE_HABITABLE'].to_i
     nb.surface_terrain = cat_root['SURFACE_TERRAIN'].to_i
-    nb.titre = b['INTITULE']['FR']
+    #nb.titre = b['INTITULE']['FR']
 	
     nb.prix = price
-    nb.description = b['COMMENTAIRES']['FR']
+    nb.description = b['COMMENTAIRES']['FR']+" "+description
     nb.valeur_dpe = cat_root['CONSO_ANNUEL_ENERGIE']
 	nb.classe_dpe = cat_root['CONSOMMATIONENERGETIQUE']
 	nb.valeur_ges = cat_root['VALEUR_GES']
