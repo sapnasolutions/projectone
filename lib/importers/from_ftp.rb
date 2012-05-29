@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Superclass for importers that use (uploaded) files as input.
 class Importers::FromFtp < Importers::BaseImporters
   require 'net/ftp'

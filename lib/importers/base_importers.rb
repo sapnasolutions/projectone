@@ -1,3 +1,4 @@
+# encoding: utf-8
 # Superclass for importers that use (uploaded) files as input.
 class Importers::BaseImporters
 
@@ -31,14 +32,21 @@ class Importers::BaseImporters
 	}
 	to_be_executed.each{ |execution|
 	
-		import_exe execution
+	
+	begin
+	  import_exe execution
+	  statut = "ok"
+	rescue Exception => e
+		    @rapport_import << "Fail<\br>"
+		    @rapport_import << "Error message => : #{e.message}<\br>"
+		    @rapport_import << "Error backtrace => #{e.backtrace}<\br>"
+		    Logger.send("warn","[Passerelle] Import FAIL !")
+		    Logger.send("warn","[Passerelle] Rapport : #{@rapport_import}")
+		    statut = "err"
+	end
 		
 		exe_to_save = Execution.find execution.id
-		if @result[:ok]
-			exe_to_save.statut = "ok"
-		else
-			exe_to_save.statut = "err"
-		end
+		exe_to_save.statut = statut
 		exe_to_save.description = @result[:description]
 		exe_to_save.save!
 	}

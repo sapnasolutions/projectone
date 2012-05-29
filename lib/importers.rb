@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Importers
   ModuleMapping = {
     'pericles' => Importers::Pericles,
@@ -81,7 +82,7 @@ module Importers
 		Logger.send("warn","[Passerelle] Skipping passerelle, updated too recently (#{passerelle.updated_at.to_s}) ")
 		return
     end
-	# check importer :FIXME (proposer la liste des passerelles à la création (pour éviter les erreurs)
+	# check importer :FIXME (proposer la liste des passerelles â€¡ la crÃˆation (pour Ãˆviter les erreurs)
 	mod = Importers::ModuleMapping[passerelle.logiciel]
     if mod.nil?
 		Logger.send("warn","[Passerelle] Logiciel : (#{passerelle.logiciel.to_s}) non connu ")

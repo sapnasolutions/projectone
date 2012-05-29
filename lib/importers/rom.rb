@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Importers::Rom < Importers::FromFtp
   
   ROM_FTP_ADRESS = "azur-mediterranee.com"
@@ -73,7 +74,7 @@ class Importers::Rom < Importers::FromFtp
 
 	ref = get_value("reference",b)
 	
-	transaction_type = BienTransaction.where(:nom => 'Location').first
+	transaction_type = BienTransaction.where(:nom => 'Location saisonniere').first
 	price = nil
 	
 	cat = BienType.find_or_create get_value("type",b).up_first
@@ -97,6 +98,7 @@ class Importers::Rom < Importers::FromFtp
     #nb.titre = b["BIEN_LIBELLE"]
     nb.prix = price
     nb.description = desc
+    nb.titre = "Location saisonnière"
 	
 	nb.statut = 'new'
     nb.save!
