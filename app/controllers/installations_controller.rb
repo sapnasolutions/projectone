@@ -9,14 +9,22 @@
   web_method :data
   
   def auto_import
+    if current_user.administrator?
+      if params['cmd'] && params['cmd'] == "stop"
+	Delayed::Job.all.each{ |j| j.destroy }
+      else
 	begin
 		puts "Start Cron Automatic Import"
 		Importers.run Time.now
 		puts "done."
-		render :text => "Done"
 	rescue	
-		render :text => "Fail"
+		puts "fail."
 	end
+      end
+	redirect_to '/'
+    else
+      render :text => "Need to be logged !!"  
+    end
   end
   
   def conversion text
@@ -161,7 +169,7 @@
 		text_err = "Aucun bien actif et avec images"
 	else
 		text_err = "ok : #{tous_biens.size} actifs et avec images"
-		if(tous_biens.size > 150)
+		if(tous_biens.size > 150 && installation.code_acces_distant != "rateau")
 		    text_err = "ok (max atteint 150)"
 		    tous_biens = tous_biens.shuffle[0..149]
 		end
