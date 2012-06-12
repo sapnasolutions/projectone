@@ -290,6 +290,7 @@
 			next if photos.empty?
 			titre2 = "#{b.reference}"
 			titre2 = "#{b.titre} - #{titre2}" if b.titre && (not b.titre.empty?)
+			titre2 = titre2[0..14]
 			if installation.code_acces_distant == "golfeze"
 				titre2 = ""
 			end

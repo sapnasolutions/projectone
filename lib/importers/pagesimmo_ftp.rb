@@ -116,8 +116,8 @@ class Importers::PagesimmoFtp < Importers::FromFiles
 	# Category & Transaction type
     cat_text = find_cat(b)
     if(cat_text.nil? or b[cat_text].nil?)
-	   Logger.send("warn","[PagesimmoWs] Categorie non connue pour le bien ref : #{b["REFERENCE"]}")
-	   @result[:description] << "[PagesimmoWs] Categorie non connue pour le bien ref : #{b["REFERENCE"]}"
+	   Logger.send("warn","[PagesimmoFtp] Categorie non connue pour le bien ref : #{b["REFERENCE"]}")
+	   @result[:description] << "[PagesimmoFtp] Categorie non connue pour le bien ref : #{b["REFERENCE"]}"
        return
     end
 	cat_root = b[cat_text]
@@ -137,8 +137,8 @@ class Importers::PagesimmoFtp < Importers::FromFiles
       # transactionTypeIndex = "SAISONNIER"
       # price = 0
     else
-	  Logger.send("warn","[PagesimmoWs] Type de transaction nul pour le bien ref : #{b["REFERENCE"]}")
-	  @result[:description] << "[PagesimmoWs] Type de transaction nul pour le bien ref : #{b["REFERENCE"]}"
+	  Logger.send("warn","[PagesimmoFtp] Type de transaction nul pour le bien ref : #{b["REFERENCE"]}")
+	  @result[:description] << "[PagesimmoFtp] Type de transaction nul pour le bien ref : #{b["REFERENCE"]}"
       return
     end
 

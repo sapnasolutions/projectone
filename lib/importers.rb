@@ -16,6 +16,7 @@ module Importers
     'pagesimmoftp' => Importers::PagesimmoFtp,
     'enova' => Importers::Enova,
     'rom' => Importers::Rom,
+    'agenceplus' => Importers::AgencePlus,
     'laresidence' => Importers::Laresidence,
     'aptalis' => Importers::Aptalis,
     'totalimmo' => Importers::Totalimmo,
